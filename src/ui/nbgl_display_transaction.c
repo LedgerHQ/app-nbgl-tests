@@ -61,7 +61,7 @@ static void review_choice(bool confirm) {
 int ui_display_transaction() {
     // Format amount and address to g_amount and g_address buffers
     memset(g_amount, 0, sizeof(g_amount));
-    snprintf(g_amount, sizeof(g_amount), "BOL 0.99");
+    snprintf(g_amount, sizeof(g_amount), "NBT 0.99");
     memset(g_address, 0, sizeof(g_address));
     snprintf(g_address, sizeof(g_amount), "0x1234567890");
 
@@ -80,9 +80,9 @@ int ui_display_transaction() {
     nbgl_useCaseReview(TYPE_TRANSACTION,
                        &pairList,
                        &LARGE_ICON,
-                       "Review transaction\nto send BOL",
+                       "Review transaction\nto send NBT",
                        NULL,
-                       "Sign transaction\nto send BOL",
+                       "Sign transaction\nto send NBT",
                        review_choice);
     return 0;
 }

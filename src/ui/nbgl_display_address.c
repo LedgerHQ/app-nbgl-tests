@@ -48,7 +48,7 @@ int ui_display_address() {
     nbgl_useCaseAddressReview("0xABCDEF1234",
                               NULL,
                               &LARGE_ICON,
-                              "Verify BOL address",
+                              "Verify NBT address",
                               NULL,
                               review_choice);
     return 0;

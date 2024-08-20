@@ -22,4 +22,3 @@ int ui_display_transaction(void);
  *
  */
 int ui_display_address(void);
-
