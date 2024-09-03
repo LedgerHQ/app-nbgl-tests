@@ -1,5 +1,5 @@
 /*****************************************************************************
- *   Ledger App Boilerplate.
+ *   Ledger App NBGL_Tests.
  *   (c) 2020 Ledger SAS.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,9 +32,7 @@
 #include "constants.h"
 #include "../globals.h"
 #include "../sw.h"
-#include "../address.h"
 #include "action/validate.h"
-#include "../transaction/types.h"
 #include "../menu.h"
 
 // Buffer where the transaction amount string is written
@@ -61,27 +59,11 @@ static void review_choice(bool confirm) {
 // - Format the amount and address strings in g_amount and g_address buffers
 // - Display the first screen of the transaction review
 int ui_display_transaction() {
-    if (G_context.req_type != CONFIRM_TRANSACTION || G_context.state != STATE_PARSED) {
-        G_context.state = STATE_NONE;
-        return io_send_sw(SW_BAD_STATE);
-    }
-
     // Format amount and address to g_amount and g_address buffers
     memset(g_amount, 0, sizeof(g_amount));
-    char amount[30] = {0};
-    if (!format_fpu64(amount,
-                      sizeof(amount),
-                      G_context.tx_info.transaction.value,
-                      EXPONENT_SMALLEST_UNIT)) {
-        return io_send_sw(SW_DISPLAY_AMOUNT_FAIL);
-    }
-    snprintf(g_amount, sizeof(g_amount), "BOL %.*s", sizeof(amount), amount);
+    snprintf(g_amount, sizeof(g_amount), "NBT 0.99");
     memset(g_address, 0, sizeof(g_address));
-
-    if (format_hex(G_context.tx_info.transaction.to, ADDRESS_LEN, g_address, sizeof(g_address)) ==
-        -1) {
-        return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
-    }
+    snprintf(g_address, sizeof(g_amount), "0x1234567890");
 
     // Setup data to display
     pairs[0].item = "Amount";
@@ -97,10 +79,10 @@ int ui_display_transaction() {
     // Start review
     nbgl_useCaseReview(TYPE_TRANSACTION,
                        &pairList,
-                       &C_app_boilerplate_64px,
-                       "Review transaction\nto send BOL",
+                       &LARGE_ICON,
+                       "Review transaction\nto send NBT",
                        NULL,
-                       "Sign transaction\nto send BOL",
+                       "Sign transaction\nto send NBT",
                        review_choice);
     return 0;
 }
