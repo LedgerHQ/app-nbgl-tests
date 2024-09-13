@@ -43,6 +43,9 @@ void app_main() {
 
     ui_menu_main();
 
+    // initialize ticker event counter
+    G_ticker_counter = -1;
+
     // Initialize the NVM data if required
     if (N_storage.initialized != 0x01) {
         internal_storage_t storage;

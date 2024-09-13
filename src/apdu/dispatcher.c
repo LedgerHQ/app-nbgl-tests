@@ -29,7 +29,7 @@
 #include "../sw.h"
 #include "../handler/get_version.h"
 #include "../handler/get_app_name.h"
-#include "../handler/nbgl_tests.h"
+#include "../menu.h"
 
 int apdu_dispatcher(const command_t *cmd) {
     LEDGER_ASSERT(cmd != NULL, "NULL cmd");
@@ -51,18 +51,58 @@ int apdu_dispatcher(const command_t *cmd) {
             }
 
             return handler_get_app_name();
-        case TEST_REVIEW1:
+        case TEST_SPINNER:
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_spinner();
+        case TEST_USE_CASE_REVIEW:
             // P1 & P2 may be used later as test/sub-test number
             if (cmd->p1 != 0 || cmd->p2 != 0) {
                 return io_send_sw(SW_WRONG_P1P2);
             }
-            return handler_test_transaction_review(cmd->p1, cmd->p2);
-        case TEST_REVIEW2:
+            return ui_display_review(false);
+        case TEST_USE_CASE_REVIEW_BLIND_SIGNING:
             // P1 & P2 may be used later as test/sub-test number
             if (cmd->p1 != 0 || cmd->p2 != 0) {
                 return io_send_sw(SW_WRONG_P1P2);
             }
-            return handler_test_address_review(cmd->p1, cmd->p2);
+            return ui_display_review(true);
+        case TEST_USE_CASE_ADDRESS_REVIEW:
+            if (cmd->p1 == 0) {
+                return ui_display_address_review();
+            } else if (cmd->p1 == 1) {
+                return ui_display_long_address_review();
+            } else if (cmd->p1 == 2) {
+                return ui_display_long_address_review_with_tags();
+            } else {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+        case TEST_USE_CASE_STREAMING_REVIEW:
+            // P1 & P2 may be used later as test/sub-test number
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_streaming_review(false);
+
+        case TEST_USE_CASE_STREAMING_REVIEW_BLIND_SIGNING:
+            // P1 & P2 may be used later as test/sub-test number
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_streaming_review(true);
+        case TEST_USE_CASE_STATIC_REVIEW:
+            // P1 & P2 may be used later as test/sub-test number
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_static_review();
+        case TEST_USE_CASE_LIGHT_REVIEW:
+            // P1 & P2 may be used later as test/sub-test number
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_light_review();
         default:
             return io_send_sw(SW_INS_NOT_SUPPORTED);
     }

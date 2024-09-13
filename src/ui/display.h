@@ -21,4 +21,4 @@ int ui_display_transaction(void);
  * @return 0 if success, negative integer otherwise.
  *
  */
-int ui_display_address(void);
+int ui_display_address_review(void);

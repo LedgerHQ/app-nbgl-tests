@@ -19,6 +19,7 @@ def test_app_mainmenu(firmware, navigator, test_name, default_screenshot_path):
             NavInsID.USE_CASE_CHOICE_CONFIRM,
             NavIns(NavInsID.TOUCH, (200, 261)),
             NavInsID.USE_CASE_SETTINGS_NEXT,
+            NavInsID.USE_CASE_SETTINGS_NEXT,
             NavInsID.USE_CASE_SETTINGS_MULTI_PAGE_EXIT
         ]
     elif firmware is Firmware.FLEX:
@@ -28,6 +29,7 @@ def test_app_mainmenu(firmware, navigator, test_name, default_screenshot_path):
             NavIns(NavInsID.TOUCH, (200, 300)),
             NavInsID.USE_CASE_CHOICE_CONFIRM,
             NavIns(NavInsID.TOUCH, (200, 300)),
+            NavInsID.USE_CASE_SETTINGS_NEXT,
             NavInsID.USE_CASE_SETTINGS_NEXT,
             NavInsID.USE_CASE_SETTINGS_MULTI_PAGE_EXIT
         ]
