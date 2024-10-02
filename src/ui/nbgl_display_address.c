@@ -29,10 +29,10 @@
 
 #include "display.h"
 #include "constants.h"
-#include "../globals.h"
-#include "../sw.h"
-#include "action/validate.h"
-#include "../menu.h"
+#include "globals.h"
+#include "sw.h"
+#include "validate.h"
+#include "menu.h"
 
 static void review_choice(bool confirm) {
     // Answer, display a status page and go back to main
@@ -44,13 +44,52 @@ static void review_choice(bool confirm) {
     }
 }
 
-int ui_display_address() {
+int ui_display_address_review() {
     nbgl_useCaseAddressReview("0xABCDEF1234",
                               NULL,
                               &LARGE_ICON,
                               "Verify NBT address",
                               NULL,
                               review_choice);
+    return 0;
+}
+
+int ui_display_long_address_review() {
+    nbgl_useCaseAddressReview(
+        "5A8FgbMkmG2e3J41sBdjvjaBUyz8qHohsQcGtRf63qEUTMBvmA45fp"
+        "p5pSacMdSg7A3b71RejLzB8EkGbfjp5PELVHCRUaE",
+        NULL,
+        &LARGE_ICON,
+        "Verify NBT address",
+        NULL,
+        review_choice);
+    return 0;
+}
+
+// 2 pairs of tag/value to display in second page
+static nbgl_layoutTagValue_t pairs[2];
+static nbgl_layoutTagValueList_t pairList;
+
+int ui_display_long_address_review_with_tags() {
+    // Setup data to display
+    pairs[0].item = "Type address";
+    pairs[0].value = "dummy type";
+    pairs[1].item = "Sub address";
+    pairs[1].value = "dummy sub address";
+
+    // Setup list
+    pairList.nbMaxLinesForValue = 0;
+    pairList.nbPairs = 2;
+    pairList.pairs = pairs;
+
+    nbgl_useCaseAddressReview(
+        "5A8FgbMkmG2e3J41sBdjvjaBUyz8qHohsQcGtRf63qEUTMBvmA45fp"
+        "p5pSacMdSg7A3b71RejLzB8EkGbfjp5PELVHCRUaE",
+        &pairList,
+        &LARGE_ICON,
+        "Verify NBT address",
+        NULL,
+        review_choice);
     return 0;
 }
 

@@ -28,7 +28,7 @@ include $(BOLOS_SDK)/Makefile.defines
 #        Mandatory configuration       #
 ########################################
 # Application name
-APPNAME = "NBGL_Tests"
+APPNAME = "NBGL Tests"
 
 # Application version
 APPVERSION_M = 1

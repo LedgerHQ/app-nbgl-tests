@@ -25,8 +25,8 @@
 #include "globals.h"
 #include "io.h"
 #include "sw.h"
-#include "ui/menu.h"
-#include "apdu/dispatcher.h"
+#include "display.h"
+#include "dispatcher.h"
 
 const internal_storage_t N_storage_real;
 
@@ -42,6 +42,9 @@ void app_main() {
     io_init();
 
     ui_menu_main();
+
+    // initialize ticker event counter
+    G_ticker_counter = -1;
 
     // Initialize the NVM data if required
     if (N_storage.initialized != 0x01) {

@@ -21,8 +21,9 @@
 #include "os.h"
 #include "glyphs.h"
 #include "nbgl_use_case.h"
+#include "display.h"
 
-#include "../globals.h"
+#include "globals.h"
 #include "menu.h"
 
 //  -----------------------------------------------------------
@@ -37,9 +38,16 @@ void app_quit(void) {
 //  -----------------------------------------------------------
 //  --------------------- SETTINGS MENU -----------------------
 //  -----------------------------------------------------------
-#define SETTING_INFO_NB 2
-static const char* const INFO_TYPES[SETTING_INFO_NB] = {"Version", "Developer"};
-static const char* const INFO_CONTENTS[SETTING_INFO_NB] = {APPVERSION, "Ledger"};
+#define SETTING_INFO_NB 4
+static const char* const INFO_TYPES[SETTING_INFO_NB] = {"Version",
+                                                        "Developer",
+                                                        "Dummy 1",
+                                                        "Dummy 2"};
+
+static const char* const INFO_CONTENTS[SETTING_INFO_NB] = {APPVERSION,
+                                                           "Ledger",
+                                                           "Dummy 1 information",
+                                                           "Dummy 2 information"};
 
 // settings switches definitions
 enum { DUMMY_SWITCH_1_TOKEN = FIRST_USER_TOKEN, DUMMY_SWITCH_2_TOKEN };
@@ -127,6 +135,7 @@ static void controls_callback(int token, uint8_t index, int page) {
     }
 }
 
+static nbgl_homeAction_t homeAction;
 // home page definition
 void ui_menu_main(void) {
     // Initialize switches data
@@ -146,13 +155,16 @@ void ui_menu_main(void) {
     switches[DUMMY_SWITCH_2_ID].tuneId = TUNE_TAP_CASUAL;
 #endif
 
+    homeAction.callback = (nbgl_callback_t) ui_display_address_review;
+    homeAction.icon = NULL;
+    homeAction.text = "Display flows";
     nbgl_useCaseHomeAndSettings(APPNAME,
                                 &LARGE_ICON,
                                 NULL,
                                 INIT_HOME_PAGE,
                                 &settingContents,
                                 &infoList,
-                                NULL,
+                                &homeAction,
                                 app_quit);
 }
 
