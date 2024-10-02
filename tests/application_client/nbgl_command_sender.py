@@ -50,6 +50,7 @@ class Errors(IntEnum):
     SW_BAD_STATE               = 0xB007
     SW_SIGNATURE_FAIL          = 0xB008
 
+SW_OK: int = 0x9000
 
 def split_message(message: bytes, max_size: int) -> List[bytes]:
     return [message[x:x + max_size] for x in range(0, len(message), max_size)]

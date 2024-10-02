@@ -29,10 +29,10 @@
 
 #include "display.h"
 #include "constants.h"
-#include "../globals.h"
-#include "../sw.h"
-#include "action/validate.h"
-#include "../menu.h"
+#include "globals.h"
+#include "sw.h"
+#include "validate.h"
+#include "menu.h"
 
 static void review_choice(bool confirm) {
     // Answer, display a status page and go back to main

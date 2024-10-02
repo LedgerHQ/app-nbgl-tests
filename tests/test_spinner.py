@@ -11,7 +11,6 @@ def test_spinner(backend, navigator, test_name, default_screenshot_path):
         NavIns(NavInsID.TOUCH)
     ]
     with client.test_spinner():
-        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
-                                screen_change_before_first_instruction=True)
+        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
         backend.wait_for_home_screen()
 

@@ -1,6 +1,6 @@
 import pytest
 
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors
+from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW_OK
 from ragger.error import ExceptionRAPDU
 from ragger.navigator import NavInsID, NavIns
 
@@ -14,7 +14,7 @@ def test_use_case_static_review_accepted(backend, scenario_navigator):
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == 0x9000
+    assert status == SW_OK
 
 def test_use_case_static_review_refused(backend, navigator, test_name, default_screenshot_path):
     client = NBGLCommandSender(backend)
@@ -49,7 +49,7 @@ def test_use_case_light_review_accepted(backend, navigator, test_name, default_s
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == 0x9000
+    assert status == SW_OK
 
 def test_use_case_light_review_refused(backend, navigator, test_name, default_screenshot_path):
     client = NBGLCommandSender(backend)

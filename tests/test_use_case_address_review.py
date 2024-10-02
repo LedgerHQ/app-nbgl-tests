@@ -1,4 +1,4 @@
-from application_client.nbgl_command_sender import NBGLCommandSender
+from application_client.nbgl_command_sender import NBGLCommandSender, SW_OK
 from ragger.firmware import Firmware
 from ragger.navigator import NavInsID, NavIns
 
@@ -20,7 +20,7 @@ def test_use_case_address_review_accepted(backend, firmware, navigator, test_nam
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == 0x9000
+    assert status == SW_OK
 
 def test_use_case_long_address_review_accepted(backend, firmware, navigator, test_name, default_screenshot_path):
     client = NBGLCommandSender(backend)
@@ -40,7 +40,7 @@ def test_use_case_long_address_review_accepted(backend, firmware, navigator, tes
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == 0x9000
+    assert status == SW_OK
 
 def test_use_case_long_address_review_accepted_with_tags(backend, firmware, navigator, test_name, default_screenshot_path):
     client = NBGLCommandSender(backend)
@@ -61,4 +61,4 @@ def test_use_case_long_address_review_accepted_with_tags(backend, firmware, navi
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == 0x9000
+    assert status == SW_OK

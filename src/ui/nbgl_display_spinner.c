@@ -19,9 +19,9 @@
 
 #include "nbgl_use_case.h"
 #include "io.h"
-#include "../globals.h"
-#include "../menu.h"
-#include "../../sw.h"
+#include "globals.h"
+#include "display.h"
+#include "sw.h"
 
 int ui_display_spinner() {
     G_ticker_counter = 40;
@@ -33,7 +33,6 @@ int G_ticker_counter;
 void app_ticker_event_callback(void) {
     // use a counter to stop the spinner after a while
     if (G_ticker_counter > 0 && --G_ticker_counter == 0) {
-        G_ticker_counter = -1;
         io_send_sw(SW_OK);
         ui_menu_main();
     }

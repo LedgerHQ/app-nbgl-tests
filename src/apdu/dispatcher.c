@@ -23,13 +23,13 @@
 #include "ledger_assert.h"
 
 #include "dispatcher.h"
-#include "../constants.h"
-#include "../globals.h"
-#include "../types.h"
-#include "../sw.h"
-#include "../handler/get_version.h"
-#include "../handler/get_app_name.h"
-#include "../menu.h"
+#include "constants.h"
+#include "globals.h"
+#include "types.h"
+#include "sw.h"
+#include "get_version.h"
+#include "get_app_name.h"
+#include "display.h"
 
 int apdu_dispatcher(const command_t *cmd) {
     LEDGER_ASSERT(cmd != NULL, "NULL cmd");
@@ -75,9 +75,8 @@ int apdu_dispatcher(const command_t *cmd) {
                 return ui_display_long_address_review();
             } else if (cmd->p1 == 2) {
                 return ui_display_long_address_review_with_tags();
-            } else {
-                return io_send_sw(SW_WRONG_P1P2);
             }
+            return io_send_sw(SW_WRONG_P1P2);
         case TEST_USE_CASE_STREAMING_REVIEW:
             // P1 & P2 may be used later as test/sub-test number
             if (cmd->p1 != 0 || cmd->p2 != 0) {

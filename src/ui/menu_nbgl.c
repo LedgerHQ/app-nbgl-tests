@@ -21,8 +21,9 @@
 #include "os.h"
 #include "glyphs.h"
 #include "nbgl_use_case.h"
+#include "display.h"
 
-#include "../globals.h"
+#include "globals.h"
 #include "menu.h"
 
 //  -----------------------------------------------------------
@@ -156,7 +157,7 @@ void ui_menu_main(void) {
 
     homeAction.callback = (nbgl_callback_t) ui_display_review;
     homeAction.icon = NULL;
-    homeAction.text = "show use case";
+    homeAction.text = "Display flows";
     nbgl_useCaseHomeAndSettings(APPNAME,
                                 &LARGE_ICON,
                                 NULL,
