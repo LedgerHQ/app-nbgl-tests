@@ -14,8 +14,7 @@ def test_use_case_address_review_accepted(backend, firmware, navigator, test_nam
     ]
 
     with client.test_use_case_address_review():
-        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
-                                screen_change_before_first_instruction=True)
+        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     status = client.get_async_response().status
 
@@ -34,8 +33,7 @@ def test_use_case_long_address_review_accepted(backend, firmware, navigator, tes
     ]
 
     with client.test_use_case_long_address_review():
-        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
-                                screen_change_before_first_instruction=True)
+        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     status = client.get_async_response().status
 
@@ -55,8 +53,7 @@ def test_use_case_long_address_review_accepted_with_tags(backend, firmware, navi
     ]
 
     with client.test_use_case_long_address_review_with_tags():
-        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
-                                screen_change_before_first_instruction=True)
+        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     status = client.get_async_response().status
 

@@ -155,7 +155,7 @@ void ui_menu_main(void) {
     switches[DUMMY_SWITCH_2_ID].tuneId = TUNE_TAP_CASUAL;
 #endif
 
-    homeAction.callback = (nbgl_callback_t) ui_display_review;
+    homeAction.callback = (nbgl_callback_t) ui_display_address_review;
     homeAction.icon = NULL;
     homeAction.text = "Display flows";
     nbgl_useCaseHomeAndSettings(APPNAME,

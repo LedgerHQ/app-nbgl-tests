@@ -63,8 +63,7 @@ def test_use_case_streaming_review_accepted_with_more(backend, firmware, navigat
         ]
 
     with client.test_use_case_streaming_review():
-        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
-                                screen_change_before_first_instruction=True)
+        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     status = client.get_async_response().status
 

@@ -27,8 +27,7 @@ def test_use_case_static_review_refused(backend, navigator, test_name, default_s
 
     with pytest.raises(ExceptionRAPDU) as e:
         with client.test_use_case_static_review():
-            navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
-                                screen_change_before_first_instruction=True)
+            navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     # Assert that we have received a refusal
     assert e.value.status == Errors.SW_DENY
@@ -43,8 +42,7 @@ def test_use_case_light_review_accepted(backend, navigator, test_name, default_s
     ]
 
     with client.test_use_case_light_review():
-        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
-                                screen_change_before_first_instruction=True)
+        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     status = client.get_async_response().status
 
@@ -63,8 +61,7 @@ def test_use_case_light_review_refused(backend, navigator, test_name, default_sc
 
     with pytest.raises(ExceptionRAPDU) as e:
         with client.test_use_case_light_review():
-            navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
-                                screen_change_before_first_instruction=True)
+            navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     # Assert that we have received a refusal
     assert e.value.status == Errors.SW_DENY

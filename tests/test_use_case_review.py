@@ -43,8 +43,7 @@ def test_use_case_blind_signed_review_display_warning(navigator, backend, test_n
         ]
     with pytest.raises(ExceptionRAPDU) as e:
         with client.test_use_case_blind_signed_review():
-            navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
-                                    screen_change_before_first_instruction=True)
+            navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
 
 
