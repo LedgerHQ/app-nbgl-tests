@@ -26,18 +26,15 @@
 #include "globals.h"
 #include "menu.h"
 
-//  -----------------------------------------------------------
-//  ----------------------- HOME PAGE -------------------------
-//  -----------------------------------------------------------
-
 void app_quit(void) {
     // exit app here
     os_sched_exit(-1);
 }
 
 //  -----------------------------------------------------------
-//  --------------------- SETTINGS MENU -----------------------
+//  --------------- NBGL TEST HOME PAGE -----------------------
 //  -----------------------------------------------------------
+
 #define SETTING_INFO_NB 4
 static const char* const INFO_TYPES[SETTING_INFO_NB] = {"Version",
                                                         "Developer",
@@ -62,6 +59,7 @@ static const nbgl_contentInfoList_t infoList = {
 };
 
 static uint8_t initSettingPage;
+static nbgl_homeAction_t homeAction;
 static void review_warning_choice(bool confirm);
 static void controls_callback(int token, uint8_t index, int page);
 
@@ -95,7 +93,7 @@ static void review_warning_choice(bool confirm) {
                                 initSettingPage,
                                 &settingContents,
                                 &infoList,
-                                NULL,
+                                &homeAction,
                                 app_quit);
 }
 
@@ -135,9 +133,8 @@ static void controls_callback(int token, uint8_t index, int page) {
     }
 }
 
-static nbgl_homeAction_t homeAction;
 // home page definition
-void ui_menu_main(void) {
+void ui_menu_main_nbgl_test(void) {
     // Initialize switches data
     switches[DUMMY_SWITCH_1_ID].initState = (nbgl_state_t) N_storage.dummy1_allowed;
     switches[DUMMY_SWITCH_1_ID].text = "Dummy 1";
@@ -155,7 +152,7 @@ void ui_menu_main(void) {
     switches[DUMMY_SWITCH_2_ID].tuneId = TUNE_TAP_CASUAL;
 #endif
 
-    homeAction.callback = (nbgl_callback_t) ui_display_address_review;
+    homeAction.callback = (nbgl_callback_t) ui_display_demo_list;
     homeAction.icon = NULL;
     homeAction.text = "Display flows";
     nbgl_useCaseHomeAndSettings(APPNAME,
@@ -168,4 +165,106 @@ void ui_menu_main(void) {
                                 app_quit);
 }
 
+//  -----------------------------------------------------------
+//  -------------------- DEMO HOME PAGE -----------------------
+//  -----------------------------------------------------------
+
+#define SETTING_DEMO_INFO_NB 2
+static const char* const INFO_TYPES_DEMO[SETTING_DEMO_INFO_NB] = {"Version", "Developer"};
+
+static const char* const INFO_CONTENTS_DEMO[SETTING_DEMO_INFO_NB] = {APPVERSION, "Ledger"};
+
+static const nbgl_contentInfoList_t infoListDemo = {
+    .nbInfos = SETTING_DEMO_INFO_NB,
+    .infoTypes = INFO_TYPES_DEMO,
+    .infoContents = INFO_CONTENTS_DEMO,
+};
+
+static nbgl_homeAction_t homeActionDemo;
+// home page definition
+void ui_menu_main_demo(void) {
+    homeActionDemo.callback = (nbgl_callback_t) ui_display_demo_list;
+    homeActionDemo.icon = NULL;
+    homeActionDemo.text = "View demos";
+    nbgl_useCaseHomeAndSettings(APPNAME,
+                                &LARGE_ICON,
+                                "Showcase transactions and\n"
+                                "address verification, without\n"
+                                "spending.",
+                                INIT_HOME_PAGE,
+                                NULL,
+                                &infoListDemo,
+                                &homeActionDemo,
+                                app_quit);
+}
+
+//  -----------------------------------------------------------
+//  -------------------- DEMO FLOW LIST -----------------------
+//  -----------------------------------------------------------
+
+// demo flow
+#define DEMO_FLOW_NB 4
+
+enum {
+    BTC_SEND_REVIEW_TOKEN = FIRST_USER_TOKEN,
+    SWAP_1INCH_REVIEW_TOKEN,
+    STAKE_BLIND_SIGNING_REVIEW_TOKEN,
+    SOL_ADDRESS_REVIEW_TOKEN
+};
+
+static const char* const barTexts[DEMO_FLOW_NB] = {"Send bitcoin",
+                                                   "Swap with 1inch",
+                                                   "Stake with unknown dApp",
+                                                   "Receive SOL"};
+
+static const uint8_t tokens[DEMO_FLOW_NB] = {BTC_SEND_REVIEW_TOKEN,
+                                             SWAP_1INCH_REVIEW_TOKEN,
+                                             STAKE_BLIND_SIGNING_REVIEW_TOKEN,
+                                             SOL_ADDRESS_REVIEW_TOKEN};
+
+static void demo_control_cb(int token, uint8_t index) {
+    UNUSED(index);
+    switch (token) {
+        case BTC_SEND_REVIEW_TOKEN:
+            ui_display_BTC_review();
+            break;
+        case SWAP_1INCH_REVIEW_TOKEN:
+            ui_display_swap_review();
+            break;
+        case STAKE_BLIND_SIGNING_REVIEW_TOKEN:
+            ui_display_BS_staking_review();
+            break;
+        case SOL_ADDRESS_REVIEW_TOKEN:
+            ui_display_SOL_address_review();
+            break;
+        default:
+            PRINTF("Should not happen !");
+            break;
+    }
+}
+
+static bool nav_callback(uint8_t page, nbgl_pageContent_t* content) {
+    UNUSED(page);
+    content->tuneId = NBGL_NO_TUNE;
+    content->type = BARS_LIST;
+    content->barsList.barTexts = barTexts;
+    content->barsList.tokens = tokens;
+    content->barsList.nbBars = DEMO_FLOW_NB;
+    content->barsList.tuneId = TUNE_TAP_CASUAL;
+
+    return true;
+}
+
+// display the list of demo flows
+void ui_display_demo_list(void) {
+    nbgl_useCaseNavigableContent("Select demo", 0, 1, ui_menu_main, nav_callback, demo_control_cb);
+}
+
+void ui_menu_main(void) {
+    if (APP_TYPE == APP_DEMO_TYPE) {
+        ui_menu_main_demo();
+    } else {
+        ui_menu_main_nbgl_test();
+    }
+}
 #endif
