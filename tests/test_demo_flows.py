@@ -9,9 +9,9 @@ def test_app_demo_flow_send_BTC(firmware, navigator, scenario_navigator, test_na
     ]
 
     navigator.navigate_and_compare(default_screenshot_path, test_name+"/part1", instructions,
-                                   screen_change_before_first_instruction=False, 
+                                   screen_change_before_first_instruction=False,
                                    screen_change_after_last_instruction=False)
-    scenario_navigator.review_approve(default_screenshot_path, test_name+"/part2")
+    scenario_navigator.review_approve(test_name=test_name+"/part2")
 
 def test_app_demo_flow_swap_1inch(firmware, navigator, scenario_navigator, test_name, default_screenshot_path):
     # Navigate in the main menu
@@ -27,7 +27,7 @@ def test_app_demo_flow_swap_1inch(firmware, navigator, scenario_navigator, test_
     navigator.navigate_and_compare(default_screenshot_path, test_name+"/part1", instructions,
                                    screen_change_before_first_instruction=False,
                                    screen_change_after_last_instruction=False)
-    scenario_navigator.review_approve(default_screenshot_path, test_name+"/part2")
+    scenario_navigator.review_approve(test_name=test_name+"/part2")
 
 def test_app_demo_flow_BS_stake(firmware, navigator, scenario_navigator, test_name, default_screenshot_path):
     # Navigate in the main menu
@@ -40,7 +40,7 @@ def test_app_demo_flow_BS_stake(firmware, navigator, scenario_navigator, test_na
     navigator.navigate_and_compare(default_screenshot_path, test_name+"/part1", instructions,
                                    screen_change_before_first_instruction=False,
                                    screen_change_after_last_instruction=False)
-    scenario_navigator.review_approve(default_screenshot_path, test_name+"/part2")
+    scenario_navigator.review_approve(test_name=test_name+"/part2")
 
 def test_app_demo_flow_SOL_receive(firmware, navigator, scenario_navigator, test_name, default_screenshot_path):
     # Navigate in the main menu
@@ -52,4 +52,4 @@ def test_app_demo_flow_SOL_receive(firmware, navigator, scenario_navigator, test
     navigator.navigate_and_compare(default_screenshot_path, test_name+"/part1", instructions,
                                    screen_change_before_first_instruction=False,
                                    screen_change_after_last_instruction=False)
-    scenario_navigator.address_review_approve(default_screenshot_path, test_name+"/part2")
+    scenario_navigator.address_review_approve(test_name=test_name+"/part2")

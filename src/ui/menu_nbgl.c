@@ -214,7 +214,7 @@ enum {
 
 static const char* const barTexts[DEMO_FLOW_NB] = {"Send bitcoin",
                                                    "Swap with 1inch",
-                                                   "Stake with unknown dApp",
+                                                   "Blind-sign on Ethereum",
                                                    "Receive SOL"};
 
 static const uint8_t tokens[DEMO_FLOW_NB] = {BTC_SEND_REVIEW_TOKEN,

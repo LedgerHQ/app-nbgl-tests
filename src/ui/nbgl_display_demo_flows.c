@@ -35,13 +35,6 @@
 #include "validate.h"
 #include "menu.h"
 
-// Buffer where the transaction amount string is written
-static char g_amount[30];
-// Buffer where the transaction address string is written
-static char g_address[43];
-// Buffer where the transaction fees string is written
-static char g_fees[40];
-
 static nbgl_layoutTagValue_t pairs[4];
 static nbgl_layoutTagValueList_t pairList;
 
@@ -57,21 +50,13 @@ static void review_choice(bool confirm) {
 }
 
 int ui_display_BTC_review() {
-    // Format amount and address to g_amount and g_address buffers
-    memset(g_amount, 0, sizeof(g_amount));
-    snprintf(g_amount, sizeof(g_amount), "1.5 BTC");
-    memset(g_address, 0, sizeof(g_address));
-    snprintf(g_address, sizeof(g_address), "bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2");
-    memset(g_fees, 0, sizeof(g_fees));
-    snprintf(g_fees, sizeof(g_fees), "0.00000698 BTC");
-
     // Setup data to display
     pairs[0].item = "Amount";
-    pairs[0].value = g_amount;
+    pairs[0].value = "1.5 BTC";
     pairs[1].item = "To";
-    pairs[1].value = g_address;
+    pairs[1].value = "bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2";
     pairs[2].item = "Fees";
-    pairs[2].value = g_fees;
+    pairs[2].value = "0.00000698 BTC";
 
     // Setup list
     pairList.nbMaxLinesForValue = 0;
@@ -111,24 +96,19 @@ int ui_display_SOL_address_review() {
 }
 
 int ui_display_BS_staking_review() {
-    memset(g_amount, 0, sizeof(g_amount));
-    snprintf(g_amount, sizeof(g_amount), "0 ETH");
-    memset(g_address, 0, sizeof(g_address));
-    snprintf(g_address, sizeof(g_address), "0x51917F958D2ee523a2206206994597C13D83de3a");
-    memset(g_fees, 0, sizeof(g_fees));
-    snprintf(g_fees, sizeof(g_fees), "0.0047303 ETH");
-
     // Setup data to display
-    pairs[0].item = "Amount";
-    pairs[0].value = g_amount;
-    pairs[1].item = "Address";
-    pairs[1].value = g_address;
-    pairs[2].item = "Max fees";
-    pairs[2].value = g_fees;
+    pairs[0].item = "From";
+    pairs[0].value = "0x519192a437e6aeb895Cec72828A73B11b698dE3a";
+    pairs[1].item = "Amount";
+    pairs[1].value = "ETH 0";
+    pairs[2].item = "To";
+    pairs[2].value = "0x16D5A408e807db8eF7c578279BEeEe6b228f1c1C";
+    pairs[3].item = "Max fees";
+    pairs[3].value = "ETH 0.0047303";
 
     // Setup list
     pairList.nbMaxLinesForValue = 0;
-    pairList.nbPairs = 3;
+    pairList.nbPairs = 4;
     pairList.pairs = pairs;
 
     // Start blind-signing review flow
@@ -172,7 +152,7 @@ int ui_display_swap_review() {
     pairList.pairs = pairs;
 
     nbgl_tipBox_t tipBox = {.icon = &C_info_button_64px,
-                            .text = "You're interacting with a contract from:\n1inch",
+                            .text = "Interaction with a\nsmart contract from:\n1inch",
                             .modalTitle = "Contract information",
                             .infos.nbInfos = INFO_NB,
                             .infos.infoTypes = infoTypes,
