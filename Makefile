@@ -27,8 +27,6 @@ include $(BOLOS_SDK)/Makefile.defines
 ########################################
 #        Mandatory configuration       #
 ########################################
-# Application name
-APPNAME = "NBGL Tests"
 
 # Application version
 APPVERSION_M = 1
@@ -38,13 +36,6 @@ APPVERSION = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 
 # Application source files
 APP_SOURCE_PATH += src
-
-# Application icons following guidelines:
-# https://developers.ledger.com/docs/embedded-app/design-requirements/#device-icon
-ICON_NANOX = icons/app_nbgl_tests_14px.png
-ICON_NANOSP = icons/app_nbgl_tests_14px.png
-ICON_STAX = icons/app_nbgl_tests_32px.png
-ICON_FLEX = icons/app_nbgl_tests_40px.png
 
 # Application allowed derivation curves.
 # Possibles curves are: secp256k1, secp256r1, ed25519 and bls12381g1
@@ -68,7 +59,34 @@ PATH_APP_LOAD_PARAMS = "44'/1'"   # purpose=coin(44) / coin_type=Testnet(1)
 #   * It must at least contains one value.
 #   * Values can be the app ticker or anything else but should be unique.
 VARIANT_PARAM = COIN
-VARIANT_VALUES = NBT
+VARIANT_VALUES = nbgl_test demo
+
+# Application icons following guidelines:
+# https://developers.ledger.com/docs/embedded-app/design-requirements/#device-icon
+ICON_NANOX = icons/app_nbgl_tests_14px.png
+ICON_NANOSP = icons/app_nbgl_tests_14px.png
+
+ifeq ($(COIN),nbgl_test)
+ICON_STAX = icons/app_nbgl_tests_32px.png
+ICON_FLEX = icons/app_nbgl_tests_40px.png
+else
+ICON_STAX = icons/app_demo_32px.png
+ICON_FLEX = icons/app_demo_40px.png
+endif
+
+APP_DEMO_TYPE=0
+APP_NBGL_TYPE=1
+DEFINES +=APP_DEMO_TYPE
+DEFINES +=APP_NBGL_TYPE
+ifeq ($(COIN),nbgl_test)
+# NBGL Test app
+APPNAME = "NBGL Tests"
+DEFINES +=APP_TYPE=$(APP_DEMO_TYPE)
+else
+# Demo app
+APPNAME = "Ledger Demo"
+DEFINES +=APP_TYPE=$(APP_NBGL_TYPE)
+endif
 
 # Enabling DEBUG flag will enable PRINTF and disable optimizations
 #DEBUG = 1
