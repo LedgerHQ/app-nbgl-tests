@@ -25,6 +25,8 @@ on:
       - main
       - develop
   pull_request:
+  repository_dispatch:
+    types: [trigger-workflow]
 
 jobs:
   build_application_nbgl_test:
