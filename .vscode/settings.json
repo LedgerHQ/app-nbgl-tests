@@ -1,0 +1,51 @@
+{
+    "files.associations": {
+        "*.h": "c"
+    },
+    "ledgerDevTools.appSettings": {
+        "selectedUseCase": "release",
+        "selectedDevice": "Stax",
+        "selectedVariant": "nbgl_test",
+        "testsList": [
+            "test_app_mainmenu",
+            "test_generic_settings",
+            "test_generic_config",
+            "test_app_name",
+            "test_confirm",
+            "test_app_demo_flow_send_BTC",
+            "test_app_demo_flow_swap_1inch",
+            "test_app_demo_flow_BS_stake",
+            "test_app_demo_flow_SOL_receive",
+            "test_bad_cla",
+            "test_bad_ins",
+            "test_wrong_p1p2",
+            "test_wrong_data_length",
+            "test_keypad",
+            "test_keypad",
+            "test_get_app_and_version",
+            "test_navigation",
+            "test_navigation",
+            "test_navigation",
+            "test_navigation",
+            "test_navigation",
+            "test_spinner",
+            "test_use_case_address_review_accepted",
+            "test_use_case_long_address_review_accepted",
+            "test_use_case_long_address_review_accepted_with_tags",
+            "test_use_case_static_review_accepted",
+            "test_use_case_static_review_refused",
+            "test_use_case_light_review_accepted",
+            "test_use_case_light_review_refused",
+            "test_use_case_review_accepted",
+            "test_use_case_blind_signed_review_accepted",
+            "test_use_case_blind_signed_review_display_warning",
+            "test_use_case_review_refused",
+            "test_use_case_generic_review",
+            "test_use_case_streaming_review_accepted",
+            "test_use_case_blind_signed_streaming_review_accepted",
+            "test_use_case_streaming_review_accepted_with_more",
+            "test_use_case_streaming_review_refused",
+            "test_version"
+        ]
+    }
+}
