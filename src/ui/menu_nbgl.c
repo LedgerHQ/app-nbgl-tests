@@ -27,10 +27,7 @@
 #include "menu.h"
 #include "sw.h"
 
-void app_quit(void) {
-    // exit app here
-    os_sched_exit(-1);
-}
+extern void app_exit(void);
 
 //  -----------------------------------------------------------
 //  --------------- NBGL TEST HOME PAGE -----------------------
@@ -89,13 +86,13 @@ static void review_warning_choice(bool confirm) {
 
     // Reset setting menu to the right page
     nbgl_useCaseHomeAndSettings(APPNAME,
-                                &LARGE_ICON,
+                                &ICON_APP,
                                 NULL,
                                 initSettingPage,
                                 &settingContents,
                                 &infoList,
                                 &homeAction,
-                                app_quit);
+                                app_exit);
 }
 
 static void controls_callback(int token, uint8_t index, int page) {
@@ -118,7 +115,7 @@ static void controls_callback(int token, uint8_t index, int page) {
         // to activate the dummy 2 setting
         if (!N_storage.dummy2_allowed) {
             // Display the warning message and ask the user to confirm
-            nbgl_useCaseChoice(&LARGE_WARNING_ICON,
+            nbgl_useCaseChoice(&ICON_WARNING,
                                "Dummy 2",
                                "Are you sure to\nallow dummy 2\nin transactions?",
                                "I understand, confirm",
@@ -157,13 +154,13 @@ void ui_menu_main_nbgl_test(void) {
     homeAction.icon = NULL;
     homeAction.text = "Display flows";
     nbgl_useCaseHomeAndSettings(APPNAME,
-                                &LARGE_ICON,
+                                &ICON_APP,
                                 NULL,
                                 INIT_HOME_PAGE,
                                 &settingContents,
                                 &infoList,
                                 &homeAction,
-                                app_quit);
+                                app_exit);
 }
 
 //  -----------------------------------------------------------
@@ -188,7 +185,7 @@ void ui_menu_main_demo(void) {
     homeActionDemo.icon = NULL;
     homeActionDemo.text = "View demos";
     nbgl_useCaseHomeAndSettings(APPNAME,
-                                &LARGE_ICON,
+                                &ICON_APP,
                                 "Showcase transactions and\n"
                                 "address verification, without\n"
                                 "spending.",
@@ -196,7 +193,7 @@ void ui_menu_main_demo(void) {
                                 NULL,
                                 &infoListDemo,
                                 &homeActionDemo,
-                                app_quit);
+                                app_exit);
 }
 
 //  -----------------------------------------------------------
@@ -246,13 +243,16 @@ static void demo_control_cb(int token, uint8_t index) {
 
 static bool nav_bar_cb(uint8_t page, nbgl_pageContent_t* content) {
     UNUSED(page);
+#ifdef HAVE_PIEZO_SOUND
     content->tuneId = NBGL_NO_TUNE;
+#endif
     content->type = BARS_LIST;
     content->barsList.barTexts = barTexts;
     content->barsList.tokens = tokens;
     content->barsList.nbBars = DEMO_FLOW_NB;
+#ifdef HAVE_PIEZO_SOUND
     content->barsList.tuneId = TUNE_TAP_CASUAL;
-
+#endif
     return true;
 }
 

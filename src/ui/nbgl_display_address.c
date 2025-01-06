@@ -47,7 +47,7 @@ static void review_choice(bool confirm) {
 int ui_display_address_review() {
     nbgl_useCaseAddressReview("0xABCDEF1234",
                               NULL,
-                              &LARGE_ICON,
+                              &ICON_APP,
                               "Verify NBT address",
                               NULL,
                               review_choice);
@@ -59,7 +59,7 @@ int ui_display_long_address_review() {
         "5A8FgbMkmG2e3J41sBdjvjaBUyz8qHohsQcGtRf63qEUTMBvmA45fp"
         "p5pSacMdSg7A3b71RejLzB8EkGbfjp5PELVHCRUaE",
         NULL,
-        &LARGE_ICON,
+        &ICON_APP,
         "Verify NBT address",
         NULL,
         review_choice);
@@ -67,8 +67,8 @@ int ui_display_long_address_review() {
 }
 
 // 2 pairs of tag/value to display in second page
-static nbgl_layoutTagValue_t pairs[2];
-static nbgl_layoutTagValueList_t pairList;
+static nbgl_contentTagValue_t pairs[2];
+static nbgl_contentTagValueList_t pairList;
 
 int ui_display_long_address_review_with_tags() {
     // Setup data to display
@@ -86,7 +86,7 @@ int ui_display_long_address_review_with_tags() {
         "5A8FgbMkmG2e3J41sBdjvjaBUyz8qHohsQcGtRf63qEUTMBvmA45fp"
         "p5pSacMdSg7A3b71RejLzB8EkGbfjp5PELVHCRUaE",
         &pairList,
-        &LARGE_ICON,
+        &ICON_APP,
         "Verify NBT address",
         NULL,
         review_choice);

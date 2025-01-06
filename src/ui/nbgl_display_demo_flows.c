@@ -35,8 +35,8 @@
 #include "validate.h"
 #include "menu.h"
 
-static nbgl_layoutTagValue_t pairs[4];
-static nbgl_layoutTagValueList_t pairList;
+static nbgl_contentTagValue_t pairs[4];
+static nbgl_contentTagValueList_t pairList;
 
 // called when long press button on 3rd page is long-touched or when reject footer is touched
 static void review_choice(bool confirm) {
@@ -66,7 +66,7 @@ int ui_display_BTC_review() {
     // Start review flow
     nbgl_useCaseReview(TYPE_TRANSACTION,
                        &pairList,
-                       &C_bitcoin_64px,
+                       &ICON_BITCOIN,
                        "Review transaction\nto send Bitcoin (demo)",
                        NULL,
                        "Sign transaction to\n send Bitcoin? (demo)",
@@ -88,7 +88,7 @@ static void review_choice_address_SOL(bool confirm) {
 int ui_display_SOL_address_review() {
     nbgl_useCaseAddressReview("7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtV",
                               NULL,
-                              &C_solana_64px,
+                              &ICON_SOLANA,
                               "Verify Solana address\n(demo)",
                               NULL,
                               review_choice_address_SOL);
@@ -114,7 +114,7 @@ int ui_display_BS_staking_review() {
     // Start blind-signing review flow
     nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
                                    &pairList,
-                                   &C_ethereum_64px,
+                                   &ICON_ETHEREUM,
                                    "Review transaction\n(demo)",
                                    NULL,
                                    "Accept risk and sign\ntransaction? (demo)",
@@ -151,7 +151,7 @@ int ui_display_swap_review() {
     pairList.nbPairs = 4;
     pairList.pairs = pairs;
 
-    nbgl_tipBox_t tipBox = {.icon = &C_info_button_64px,
+    nbgl_tipBox_t tipBox = {.icon = &ICON_INFO,
                             .text = "Interaction with a\nsmart contract from:\n1inch",
                             .modalTitle = "Contract information",
                             .infos.nbInfos = INFO_NB,
@@ -163,7 +163,7 @@ int ui_display_swap_review() {
 
     nbgl_useCaseAdvancedReview(TYPE_TRANSACTION,
                                &pairList,
-                               &C_polygon_64px,
+                               &ICON_POLYGON,
                                "Review transaction to\nswap tokens (demo)",
                                NULL,
                                "Sign transaction to\nswap tokens? (demo)",

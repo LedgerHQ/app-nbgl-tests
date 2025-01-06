@@ -41,8 +41,8 @@ static char g_amount[30];
 static char g_address[43];
 static char g_address_long[100];
 
-static nbgl_layoutTagValue_t pairs[3];
-static nbgl_layoutTagValueList_t pairList;
+static nbgl_contentTagValue_t pairs[3];
+static nbgl_contentTagValueList_t pairList;
 
 // called when long press button on 3rd page is long-touched or when reject footer is touched
 static void review_choice(bool confirm) {
@@ -82,7 +82,7 @@ int ui_display_review(bool is_blind_signed) {
         // Start blind-signing review flow
         nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
                                        &pairList,
-                                       &LARGE_ICON,
+                                       &ICON_APP,
                                        "Review transaction\nto send NBT",
                                        NULL,
                                        "Sign transaction\nto send NBT",
@@ -92,7 +92,7 @@ int ui_display_review(bool is_blind_signed) {
         // Start review flow
         nbgl_useCaseReview(TYPE_TRANSACTION,
                            &pairList,
-                           &LARGE_ICON,
+                           &ICON_APP,
                            "Review transaction\nto send NBT",
                            NULL,
                            "Sign transaction\nto send NBT",
@@ -157,14 +157,14 @@ int ui_display_streaming_review(bool is_blind_signed) {
     if (is_blind_signed) {
         // Start streaming blind-signing review flow
         nbgl_useCaseReviewStreamingBlindSigningStart(TYPE_TRANSACTION,
-                                                     &LARGE_ICON,
+                                                     &ICON_APP,
                                                      "Review transaction\nto send NBT",
                                                      NULL,
                                                      onTransactionContinue);
     } else {
         // Start streaming review flow
         nbgl_useCaseReviewStreamingStart(TYPE_TRANSACTION,
-                                         &LARGE_ICON,
+                                         &ICON_APP,
                                          "Review transaction\nto send NBT",
                                          NULL,
                                          onTransactionContinue);
@@ -190,52 +190,58 @@ static void control_cb(int token, uint8_t index, int page) {
     ui_menu_main();
 }
 
+static void content_cb(uint8_t contentIndex, nbgl_content_t *content) {
+    memset(content, 0, sizeof(nbgl_content_t));
+
+    switch (contentIndex) {
+        case 0:
+            content->type = CENTERED_INFO;
+            content->content.centeredInfo.text1 = "Centered Info";
+            content->content.centeredInfo.text2 = "Text 2";
+            content->content.centeredInfo.icon = &ICON_INFO;
+            break;
+        case 1:
+            // Format amount and address to g_amount and g_address buffers
+            memset(g_amount, 0, sizeof(g_amount));
+            snprintf(g_amount, sizeof(g_amount), "NBT 0.99");
+            memset(g_address, 0, sizeof(g_address));
+            snprintf(g_address, sizeof(g_address), "0x1234567890");
+            memset(g_address_long, 0, sizeof(g_address_long));
+            snprintf(g_address_long,
+                     sizeof(g_address_long),
+                     "5A8FgbMkmG2e3J41sBdjvjaBUyz8qHohsQcGtRf63qEUTMBvmA45fpp5pSacMdSg7A3b71RejLzB8"
+                     "EkGbfjp5PELVHCRUaE");
+            // Setup data to display
+            pairs[0].item = "Amount";
+            pairs[0].value = g_amount;
+            pairs[1].item = "Address Short";
+            pairs[1].value = g_address;
+            pairs[2].item = "Address Long";
+            pairs[2].value = g_address_long;
+
+            content->type = TAG_VALUE_LIST;
+            content->content.tagValueList.nbPairs = 3;
+            content->content.tagValueList.pairs = pairs;
+            break;
+        case 2:
+            content->type = INFO_BUTTON;
+            content->content.infoButton.text = "Info Button";
+            content->content.infoButton.icon = &ICON_APP;
+            content->content.infoButton.buttonText = "Valid";
+            content->content.infoButton.buttonToken = FIRST_USER_TOKEN;
+            content->contentActionCallback = control_cb;
+            break;
+        default:
+            break;
+    }
+}
+
 int ui_display_generic_review(void) {
     static nbgl_genericContents_t genericContent = {0};
-    static nbgl_content_t contentsList[3] = {0};
-    uint8_t nbContent = 0;
 
-    // Format amount and address to g_amount and g_address buffers
-    memset(g_amount, 0, sizeof(g_amount));
-    snprintf(g_amount, sizeof(g_amount), "NBT 0.99");
-    memset(g_address, 0, sizeof(g_address));
-    snprintf(g_address, sizeof(g_address), "0x1234567890");
-    memset(g_address_long, 0, sizeof(g_address_long));
-    snprintf(g_address_long,
-             sizeof(g_address_long),
-             "5A8FgbMkmG2e3J41sBdjvjaBUyz8qHohsQcGtRf63qEUTMBvmA45fpp5pSacMdSg7A3b71RejLzB8EkGbfjp5"
-             "PELVHCRUaE");
-
-    // Setup data to display
-    pairs[0].item = "Amount";
-    pairs[0].value = g_amount;
-    pairs[1].item = "Address Short";
-    pairs[1].value = g_address;
-    pairs[2].item = "Address Long";
-    pairs[2].value = g_address_long;
-
-    contentsList[nbContent].type = CENTERED_INFO;
-    contentsList[nbContent].content.centeredInfo.text1 = "Centered Info";
-    contentsList[nbContent].content.centeredInfo.text2 = "Text 2";
-    contentsList[nbContent].content.centeredInfo.icon = &ICON_INFO;
-    nbContent++;
-
-    contentsList[nbContent].type = TAG_VALUE_LIST;
-    contentsList[nbContent].content.tagValueList.nbMaxLinesForValue = 0;
-    contentsList[nbContent].content.tagValueList.nbPairs = 3;
-    contentsList[nbContent].content.tagValueList.pairs = pairs;
-    nbContent++;
-
-    contentsList[nbContent].type = INFO_BUTTON;
-    contentsList[nbContent].content.infoButton.text = "Info Button";
-    contentsList[nbContent].content.infoButton.icon = &ICON_APP;
-    contentsList[nbContent].content.infoButton.buttonText = "Valid";
-    contentsList[nbContent].content.infoButton.buttonToken = FIRST_USER_TOKEN;
-    contentsList[nbContent].contentActionCallback = control_cb;
-    nbContent++;
-
-    genericContent.contentsList = (const nbgl_content_t *) contentsList;
-    genericContent.nbContents = nbContent;
+    genericContent.callbackCallNeeded = true;
+    genericContent.contentGetterCallback = content_cb;
+    genericContent.nbContents = 3;
 
     // Start review flow
     nbgl_useCaseGenericReview(&genericContent, "Cancel", quit_cb);
