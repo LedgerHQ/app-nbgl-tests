@@ -1,7 +1,12 @@
-from application_client.nbgl_command_sender import NBGLCommandSender
-from ragger.navigator import NavInsID, NavIns
+from ragger.backend.interface import BackendInterface
+from ragger.navigator import Navigator, NavInsID, NavIns
 
-def test_spinner(backend, navigator, test_name, default_screenshot_path):
+from application_client.nbgl_command_sender import NBGLCommandSender
+
+def test_spinner(backend: BackendInterface,
+                 navigator: Navigator,
+                 test_name: str,
+                 default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
 
     instructions = [
@@ -13,4 +18,3 @@ def test_spinner(backend, navigator, test_name, default_screenshot_path):
     with client.test_spinner():
         navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
         backend.wait_for_home_screen()
-

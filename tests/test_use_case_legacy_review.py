@@ -1,11 +1,15 @@
 import pytest
 
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW_OK
+from ragger.backend.interface import BackendInterface
 from ragger.error import ExceptionRAPDU
-from ragger.navigator import NavInsID, NavIns
+from ragger.navigator import Navigator, NavInsID, NavIns
+from ragger.navigator.navigation_scenario import NavigateWithScenario
+
+from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW_OK
 
 
-def test_use_case_static_review_accepted(backend, scenario_navigator):
+def test_use_case_static_review_accepted(backend: BackendInterface,
+                                         scenario_navigator: NavigateWithScenario) -> None:
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_static_review():
@@ -16,7 +20,11 @@ def test_use_case_static_review_accepted(backend, scenario_navigator):
     # Assert that we have received an approval
     assert status == SW_OK
 
-def test_use_case_static_review_refused(backend, navigator, test_name, default_screenshot_path):
+
+def test_use_case_static_review_refused(backend: BackendInterface,
+                                        navigator: Navigator,
+                                        test_name: str,
+                                        default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
 
     instructions = [
@@ -33,7 +41,11 @@ def test_use_case_static_review_refused(backend, navigator, test_name, default_s
     assert e.value.status == Errors.SW_DENY
     assert len(e.value.data) == 0
 
-def test_use_case_light_review_accepted(backend, navigator, test_name, default_screenshot_path):
+
+def test_use_case_light_review_accepted(backend: BackendInterface,
+                                        navigator: Navigator,
+                                        test_name: str,
+                                        default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
     instructions = [
         NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
@@ -49,7 +61,11 @@ def test_use_case_light_review_accepted(backend, navigator, test_name, default_s
     # Assert that we have received an approval
     assert status == SW_OK
 
-def test_use_case_light_review_refused(backend, navigator, test_name, default_screenshot_path):
+
+def test_use_case_light_review_refused(backend: BackendInterface,
+                                       navigator: Navigator,
+                                       test_name: str,
+                                       default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
 
     instructions = [

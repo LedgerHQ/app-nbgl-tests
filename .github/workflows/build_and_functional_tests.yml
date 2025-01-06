@@ -15,7 +15,7 @@ on:
         type: choice
         required: true
         default: 'Raise an error (default)'
-        description: CI behavior if the test snaphots are different than expected.
+        description: CI behavior if the test snapshots are different than expected.
         options:
           - 'Raise an error (default)'
           - 'Open a PR'
@@ -42,7 +42,7 @@ jobs:
     with:
       upload_app_binaries_artifact: "compiled_app_binaries_demo"
       flags: "COIN=demo"
-     
+
   ragger_tests:
     name: Run ragger tests using the reusable workflow
     needs: build_application_nbgl_test

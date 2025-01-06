@@ -1,8 +1,14 @@
-from application_client.nbgl_command_sender import NBGLCommandSender, SW_OK
+from ragger.backend.interface import BackendInterface
 from ragger.firmware import Firmware
-from ragger.navigator import NavInsID, NavIns
+from ragger.navigator import Navigator, NavInsID, NavIns
 
-def test_use_case_address_review_accepted(backend, firmware, navigator, test_name, default_screenshot_path):
+from application_client.nbgl_command_sender import NBGLCommandSender, SW_OK
+
+def test_use_case_address_review_accepted(backend: BackendInterface,
+                                          firmware: Firmware,
+                                          navigator: Navigator,
+                                          test_name: str,
+                                          default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
 
     instructions = [
@@ -21,7 +27,12 @@ def test_use_case_address_review_accepted(backend, firmware, navigator, test_nam
     # Assert that we have received an approval
     assert status == SW_OK
 
-def test_use_case_long_address_review_accepted(backend, firmware, navigator, test_name, default_screenshot_path):
+
+def test_use_case_long_address_review_accepted(backend: BackendInterface,
+                                               firmware: Firmware,
+                                               navigator: Navigator,
+                                               test_name: str,
+                                               default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
 
     instructions = [
@@ -40,7 +51,12 @@ def test_use_case_long_address_review_accepted(backend, firmware, navigator, tes
     # Assert that we have received an approval
     assert status == SW_OK
 
-def test_use_case_long_address_review_accepted_with_tags(backend, firmware, navigator, test_name, default_screenshot_path):
+
+def test_use_case_long_address_review_accepted_with_tags(backend: BackendInterface,
+                                                         firmware: Firmware,
+                                                         navigator: Navigator,
+                                                         test_name: str,
+                                                         default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
 
     instructions = [

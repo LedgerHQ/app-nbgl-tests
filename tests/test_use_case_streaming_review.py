@@ -1,12 +1,16 @@
 import pytest
 
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW_OK
+from ragger.backend.interface import BackendInterface
 from ragger.error import ExceptionRAPDU
 from ragger.firmware import Firmware
-from ragger.navigator import NavInsID, NavIns
+from ragger.navigator import Navigator, NavInsID, NavIns
+from ragger.navigator.navigation_scenario import NavigateWithScenario
+
+from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW_OK
 
 
-def test_use_case_streaming_review_accepted(backend, scenario_navigator):
+def test_use_case_streaming_review_accepted(backend: BackendInterface,
+                                            scenario_navigator: NavigateWithScenario) -> None:
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_streaming_review():
@@ -17,7 +21,12 @@ def test_use_case_streaming_review_accepted(backend, scenario_navigator):
     # Assert that we have received an approval
     assert status == SW_OK
 
-def test_use_case_blind_signed_streaming_review_accepted(navigator, backend, scenario_navigator, test_name, default_screenshot_path):
+
+def test_use_case_blind_signed_streaming_review_accepted(backend: BackendInterface,
+                                                         navigator: Navigator,
+                                                         scenario_navigator: NavigateWithScenario,
+                                                         test_name: str,
+                                                         default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_blind_signed_streaming_review():
@@ -32,13 +41,19 @@ def test_use_case_blind_signed_streaming_review_accepted(navigator, backend, sce
     # Assert that we have received an approval
     assert status == SW_OK
 
+
 # display the long value field with more button
-def test_use_case_streaming_review_accepted_with_more(backend, firmware, navigator, test_name, default_screenshot_path):
+def test_use_case_streaming_review_accepted_with_more(firmware: Firmware,
+                                                      backend: BackendInterface,
+                                                      navigator: Navigator,
+                                                      test_name: str,
+                                                      default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
 
     # Navigate in the main menu
+    instructions = []
     if firmware is Firmware.STAX:
-        instructions = [
+        instructions += [
             NavInsID.SWIPE_CENTER_TO_LEFT,
             NavInsID.SWIPE_CENTER_TO_LEFT,
             NavInsID.SWIPE_CENTER_TO_LEFT,
@@ -50,7 +65,7 @@ def test_use_case_streaming_review_accepted_with_more(backend, firmware, navigat
             NavInsID.USE_CASE_REVIEW_CONFIRM
         ]
     elif firmware is Firmware.FLEX:
-        instructions = [
+        instructions += [
             NavInsID.SWIPE_CENTER_TO_LEFT,
             NavInsID.SWIPE_CENTER_TO_LEFT,
             NavInsID.SWIPE_CENTER_TO_LEFT,
@@ -62,6 +77,7 @@ def test_use_case_streaming_review_accepted_with_more(backend, firmware, navigat
             NavInsID.USE_CASE_REVIEW_CONFIRM
         ]
 
+    assert len(instructions) > 0
     with client.test_use_case_streaming_review():
         navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
@@ -70,7 +86,9 @@ def test_use_case_streaming_review_accepted_with_more(backend, firmware, navigat
     # Assert that we have received an approval
     assert status == SW_OK
 
-def test_use_case_streaming_review_refused(backend, scenario_navigator):
+
+def test_use_case_streaming_review_refused(backend: BackendInterface,
+                                           scenario_navigator: NavigateWithScenario) -> None:
     client = NBGLCommandSender(backend)
 
     with pytest.raises(ExceptionRAPDU) as e:

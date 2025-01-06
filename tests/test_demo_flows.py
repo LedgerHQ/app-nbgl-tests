@@ -1,7 +1,12 @@
 from ragger.firmware import Firmware
-from ragger.navigator import NavInsID, NavIns
+from ragger.navigator import Navigator, NavInsID, NavIns
+from ragger.navigator.navigation_scenario import NavigateWithScenario
 
-def test_app_demo_flow_send_BTC(firmware, navigator, scenario_navigator, test_name, default_screenshot_path):
+def test_app_demo_flow_send_BTC(firmware: Firmware,
+                                navigator: Navigator,
+                                scenario_navigator: NavigateWithScenario,
+                                test_name: str,
+                                default_screenshot_path: str) -> None:
     # Navigate in the main menu
     instructions = [
         NavIns(NavInsID.TOUCH, (200, 520 if firmware is Firmware.STAX else 440)),
@@ -13,7 +18,12 @@ def test_app_demo_flow_send_BTC(firmware, navigator, scenario_navigator, test_na
                                    screen_change_after_last_instruction=False)
     scenario_navigator.review_approve(test_name=test_name+"/part2")
 
-def test_app_demo_flow_swap_1inch(firmware, navigator, scenario_navigator, test_name, default_screenshot_path):
+
+def test_app_demo_flow_swap_1inch(firmware: Firmware,
+                                  navigator: Navigator,
+                                  scenario_navigator: NavigateWithScenario,
+                                  test_name: str,
+                                  default_screenshot_path: str) -> None:
     # Navigate in the main menu
     instructions = [
         NavIns(NavInsID.TOUCH, (200, 520 if firmware is Firmware.STAX else 440)),
@@ -29,7 +39,12 @@ def test_app_demo_flow_swap_1inch(firmware, navigator, scenario_navigator, test_
                                    screen_change_after_last_instruction=False)
     scenario_navigator.review_approve(test_name=test_name+"/part2")
 
-def test_app_demo_flow_BS_stake(firmware, navigator, scenario_navigator, test_name, default_screenshot_path):
+
+def test_app_demo_flow_BS_stake(firmware: Firmware,
+                                navigator: Navigator,
+                                scenario_navigator: NavigateWithScenario,
+                                test_name: str,
+                                default_screenshot_path: str) -> None:
     # Navigate in the main menu
     instructions = [
         NavIns(NavInsID.TOUCH, (200, 520 if firmware is Firmware.STAX else 440)),
@@ -42,7 +57,12 @@ def test_app_demo_flow_BS_stake(firmware, navigator, scenario_navigator, test_na
                                    screen_change_after_last_instruction=False)
     scenario_navigator.review_approve(test_name=test_name+"/part2")
 
-def test_app_demo_flow_SOL_receive(firmware, navigator, scenario_navigator, test_name, default_screenshot_path):
+
+def test_app_demo_flow_SOL_receive(firmware: Firmware,
+                                   navigator: Navigator,
+                                   scenario_navigator: NavigateWithScenario,
+                                   test_name: str,
+                                   default_screenshot_path: str) -> None:
     # Navigate in the main menu
     instructions = [
         NavIns(NavInsID.TOUCH, (200, 520 if firmware is Firmware.STAX else 440)),

@@ -20,9 +20,9 @@
 #include "crypto_helpers.h"
 
 #include "validate.h"
-#include "../menu.h"
-#include "../../sw.h"
-#include "../../globals.h"
+#include "menu.h"
+#include "sw.h"
+#include "globals.h"
 
 void validate_transaction(bool choice) {
     if (choice) {
