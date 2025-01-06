@@ -30,7 +30,7 @@ include $(BOLOS_SDK)/Makefile.defines
 
 # Application version
 APPVERSION_M = 1
-APPVERSION_N = 0
+APPVERSION_N = 1
 APPVERSION_P = 0
 APPVERSION = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 
