@@ -1,6 +1,7 @@
 import pytest
 
 from ragger.backend.interface import BackendInterface
+from ragger.firmware import Firmware
 from ragger.error import ExceptionRAPDU
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.navigator.navigation_scenario import NavigateWithScenario
@@ -9,7 +10,11 @@ from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW
 
 
 def test_use_case_static_review_accepted(backend: BackendInterface,
+                                         firmware: Firmware,
                                          scenario_navigator: NavigateWithScenario) -> None:
+    if firmware.is_nano:
+        pytest.skip("Nano does not support legacy useCase on NBGL")
+
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_static_review():
@@ -22,9 +27,13 @@ def test_use_case_static_review_accepted(backend: BackendInterface,
 
 
 def test_use_case_static_review_refused(backend: BackendInterface,
+                                        firmware: Firmware,
                                         navigator: Navigator,
                                         test_name: str,
                                         default_screenshot_path: str) -> None:
+    if firmware.is_nano:
+        pytest.skip("Nano does not support legacy useCase on NBGL")
+
     client = NBGLCommandSender(backend)
 
     instructions = [
@@ -43,15 +52,26 @@ def test_use_case_static_review_refused(backend: BackendInterface,
 
 
 def test_use_case_light_review_accepted(backend: BackendInterface,
+                                        firmware: Firmware,
                                         navigator: Navigator,
                                         test_name: str,
                                         default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
-    instructions = [
-        NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
-        NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
-        NavIns(NavInsID.USE_CASE_CHOICE_CONFIRM)
-    ]
+
+    instructions = []
+    if firmware.is_nano:
+        instructions += [
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+        ]
+    else:
+        instructions += [
+            NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
+            NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
+            NavIns(NavInsID.USE_CASE_CHOICE_CONFIRM)
+        ]
 
     with client.test_use_case_light_review():
         navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
@@ -63,17 +83,28 @@ def test_use_case_light_review_accepted(backend: BackendInterface,
 
 
 def test_use_case_light_review_refused(backend: BackendInterface,
+                                       firmware: Firmware,
                                        navigator: Navigator,
                                        test_name: str,
                                        default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
 
-    instructions = [
-        NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
-        NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
-        NavIns(NavInsID.USE_CASE_CHOICE_REJECT),
-        NavIns(NavInsID.USE_CASE_CHOICE_CONFIRM)
-    ]
+    instructions = []
+    if firmware.is_nano:
+        instructions += [
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+        ]
+    else:
+        instructions += [
+            NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
+            NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
+            NavIns(NavInsID.USE_CASE_CHOICE_REJECT),
+            NavIns(NavInsID.USE_CASE_CHOICE_CONFIRM)
+        ]
 
     with pytest.raises(ExceptionRAPDU) as e:
         with client.test_use_case_light_review():

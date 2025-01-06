@@ -16,7 +16,23 @@ def test_app_mainmenu(firmware: Firmware,
         instructions += [
             NavInsID.RIGHT_CLICK,
             NavInsID.RIGHT_CLICK,
-            NavInsID.RIGHT_CLICK
+            NavInsID.BOTH_CLICK,
+            NavInsID.BOTH_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+            NavInsID.RIGHT_CLICK,
         ]
     elif firmware is Firmware.STAX:
         instructions += [
@@ -57,6 +73,7 @@ def test_generic_settings(backend: BackendInterface,
     if firmware.is_nano:
         instructions += [
             NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
             NavInsID.BOTH_CLICK,
         ]
     elif firmware is Firmware.STAX:
@@ -85,6 +102,7 @@ def test_generic_config(backend: BackendInterface,
     instructions = []
     if firmware.is_nano:
         instructions += [
+            NavInsID.RIGHT_CLICK,
             NavInsID.RIGHT_CLICK,
             NavInsID.BOTH_CLICK,
         ]

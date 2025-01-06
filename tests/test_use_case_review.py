@@ -23,16 +23,18 @@ def test_use_case_review_accepted(backend: BackendInterface,
 
 
 def test_use_case_blind_signed_review_accepted(backend: BackendInterface,
+                                               firmware: Firmware,
                                                navigator: Navigator,
                                                scenario_navigator: NavigateWithScenario,
                                                test_name: str,
                                                default_screenshot_path: str) -> None:
     client = NBGLCommandSender(backend)
 
+    instructions = [NavInsID.RIGHT_CLICK] if firmware.is_nano else [NavInsID.USE_CASE_CHOICE_REJECT]
     with client.test_use_case_blind_signed_review():
         navigator.navigate_and_compare(default_screenshot_path,
                         test_name+"/BS_screen",
-                        [NavInsID.USE_CASE_CHOICE_REJECT],
+                        instructions,
                         screen_change_after_last_instruction=False)
         scenario_navigator.review_approve()
 
@@ -43,9 +45,13 @@ def test_use_case_blind_signed_review_accepted(backend: BackendInterface,
 
 
 def test_use_case_blind_signed_review_display_warning(backend: BackendInterface,
+                                                      firmware: Firmware,
                                                       navigator: Navigator,
                                                       test_name: str,
                                                       default_screenshot_path: str) -> None:
+    if firmware.is_nano:
+        pytest.skip("Nano does not support this use case with warning screen")
+
     client = NBGLCommandSender(backend)
 
     instructions = [
