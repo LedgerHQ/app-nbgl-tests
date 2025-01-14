@@ -37,6 +37,9 @@ def test_keypad(backend: BackendInterface,
                 test_name: str,
                 default_screenshot_path: str,
                 mode: str) -> None:
+    if firmware.is_nano:
+        pytest.skip("Nano needs speculos API_LEVEL 23 for this test")
+
     client = NBGLCommandSender(backend)
 
     instructions = []
