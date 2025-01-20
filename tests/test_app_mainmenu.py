@@ -1,5 +1,8 @@
+from ragger.backend.interface import BackendInterface
 from ragger.firmware import Firmware
 from ragger.navigator import Navigator, NavInsID, NavIns
+
+from application_client.nbgl_command_sender import NBGLCommandSender
 
 
 # In this test we check the behavior of the device main menu
@@ -41,3 +44,61 @@ def test_app_mainmenu(firmware: Firmware,
     assert len(instructions) > 0
     navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
                                    screen_change_before_first_instruction=False)
+
+
+def test_generic_settings(backend: BackendInterface,
+                          firmware: Firmware,
+                          navigator: Navigator,
+                          test_name: str,
+                          default_screenshot_path: str) -> None:
+    client = NBGLCommandSender(backend)
+
+    instructions = []
+    if firmware.is_nano:
+        instructions += [
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+        ]
+    elif firmware is Firmware.STAX:
+        instructions += [
+            NavIns(NavInsID.TOUCH, (200, 113)),
+            NavInsID.USE_CASE_SETTINGS_MULTI_PAGE_EXIT
+        ]
+    elif firmware is Firmware.FLEX:
+        instructions += [
+            NavIns(NavInsID.TOUCH, (200, 113)),
+            NavInsID.USE_CASE_SETTINGS_MULTI_PAGE_EXIT
+        ]
+
+    with client.test_generic_settings():
+        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
+        backend.wait_for_home_screen()
+
+
+def test_generic_config(backend: BackendInterface,
+                          firmware: Firmware,
+                          navigator: Navigator,
+                          test_name: str,
+                          default_screenshot_path: str) -> None:
+    client = NBGLCommandSender(backend)
+
+    instructions = []
+    if firmware.is_nano:
+        instructions += [
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+        ]
+    elif firmware is Firmware.STAX:
+        instructions += [
+            NavIns(NavInsID.TOUCH, (200, 113)),
+            NavInsID.USE_CASE_SETTINGS_MULTI_PAGE_EXIT
+        ]
+    elif firmware is Firmware.FLEX:
+        instructions += [
+            NavIns(NavInsID.TOUCH, (200, 113)),
+            NavInsID.USE_CASE_SETTINGS_MULTI_PAGE_EXIT
+        ]
+
+    with client.test_generic_config():
+        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
+        backend.wait_for_home_screen()
