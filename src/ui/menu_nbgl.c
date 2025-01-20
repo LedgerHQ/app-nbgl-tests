@@ -25,6 +25,7 @@
 
 #include "globals.h"
 #include "menu.h"
+#include "sw.h"
 
 void app_quit(void) {
     // exit app here
@@ -243,7 +244,7 @@ static void demo_control_cb(int token, uint8_t index) {
     }
 }
 
-static bool nav_callback(uint8_t page, nbgl_pageContent_t* content) {
+static bool nav_bar_cb(uint8_t page, nbgl_pageContent_t* content) {
     UNUSED(page);
     content->tuneId = NBGL_NO_TUNE;
     content->type = BARS_LIST;
@@ -255,9 +256,52 @@ static bool nav_callback(uint8_t page, nbgl_pageContent_t* content) {
     return true;
 }
 
+static bool nav_switch_cb(uint8_t page, nbgl_pageContent_t* content) {
+    UNUSED(page);
+    content->type = SWITCHES_LIST;
+    content->switchesList.nbSwitches = SETTINGS_SWITCHES_NB;
+    content->switchesList.switches = switches;
+    return true;
+}
+
+#define CHOICES_NB 4
+static const char* const choicesTexts[CHOICES_NB] = {"Choice 1",
+                                                     "Choice 2",
+                                                     "Choice 3",
+                                                     "Choice 4"};
+
+static bool nav_choice_cb(uint8_t page, nbgl_pageContent_t* content) {
+    UNUSED(page);
+    content->type = CHOICES_LIST;
+    content->choicesList.names = choicesTexts;
+    content->choicesList.token = FIRST_USER_TOKEN;
+    content->choicesList.initChoice = 0;
+    content->choicesList.nbChoices = CHOICES_NB;
+    return true;
+}
+
+static bool nav_button_cb(uint8_t page, nbgl_pageContent_t* content) {
+    UNUSED(page);
+    content->type = INFO_BUTTON;
+    content->infoButton.text = "Test info button";
+    content->infoButton.icon = &ICON_APP;
+    content->infoButton.buttonText = "Press me";
+    content->infoButton.buttonToken = 23;
+    return true;
+}
+
+static bool nav_info_cb(uint8_t page, nbgl_pageContent_t* content) {
+    UNUSED(page);
+    content->type = CENTERED_INFO;
+    content->centeredInfo.text1 = "Test centered info";
+    content->centeredInfo.icon = &ICON_APP;
+    content->centeredInfo.text2 = "example text";
+    return true;
+}
+
 // display the list of demo flows
 void ui_display_demo_list(void) {
-    nbgl_useCaseNavigableContent("Select demo", 0, 1, ui_menu_main, nav_callback, demo_control_cb);
+    nbgl_useCaseNavigableContent("Select demo", 0, 1, ui_menu_main, nav_bar_cb, demo_control_cb);
 }
 
 void ui_menu_main(void) {
@@ -267,4 +311,75 @@ void ui_menu_main(void) {
         ui_menu_main_nbgl_test();
     }
 }
+
+static void quit_cb(void) {
+    io_send_sw(SW_OK);
+    ui_menu_main();
+}
+
+int ui_display_generic_config() {
+    nbgl_useCaseGenericConfiguration("Generic Config", 0, &settingContents, quit_cb);
+    return 0;
+}
+
+int ui_display_generic_settings() {
+    nbgl_useCaseGenericSettings(APPNAME, 0, &settingContents, &infoList, quit_cb);
+    return 0;
+}
+static void nav_control_cb(int token, uint8_t index) {
+    UNUSED(token);
+    UNUSED(index);
+}
+
+int ui_display_navigation(uint8_t nav_type) {
+    uint16_t sw = SW_OK;
+    switch (nav_type) {
+        case P1_NAV_CONTENT_CENTERED_INFO:
+            nbgl_useCaseNavigableContent("Centered Info",
+                                         0,
+                                         1,
+                                         ui_menu_main,
+                                         nav_info_cb,
+                                         nav_control_cb);
+            break;
+        case P1_NAV_CONTENT_INFO_BUTTON:
+            nbgl_useCaseNavigableContent("Info Button",
+                                         0,
+                                         1,
+                                         ui_menu_main,
+                                         nav_button_cb,
+                                         nav_control_cb);
+            break;
+        case P1_NAV_CONTENT_SWITCHES:
+            nbgl_useCaseNavigableContent("Switches List",
+                                         0,
+                                         1,
+                                         ui_menu_main,
+                                         nav_switch_cb,
+                                         nav_control_cb);
+            break;
+        case P1_NAV_CONTENT_CHOICES:
+            nbgl_useCaseNavigableContent("Choices List",
+                                         0,
+                                         1,
+                                         ui_menu_main,
+                                         nav_choice_cb,
+                                         nav_control_cb);
+            break;
+        case P1_NAV_CONTENT_BARS:
+            nbgl_useCaseNavigableContent("Bars List",
+                                         0,
+                                         1,
+                                         ui_menu_main,
+                                         nav_bar_cb,
+                                         nav_control_cb);
+            break;
+        default:
+            sw = SW_WRONG_P1P2;
+            break;
+    }
+    io_send_sw(sw);
+    return 0;
+}
+
 #endif

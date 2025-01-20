@@ -39,6 +39,7 @@
 static char g_amount[30];
 // Buffer where the transaction address string is written
 static char g_address[43];
+static char g_address_long[100];
 
 static nbgl_layoutTagValue_t pairs[3];
 static nbgl_layoutTagValueList_t pairList;
@@ -168,6 +169,76 @@ int ui_display_streaming_review(bool is_blind_signed) {
                                          NULL,
                                          onTransactionContinue);
     }
+
+    return 0;
+}
+
+static void quit_cb(void) {
+    io_send_sw(SW_DENY);
+    ui_menu_main();
+}
+
+static void control_cb(int token, uint8_t index, int page) {
+    UNUSED(index);
+    UNUSED(page);
+
+    if (token == FIRST_USER_TOKEN) {
+        io_send_sw(SW_OK);
+    } else {
+        io_send_sw(SW_DENY);
+    }
+    ui_menu_main();
+}
+
+int ui_display_generic_review(void) {
+    static nbgl_genericContents_t genericContent = {0};
+    static nbgl_content_t contentsList[3] = {0};
+    uint8_t nbContent = 0;
+
+    // Format amount and address to g_amount and g_address buffers
+    memset(g_amount, 0, sizeof(g_amount));
+    snprintf(g_amount, sizeof(g_amount), "NBT 0.99");
+    memset(g_address, 0, sizeof(g_address));
+    snprintf(g_address, sizeof(g_address), "0x1234567890");
+    memset(g_address_long, 0, sizeof(g_address_long));
+    snprintf(g_address_long,
+             sizeof(g_address_long),
+             "5A8FgbMkmG2e3J41sBdjvjaBUyz8qHohsQcGtRf63qEUTMBvmA45fpp5pSacMdSg7A3b71RejLzB8EkGbfjp5"
+             "PELVHCRUaE");
+
+    // Setup data to display
+    pairs[0].item = "Amount";
+    pairs[0].value = g_amount;
+    pairs[1].item = "Address Short";
+    pairs[1].value = g_address;
+    pairs[2].item = "Address Long";
+    pairs[2].value = g_address_long;
+
+    contentsList[nbContent].type = CENTERED_INFO;
+    contentsList[nbContent].content.centeredInfo.text1 = "Centered Info";
+    contentsList[nbContent].content.centeredInfo.text2 = "Text 2";
+    contentsList[nbContent].content.centeredInfo.icon = &ICON_INFO;
+    nbContent++;
+
+    contentsList[nbContent].type = TAG_VALUE_LIST;
+    contentsList[nbContent].content.tagValueList.nbMaxLinesForValue = 0;
+    contentsList[nbContent].content.tagValueList.nbPairs = 3;
+    contentsList[nbContent].content.tagValueList.pairs = pairs;
+    nbContent++;
+
+    contentsList[nbContent].type = INFO_BUTTON;
+    contentsList[nbContent].content.infoButton.text = "Info Button";
+    contentsList[nbContent].content.infoButton.icon = &ICON_APP;
+    contentsList[nbContent].content.infoButton.buttonText = "Valid";
+    contentsList[nbContent].content.infoButton.buttonToken = FIRST_USER_TOKEN;
+    contentsList[nbContent].contentActionCallback = control_cb;
+    nbContent++;
+
+    genericContent.contentsList = (const nbgl_content_t *) contentsList;
+    genericContent.nbContents = nbContent;
+
+    // Start review flow
+    nbgl_useCaseGenericReview(&genericContent, "Cancel", quit_cb);
 
     return 0;
 }

@@ -43,13 +43,11 @@ int apdu_dispatcher(const command_t *cmd) {
             if (cmd->p1 != 0 || cmd->p2 != 0) {
                 return io_send_sw(SW_WRONG_P1P2);
             }
-
             return handler_get_version();
         case GET_APP_NAME:
             if (cmd->p1 != 0 || cmd->p2 != 0) {
                 return io_send_sw(SW_WRONG_P1P2);
             }
-
             return handler_get_app_name();
         case TEST_SPINNER:
             if (cmd->p1 != 0 || cmd->p2 != 0) {
@@ -69,11 +67,16 @@ int apdu_dispatcher(const command_t *cmd) {
             }
             return ui_display_review(true);
         case TEST_USE_CASE_ADDRESS_REVIEW:
-            if (cmd->p1 == 0) {
+            if (cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            if (cmd->p1 == P1_ADDR_REVIEW_SHORT) {
                 return ui_display_address_review();
-            } else if (cmd->p1 == 1) {
+            }
+            if (cmd->p1 == P1_ADDR_REVIEW_LONG) {
                 return ui_display_long_address_review();
-            } else if (cmd->p1 == 2) {
+            }
+            if (cmd->p1 == P1_ADDR_REVIEW_TAGS) {
                 return ui_display_long_address_review_with_tags();
             }
             return io_send_sw(SW_WRONG_P1P2);
@@ -102,6 +105,42 @@ int apdu_dispatcher(const command_t *cmd) {
                 return io_send_sw(SW_WRONG_P1P2);
             }
             return ui_display_light_review();
+        case TEST_USE_CASE_CONFIRM:
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_confirm();
+        case TEST_USE_CASE_GENERIC_CONFIG:
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_generic_config();
+        case TEST_USE_CASE_GENERIC_REVIEW:
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_generic_review();
+        case TEST_USE_CASE_GENERIC_SETTINGS:
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_generic_settings();
+        case TEST_USE_CASE_KEYPAD:
+            if (cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            if (cmd->p1 == P1_KEYPAD_DIGITS) {
+                return ui_display_keypad_digits();
+            }
+            if (cmd->p1 == P1_KEYPAD_PIN) {
+                return ui_display_keypad_pin();
+            }
+            return io_send_sw(SW_WRONG_P1P2);
+        case TEST_USE_CASE_NAVIGATION:
+            if (cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_navigation(cmd->p1);
         default:
             return io_send_sw(SW_INS_NOT_SUPPORTED);
     }
