@@ -15,6 +15,8 @@
 #   limitations under the License.
 # ****************************************************************************
 
+include $(BOLOS_SDK)/Makefile.target
+
 ########################################
 #        Mandatory configuration       #
 ########################################
@@ -103,7 +105,9 @@ ENABLE_NBGL_FOR_NANO_DEVICES = 1
 ########################################
 ENABLE_NBGL_QRCODE = 1
 #ENABLE_NBGL_KEYBOARD = 1
+ifeq ($(TARGET_NAME),$(filter $(TARGET_NAME),TARGET_STAX TARGET_FLEX))
 ENABLE_NBGL_KEYPAD = 1
+endif
 
 ########################################
 #          Features disablers          #
