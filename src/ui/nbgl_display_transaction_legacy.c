@@ -16,7 +16,6 @@
  *****************************************************************************/
 
 #ifdef HAVE_NBGL
-
 #include <stdbool.h>  // bool
 #include <string.h>   // memset
 
@@ -30,14 +29,17 @@
 #include "display.h"
 #include "menu.h"
 
+// Following code is expected to be deprecated and removed.
+// It is kept for compatibility with the previous version of the app.
+// but not ported on Nano
+
 // Buffer where the transaction amount string is written
 static char g_amount[30];
 // Buffer where the transaction address string is written
 static char g_address[43];
 
-static nbgl_layoutTagValue_t pairs[3];
-static nbgl_layoutTagValueList_t pairList;
-static nbgl_pageInfoLongPress_t infoLongPress;
+static nbgl_contentTagValue_t pairs[3];
+static nbgl_contentTagValueList_t pairList;
 
 // called when long press button on 3rd page is long-touched or when reject footer is touched
 static void review_choice(bool confirm) {
@@ -49,6 +51,9 @@ static void review_choice(bool confirm) {
         nbgl_useCaseReviewStatus(STATUS_TYPE_TRANSACTION_REJECTED, ui_menu_main);
     }
 }
+
+#if defined(TARGET_STAX) || defined(TARGET_FLEX)
+static nbgl_pageInfoLongPress_t infoLongPress;
 
 static void reject_callback(void) {
     review_choice(false);
@@ -72,7 +77,7 @@ void continue_callback() {
     pairList.nbPairs = 2;
     pairList.pairs = pairs;
 
-    infoLongPress.icon = &LARGE_ICON;
+    infoLongPress.icon = &ICON_APP;
     infoLongPress.longPressText = "Hold to sign";
     infoLongPress.longPressToken = 0;
     infoLongPress.tuneId = TUNE_TAP_CASUAL;
@@ -83,7 +88,7 @@ void continue_callback() {
 
 // start a static review flow
 int ui_display_static_review() {
-    nbgl_useCaseReviewStart(&LARGE_ICON,
+    nbgl_useCaseReviewStart(&ICON_APP,
                             "Review transaction\nto send NBT",
                             NULL,
                             "Reject",
@@ -92,6 +97,12 @@ int ui_display_static_review() {
 
     return 0;
 }
+#else   // TARGET_STAX || TARGET_FLEX
+int ui_display_static_review() {
+    io_send_sw(SW_INS_NOT_SUPPORTED);
+    return 0;
+}
+#endif  // TARGET_STAX || TARGET_FLEX
 
 int ui_display_light_review() {
     // Format amount and address to g_amount and g_address buffers
@@ -111,16 +122,10 @@ int ui_display_light_review() {
     pairList.nbPairs = 2;
     pairList.pairs = pairs;
 
-    infoLongPress.icon = &LARGE_ICON;
-    infoLongPress.longPressText = "Hold to sign";
-    infoLongPress.longPressToken = 0;
-    infoLongPress.tuneId = TUNE_TAP_CASUAL;
-    infoLongPress.text = "Sign transaction\nto send NBT";
-
     // Start light review flow
     nbgl_useCaseReviewLight(TYPE_TRANSACTION,
                             &pairList,
-                            &LARGE_ICON,
+                            &ICON_APP,
                             "Review transaction\nto send NBT",
                             NULL,
                             "Sign transaction\nto send NBT",
@@ -128,4 +133,4 @@ int ui_display_light_review() {
     return 0;
 }
 
-#endif
+#endif  // HAVE_NBGL

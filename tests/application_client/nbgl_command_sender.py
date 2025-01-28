@@ -15,6 +15,9 @@ class P1(IntEnum):
     P1_MAX   = 0x03
     # Parameter 1 for screen confirmation for GET_PUBLIC_KEY.
     P1_CONFIRM = 0x01
+    # Parameter 1 for Keypad.
+    P1_DIGITS = 0x00
+    P1_PIN = 0x01
 
 class P2(IntEnum):
     # Parameter 2 for last APDU to receive.
@@ -33,6 +36,12 @@ class InsType(IntEnum):
     TEST_SPINNER = 0x0A
     TEST_USE_CASE_STATIC_REVIEW = 0x0B
     TEST_USE_CASE_LIGHT_REVIEW = 0x0C
+    TEST_USE_CASE_CONFIRM = 0x0D
+    TEST_USE_CASE_GENERIC_CONFIG = 0x0E
+    TEST_USE_CASE_GENERIC_REVIEW = 0x0F
+    TEST_USE_CASE_GENERIC_SETTINGS = 0x10
+    TEST_USE_CASE_KEYPAD = 0x11
+    TEST_USE_CASE_NAVIGATION = 0x12
 
 class Errors(IntEnum):
     SW_DENY                    = 0x6985
@@ -91,6 +100,44 @@ class NBGLCommandSender:
                                          p1=P1.P1_START,
                                          p2=P2.P2_LAST,
                                          data=b"") as response:
+            yield response
+
+    @contextmanager
+    def test_generic_settings(self) -> Generator[None, None, None]:
+        with self.backend.exchange_async(cla=CLA,
+                                         ins=InsType.TEST_USE_CASE_GENERIC_SETTINGS) as response:
+            yield response
+
+    @contextmanager
+    def test_generic_config(self) -> Generator[None, None, None]:
+        with self.backend.exchange_async(cla=CLA,
+                                         ins=InsType.TEST_USE_CASE_GENERIC_CONFIG) as response:
+            yield response
+
+    @contextmanager
+    def test_generic_review(self) -> Generator[None, None, None]:
+        with self.backend.exchange_async(cla=CLA,
+                                         ins=InsType.TEST_USE_CASE_GENERIC_REVIEW) as response:
+            yield response
+
+    @contextmanager
+    def test_confirm(self) -> Generator[None, None, None]:
+        with self.backend.exchange_async(cla=CLA,
+                                         ins=InsType.TEST_USE_CASE_CONFIRM) as response:
+            yield response
+
+    @contextmanager
+    def test_keypad(self, p1: int) -> Generator[None, None, None]:
+        with self.backend.exchange_async(cla=CLA,
+                                         ins=InsType.TEST_USE_CASE_KEYPAD,
+                                         p1=p1) as response:
+            yield response
+
+    @contextmanager
+    def test_navigation(self, p1: int) -> Generator[None, None, None]:
+        with self.backend.exchange_async(cla=CLA,
+                                         ins=InsType.TEST_USE_CASE_NAVIGATION,
+                                         p1=p1) as response:
             yield response
 
     @contextmanager
