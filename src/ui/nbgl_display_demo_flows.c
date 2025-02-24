@@ -124,6 +124,8 @@ int ui_display_BS_staking_review() {
     return 0;
 }
 
+#ifdef SCREEN_SIZE_WALLET
+
 #define INFO_NB 3
 static const char* const infoTypes[INFO_NB] = {"Contract owner", "Contract", "Deployed on"};
 static const char* const infoValues[INFO_NB] = {"1inch Network\n1inch.io",
@@ -176,5 +178,6 @@ int ui_display_swap_review() {
 
     return 0;
 }
+#endif  // SCREEN_SIZE_WALLET
 
 #endif
