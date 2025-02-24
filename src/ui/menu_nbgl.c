@@ -205,18 +205,24 @@ void ui_menu_main_demo(void) {
 
 enum {
     BTC_SEND_REVIEW_TOKEN = FIRST_USER_TOKEN,
+#ifdef SCREEN_SIZE_WALLET
     SWAP_1INCH_REVIEW_TOKEN,
+#endif
     STAKE_BLIND_SIGNING_REVIEW_TOKEN,
     SOL_ADDRESS_REVIEW_TOKEN
 };
 
 static const char* const barTexts[DEMO_FLOW_NB] = {"Send bitcoin",
+#ifdef SCREEN_SIZE_WALLET
                                                    "Swap with 1inch",
+#endif
                                                    "Blind-sign on Ethereum",
                                                    "Receive SOL"};
 
 static const uint8_t tokens[DEMO_FLOW_NB] = {BTC_SEND_REVIEW_TOKEN,
+#ifdef SCREEN_SIZE_WALLET
                                              SWAP_1INCH_REVIEW_TOKEN,
+#endif
                                              STAKE_BLIND_SIGNING_REVIEW_TOKEN,
                                              SOL_ADDRESS_REVIEW_TOKEN};
 
@@ -226,9 +232,11 @@ static void demo_control_cb(int token, uint8_t index) {
         case BTC_SEND_REVIEW_TOKEN:
             ui_display_BTC_review();
             break;
+#ifdef SCREEN_SIZE_WALLET
         case SWAP_1INCH_REVIEW_TOKEN:
             ui_display_swap_review();
             break;
+#endif
         case STAKE_BLIND_SIGNING_REVIEW_TOKEN:
             ui_display_BS_staking_review();
             break;

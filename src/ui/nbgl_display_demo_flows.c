@@ -124,6 +124,8 @@ int ui_display_BS_staking_review() {
     return 0;
 }
 
+#ifdef SCREEN_SIZE_WALLET
+
 #define INFO_NB 3
 static const char* const infoTypes[INFO_NB] = {"Contract owner", "Contract", "Deployed on"};
 static const char* const infoValues[INFO_NB] = {"1inch Network\n1inch.io",
@@ -135,7 +137,10 @@ static const nbgl_contentValueExt_t infoExtensions[INFO_NB] = {
            .title = "0x111111125421cA6dc452d289314280a0f8842A65",
            .aliasType = QR_CODE_ALIAS}};
 
+static nbgl_tipBox_t tipBox;
+
 int ui_display_swap_review() {
+    explicit_bzero(&tipBox, sizeof(tipBox));
     // Setup data to display
     pairs[0].item = "Send";
     pairs[0].value = "USDT 42";
@@ -151,15 +156,15 @@ int ui_display_swap_review() {
     pairList.nbPairs = 4;
     pairList.pairs = pairs;
 
-    nbgl_tipBox_t tipBox = {.icon = &ICON_INFO,
-                            .text = "Interaction with a\nsmart contract from:\n1inch",
-                            .modalTitle = "Contract information",
-                            .infos.nbInfos = INFO_NB,
-                            .infos.infoTypes = infoTypes,
-                            .infos.infoContents = infoValues,
-                            .infos.infoExtensions = infoExtensions,
-                            .infos.withExtensions = true,
-                            .type = INFOS_LIST};
+    tipBox.icon = &ICON_INFO;
+    tipBox.text = "Interaction with a\nsmart contract from:\n1inch";
+    tipBox.modalTitle = "Contract information";
+    tipBox.infos.nbInfos = INFO_NB;
+    tipBox.infos.infoTypes = infoTypes;
+    tipBox.infos.infoContents = infoValues;
+    tipBox.infos.infoExtensions = infoExtensions;
+    tipBox.infos.withExtensions = true;
+    tipBox.type = INFOS_LIST;
 
     nbgl_useCaseAdvancedReview(TYPE_TRANSACTION,
                                &pairList,
@@ -168,9 +173,11 @@ int ui_display_swap_review() {
                                NULL,
                                "Sign transaction to\nswap tokens? (demo)",
                                &tipBox,
+                               NULL,
                                review_choice);
 
     return 0;
 }
+#endif  // SCREEN_SIZE_WALLET
 
 #endif
