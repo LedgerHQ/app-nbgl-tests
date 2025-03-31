@@ -1,4 +1,3 @@
-import pytest
 from ragger.firmware import Firmware
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.navigator.navigation_scenario import NavigateWithScenario
@@ -33,7 +32,6 @@ def test_app_demo_flow_swap_1inch(firmware: Firmware,
                                   test_name: str,
                                   default_screenshot_path: str) -> None:
     if firmware.is_nano:
-        pytest.skip("This test is currently disabled because the test '1Inch' is deactivated in the App")
         instructions = [
             NavInsID.RIGHT_CLICK,
             NavInsID.BOTH_CLICK,
@@ -96,7 +94,7 @@ def test_app_demo_flow_SOL_receive(firmware: Firmware,
             NavInsID.BOTH_CLICK,
             NavInsID.RIGHT_CLICK,
             NavInsID.RIGHT_CLICK,
-            # NavInsID.RIGHT_CLICK, This is currently disabled because the test '1Inch' is deactivated in the App
+            NavInsID.RIGHT_CLICK,
             NavInsID.BOTH_CLICK,
         ]
     else:

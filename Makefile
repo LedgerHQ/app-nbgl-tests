@@ -24,7 +24,7 @@ include $(BOLOS_SDK)/Makefile.target
 # Application version
 APPVERSION_M = 1
 APPVERSION_N = 1
-APPVERSION_P = 1
+APPVERSION_P = 2
 APPVERSION = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 
 # Application source files
@@ -59,26 +59,26 @@ VARIANT_VALUES = nbgl_test demo
 ICON_NANOX = icons/app_nbgl_tests_14px.png
 ICON_NANOSP = icons/app_nbgl_tests_14px.png
 
-ifeq ($(COIN),nbgl_test)
-ICON_STAX = icons/app_nbgl_tests_32px.png
-ICON_FLEX = icons/app_nbgl_tests_40px.png
-else
+ifeq ($(COIN),demo)
 ICON_STAX = icons/app_demo_32px.png
 ICON_FLEX = icons/app_demo_40px.png
+else
+ICON_STAX = icons/app_nbgl_tests_32px.png
+ICON_FLEX = icons/app_nbgl_tests_40px.png
 endif
 
 APP_DEMO_TYPE=0
 APP_NBGL_TYPE=1
 DEFINES +=APP_DEMO_TYPE
 DEFINES +=APP_NBGL_TYPE
-ifeq ($(COIN),nbgl_test)
-# NBGL Test app
-APPNAME = "NBGL Tests"
-DEFINES +=APP_TYPE=$(APP_DEMO_TYPE)
-else
+ifeq ($(COIN),demo)
 # Demo app
 APPNAME = "Ledger Demo"
 DEFINES +=APP_TYPE=$(APP_NBGL_TYPE)
+else
+# NBGL Test app
+APPNAME = "NBGL Tests"
+DEFINES +=APP_TYPE=$(APP_DEMO_TYPE)
 endif
 
 # Enabling DEBUG flag will enable PRINTF and disable optimizations
