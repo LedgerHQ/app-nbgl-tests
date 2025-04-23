@@ -26,3 +26,4 @@ int ui_display_generic_settings();
 int ui_display_keypad_digits();
 int ui_display_keypad_pin();
 int ui_display_navigation(uint8_t nav_type);
+int ui_play_sound(uint8_t tune_type);

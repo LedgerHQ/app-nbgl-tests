@@ -27,6 +27,7 @@ typedef enum {
     TEST_USE_CASE_GENERIC_SETTINGS = 0x10,
     TEST_USE_CASE_KEYPAD = 0x11,
     TEST_USE_CASE_NAVIGATION = 0x12,
+    TEST_SOUND = 0x13,
 } command_e;
 
 /**
@@ -42,3 +43,16 @@ typedef enum {
 #define P1_NAV_CONTENT_SWITCHES      0x02
 #define P1_NAV_CONTENT_CHOICES       0x03
 #define P1_NAV_CONTENT_BARS          0x04
+
+// Please ensure that the P1_TUNE_* values are in sync with the SDK (include/os_io_seproxyhal.h)
+#define P1_TUNE_BOOT          0x01
+#define P1_TUNE_CHARGING      0x02
+#define P1_TUNE_LEDGER_MOMENT 0x03
+#define P1_TUNE_ERROR         0x04
+#define P1_TUNE_NEUTRAL       0x05
+#define P1_TUNE_LOCK          0x06
+#define P1_TUNE_SUCCESS       0x07
+#define P1_TUNE_LOOK_AT_ME    0x08
+#define P1_TUNE_TAP_CASUAL    0x09
+#define P1_TUNE_TAP_NEXT      0x0A
+#define P1_TUNE_CARD_CONNECT  0x0B
