@@ -23,20 +23,11 @@ def test_use_case_streaming_review_accepted(backend: BackendInterface,
 
 
 def test_use_case_blind_signed_streaming_review_accepted(backend: BackendInterface,
-                                                         firmware: Firmware,
-                                                         navigator: Navigator,
-                                                         scenario_navigator: NavigateWithScenario,
-                                                         test_name: str,
-                                                         default_screenshot_path: str) -> None:
+                                                         scenario_navigator: NavigateWithScenario) -> None:
     client = NBGLCommandSender(backend)
 
-    instructions = [NavInsID.RIGHT_CLICK] if firmware.is_nano else [NavInsID.USE_CASE_CHOICE_REJECT]
     with client.test_use_case_blind_signed_streaming_review():
-        navigator.navigate_and_compare(default_screenshot_path,
-                                test_name+"/BS_screen",
-                                instructions,
-                                screen_change_after_last_instruction=False)
-        scenario_navigator.review_approve()
+        scenario_navigator.review_approve_with_warning()
 
     status = client.get_async_response().status
 

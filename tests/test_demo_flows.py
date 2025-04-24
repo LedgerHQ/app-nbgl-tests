@@ -73,14 +73,13 @@ def test_app_demo_flow_BS_stake(firmware: Firmware,
         # Navigate in the main menu
         instructions = [
             NavInsID.USE_CASE_CHOICE_CONFIRM,
-            NavIns(NavInsID.TOUCH, (200, 320)),
-            NavInsID.USE_CASE_REVIEW_REJECT
+            NavIns(NavInsID.TOUCH, (200, 320))
         ]
 
     navigator.navigate_and_compare(default_screenshot_path, test_name+"/part1", instructions,
                                    screen_change_before_first_instruction=False,
                                    screen_change_after_last_instruction=False)
-    scenario_navigator.review_approve(test_name=test_name+"/part2")
+    scenario_navigator.review_approve_with_warning(test_name=test_name+"/part2")
 
 
 def test_app_demo_flow_SOL_receive(firmware: Firmware,
