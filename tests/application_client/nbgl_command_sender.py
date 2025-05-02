@@ -42,6 +42,7 @@ class InsType(IntEnum):
     TEST_USE_CASE_GENERIC_SETTINGS = 0x10
     TEST_USE_CASE_KEYPAD = 0x11
     TEST_USE_CASE_NAVIGATION = 0x12
+    TEST_USE_CASE_REVIEW_WARNING = 0x14
 
 class Errors(IntEnum):
     SW_DENY                    = 0x6985
@@ -156,6 +157,12 @@ class NBGLCommandSender:
                                          p1=P1.P1_START,
                                          p2=P2.P2_LAST,
                                          data=b"") as response:
+            yield response
+
+    @contextmanager
+    def test_use_case_review_with_warning(self) -> Generator[None, None, None]:
+        with self.backend.exchange_async(cla=CLA,
+                                         ins=InsType.TEST_USE_CASE_REVIEW_WARNING) as response:
             yield response
 
     @contextmanager
