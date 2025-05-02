@@ -19,6 +19,7 @@ int ui_display_BTC_review();
 int ui_display_SOL_address_review();
 int ui_display_BS_staking_review();
 int ui_display_swap_review();
+int ui_display_review_with_warning();
 int ui_display_confirm();
 int ui_display_generic_config();
 int ui_display_generic_review();
