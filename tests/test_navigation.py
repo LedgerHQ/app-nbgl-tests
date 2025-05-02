@@ -37,6 +37,7 @@ def test_navigation(backend: BackendInterface,
                 NavInsID.RIGHT_CLICK,
                 NavInsID.RIGHT_CLICK,
                 NavInsID.RIGHT_CLICK,
+                NavInsID.RIGHT_CLICK,
                 NavInsID.BOTH_CLICK]
         }
     else:
