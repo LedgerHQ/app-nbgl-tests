@@ -124,6 +124,44 @@ int ui_display_BS_staking_review() {
     return 0;
 }
 
+static nbgl_warning_t warning;
+int ui_display_review_with_warning() {
+    // Setup data to display
+    pairs[0].item = "From";
+    pairs[0].value = "0x519192a437e6aeb895Cec72828A73B11b698dE3a";
+    pairs[1].item = "Amount";
+    pairs[1].value = "ETH 0";
+    pairs[2].item = "To";
+    pairs[2].value = "0x16D5A408e807db8eF7c578279BEeEe6b228f1c1C";
+    pairs[3].item = "Max fees";
+    pairs[3].value = "ETH 0.0047303";
+
+    // Setup list
+    pairList.nbMaxLinesForValue = 0;
+    pairList.nbPairs = 4;
+    pairList.pairs = pairs;
+
+    // Setup warning
+    explicit_bzero(&warning, sizeof(nbgl_warning_t));
+    warning.predefinedSet = (1 << W3C_RISK_DETECTED_WARN);
+    warning.reportProvider = "Ledger Demo";
+    warning.providerMessage = "This Demo is\npotentially risky.";
+    warning.reportUrl = "ledger.com";
+
+    // Start blind-signing review flow
+    nbgl_useCaseAdvancedReview(TYPE_TRANSACTION,
+                               &pairList,
+                               &ICON_ETHEREUM,
+                               "Review transaction\n(demo)",
+                               NULL,
+                               "Accept risk and sign\ntransaction? (demo)",
+                               NULL,
+                               &warning,
+                               review_choice);
+
+    return 0;
+}
+
 #define INFO_NB 3
 static const char* const infoTypes[INFO_NB] = {"Contract owner", "Contract", "Deployed on"};
 static const char* const infoValues[INFO_NB] = {"1inch Network\n1inch.io",

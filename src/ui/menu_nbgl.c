@@ -201,24 +201,27 @@ void ui_menu_main_demo(void) {
 //  -----------------------------------------------------------
 
 // demo flow
-#define DEMO_FLOW_NB 4
+#define DEMO_FLOW_NB 5
 
 enum {
     BTC_SEND_REVIEW_TOKEN = FIRST_USER_TOKEN,
     SWAP_1INCH_REVIEW_TOKEN,
     STAKE_BLIND_SIGNING_REVIEW_TOKEN,
-    SOL_ADDRESS_REVIEW_TOKEN
+    SOL_ADDRESS_REVIEW_TOKEN,
+    ETH_WARNING_REVIEW_TOKEN
 };
 
 static const char* const barTexts[DEMO_FLOW_NB] = {"Send bitcoin",
                                                    "Swap with 1inch",
                                                    "Blind-sign on Ethereum",
-                                                   "Receive SOL"};
+                                                   "Receive SOL",
+                                                   "Warning with Ethereum"};
 
 static const uint8_t tokens[DEMO_FLOW_NB] = {BTC_SEND_REVIEW_TOKEN,
                                              SWAP_1INCH_REVIEW_TOKEN,
                                              STAKE_BLIND_SIGNING_REVIEW_TOKEN,
-                                             SOL_ADDRESS_REVIEW_TOKEN};
+                                             SOL_ADDRESS_REVIEW_TOKEN,
+                                             ETH_WARNING_REVIEW_TOKEN};
 
 static void demo_control_cb(int token, uint8_t index) {
     UNUSED(index);
@@ -234,6 +237,9 @@ static void demo_control_cb(int token, uint8_t index) {
             break;
         case SOL_ADDRESS_REVIEW_TOKEN:
             ui_display_SOL_address_review();
+            break;
+        case ETH_WARNING_REVIEW_TOKEN:
+            ui_display_review_with_warning();
             break;
         default:
             PRINTF("Should not happen !");

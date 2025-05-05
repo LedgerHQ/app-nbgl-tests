@@ -66,6 +66,12 @@ int apdu_dispatcher(const command_t *cmd) {
                 return io_send_sw(SW_WRONG_P1P2);
             }
             return ui_display_review(true);
+        case TEST_USE_CASE_REVIEW_WARNING:
+            // P1 & P2 may be used later as test/sub-test number
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SW_WRONG_P1P2);
+            }
+            return ui_display_review_with_warning();
         case TEST_USE_CASE_ADDRESS_REVIEW:
             if (cmd->p2 != 0) {
                 return io_send_sw(SW_WRONG_P1P2);

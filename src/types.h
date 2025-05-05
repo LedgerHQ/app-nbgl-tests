@@ -28,6 +28,7 @@ typedef enum {
     TEST_USE_CASE_KEYPAD = 0x11,
     TEST_USE_CASE_NAVIGATION = 0x12,
     TEST_SOUND = 0x13,
+    TEST_USE_CASE_REVIEW_WARNING = 0x14,
 } command_e;
 
 /**

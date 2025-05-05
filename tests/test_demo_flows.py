@@ -1,3 +1,5 @@
+import pytest
+
 from ragger.firmware import Firmware
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.navigator.navigation_scenario import NavigateWithScenario
@@ -73,14 +75,13 @@ def test_app_demo_flow_BS_stake(firmware: Firmware,
         # Navigate in the main menu
         instructions = [
             NavInsID.USE_CASE_CHOICE_CONFIRM,
-            NavIns(NavInsID.TOUCH, (200, 320)),
-            NavInsID.USE_CASE_REVIEW_REJECT
+            NavIns(NavInsID.TOUCH, (200, 320))
         ]
 
     navigator.navigate_and_compare(default_screenshot_path, test_name+"/part1", instructions,
                                    screen_change_before_first_instruction=False,
                                    screen_change_after_last_instruction=False)
-    scenario_navigator.review_approve(test_name=test_name+"/part2")
+    scenario_navigator.review_approve_with_warning(test_name=test_name+"/part2")
 
 
 def test_app_demo_flow_SOL_receive(firmware: Firmware,
@@ -108,3 +109,41 @@ def test_app_demo_flow_SOL_receive(firmware: Firmware,
                                    screen_change_before_first_instruction=False,
                                    screen_change_after_last_instruction=False)
     scenario_navigator.address_review_approve(test_name=test_name+"/part2")
+
+
+def test_app_demo_flow_ETH_warning(firmware: Firmware,
+                                   navigator: Navigator,
+                                   test_name: str,
+                                   default_screenshot_path: str) -> None:
+    if firmware.is_nano:
+        pytest.skip("Nano does not support this use case with warning screen")
+
+    instructions = [
+            NavInsID.USE_CASE_CHOICE_CONFIRM,
+            NavIns(NavInsID.TOUCH, (200, 520)),
+            NavInsID.INFO_HEADER_TAP,
+            NavInsID.LEFT_HEADER_TAP,
+            NavInsID.USE_CASE_REVIEW_REJECT,
+            NavInsID.INFO_HEADER_TAP,
+            NavIns(NavInsID.TOUCH, (200, 150)),
+            NavInsID.LEFT_HEADER_TAP,
+            NavInsID.LEFT_HEADER_TAP,
+            NavInsID.USE_CASE_CHOICE_CONFIRM,
+            NavIns(NavInsID.TOUCH, (200, 150)),
+            NavInsID.LEFT_HEADER_TAP,
+            NavInsID.LEFT_HEADER_TAP,
+            NavInsID.SWIPE_CENTER_TO_LEFT,
+            NavInsID.SWIPE_CENTER_TO_LEFT,
+    ]
+    if firmware == Firmware.FLEX:
+        instructions += [NavInsID.SWIPE_CENTER_TO_LEFT]
+    instructions += [
+            NavInsID.INFO_HEADER_TAP,
+            NavIns(NavInsID.TOUCH, (200, 150)),
+            NavInsID.LEFT_HEADER_TAP,
+            NavInsID.LEFT_HEADER_TAP,
+            NavInsID.USE_CASE_REVIEW_CONFIRM,
+        ]
+    navigator.navigate_and_compare(default_screenshot_path, test_name, instructions,
+                                   screen_change_before_first_instruction=False,
+                                   screen_change_after_last_instruction=False)
