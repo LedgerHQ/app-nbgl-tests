@@ -1,7 +1,6 @@
 import pytest
 
 from ragger.backend.interface import BackendInterface
-from ragger.firmware import Firmware
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.firmware.touch.positions import POSITIONS
 
@@ -10,14 +9,14 @@ from application_client.nbgl_command_sender import NBGLCommandSender
 
 @pytest.mark.parametrize("mode", ["info", "button", "switch", "choice", "bar"])
 def test_navigation(backend: BackendInterface,
-                firmware: Firmware,
-                navigator: Navigator,
-                test_name: str,
-                default_screenshot_path: str,
-                mode: str) -> None:
+                    navigator: Navigator,
+                    test_name: str,
+                    default_screenshot_path: str,
+                    mode: str) -> None:
+    device = backend.device
     client = NBGLCommandSender(backend)
 
-    if firmware.is_nano:
+    if device.is_nano:
         instructions = {
             "info":   [NavInsID.RIGHT_CLICK, NavInsID.BOTH_CLICK],
             "button": [NavInsID.RIGHT_CLICK, NavInsID.BOTH_CLICK],
@@ -45,7 +44,7 @@ def test_navigation(backend: BackendInterface,
             "info":   [],
             "button": [],
             "switch": [NavIns(NavInsID.TOUCH, (200, 113))],
-            "choice": [NavIns(NavInsID.TOUCH, POSITIONS["ChoiceList"][firmware][2])],
+            "choice": [NavIns(NavInsID.TOUCH, POSITIONS["ChoiceList"][device.type][2])],
             "bar":    []
         }
         instructions[mode] += [NavInsID.LEFT_HEADER_TAP]

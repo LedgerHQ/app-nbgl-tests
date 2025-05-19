@@ -1,8 +1,9 @@
 import pytest
 
+from ledgered.devices import DeviceType
+
 from ragger.backend.interface import BackendInterface
 from ragger.error import ExceptionRAPDU
-from ragger.firmware import Firmware
 from ragger.navigator import Navigator, NavInsID
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
@@ -36,11 +37,11 @@ def test_use_case_blind_signed_review_accepted(backend: BackendInterface,
 
 
 def test_use_case_blind_signed_review_display_warning(backend: BackendInterface,
-                                                      firmware: Firmware,
                                                       navigator: Navigator,
                                                       test_name: str,
                                                       default_screenshot_path: str) -> None:
-    if firmware.is_nano:
+    device = backend.device
+    if device.is_nano:
         pytest.skip("Nano does not support this use case with warning screen")
 
     client = NBGLCommandSender(backend)
@@ -71,14 +72,14 @@ def test_use_case_review_refused(backend: BackendInterface,
 
 
 def test_use_case_generic_review(backend: BackendInterface,
-                firmware: Firmware,
-                navigator: Navigator,
-                test_name: str,
-                default_screenshot_path: str) -> None:
+                                 navigator: Navigator,
+                                 test_name: str,
+                                 default_screenshot_path: str) -> None:
+    device = backend.device
     client = NBGLCommandSender(backend)
 
     instructions = []
-    if firmware.is_nano:
+    if device.is_nano:
         instructions += [
             NavInsID.RIGHT_CLICK,
             NavInsID.RIGHT_CLICK,
@@ -88,7 +89,7 @@ def test_use_case_generic_review(backend: BackendInterface,
             NavInsID.BOTH_CLICK,
         ]
     else:
-        if firmware == Firmware.FLEX:
+        if device.type == DeviceType.FLEX:
             instructions += [
                 NavInsID.SWIPE_CENTER_TO_LEFT,
             ]

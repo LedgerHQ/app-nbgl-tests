@@ -1,18 +1,17 @@
 from ragger.backend.interface import BackendInterface
-from ragger.firmware import Firmware
 from ragger.navigator import Navigator, NavInsID
 
 from application_client.nbgl_command_sender import NBGLCommandSender
 
 def test_confirm(backend: BackendInterface,
-                 firmware: Firmware,
                  navigator: Navigator,
                  test_name: str,
                  default_screenshot_path: str) -> None:
+    device = backend.device
     client = NBGLCommandSender(backend)
 
     instructions = []
-    if firmware.is_nano:
+    if device.is_nano:
         instructions += [
             NavInsID.RIGHT_CLICK,
             NavInsID.BOTH_CLICK,
