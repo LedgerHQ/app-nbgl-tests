@@ -16,6 +16,7 @@
             "test_app_demo_flow_swap_1inch",
             "test_app_demo_flow_BS_stake",
             "test_app_demo_flow_SOL_receive",
+            "test_app_demo_flow_ETH_warning",
             "test_bad_cla",
             "test_bad_ins",
             "test_wrong_p1p2",
