@@ -52,7 +52,7 @@ static void review_choice(bool confirm) {
     }
 }
 
-#if defined(TARGET_STAX) || defined(TARGET_FLEX)
+#ifdef SCREEN_SIZE_WALLET
 static nbgl_pageInfoLongPress_t infoLongPress;
 
 static void reject_callback(void) {
@@ -97,12 +97,12 @@ int ui_display_static_review() {
 
     return 0;
 }
-#else   // TARGET_STAX || TARGET_FLEX
+#else   // SCREEN_SIZE_WALLET
 int ui_display_static_review() {
     io_send_sw(SW_INS_NOT_SUPPORTED);
     return 0;
 }
-#endif  // TARGET_STAX || TARGET_FLEX
+#endif  // SCREEN_SIZE_WALLET
 
 int ui_display_light_review() {
     // Format amount and address to g_amount and g_address buffers
@@ -128,7 +128,11 @@ int ui_display_light_review() {
                             &ICON_APP,
                             "Review transaction\nto send NBT",
                             NULL,
+#ifdef SCREEN_SIZE_WALLET
                             "Sign transaction\nto send NBT",
+#else
+                            NULL,
+#endif
                             review_choice);
     return 0;
 }

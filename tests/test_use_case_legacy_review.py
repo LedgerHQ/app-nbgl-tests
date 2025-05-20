@@ -1,7 +1,6 @@
 import pytest
 
 from ragger.backend.interface import BackendInterface
-from ragger.firmware import Firmware
 from ragger.error import ExceptionRAPDU
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.navigator.navigation_scenario import NavigateWithScenario
@@ -9,10 +8,10 @@ from ragger.navigator.navigation_scenario import NavigateWithScenario
 from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW_OK
 
 
-def test_use_case_static_review_accepted(backend: BackendInterface,
-                                         firmware: Firmware,
-                                         scenario_navigator: NavigateWithScenario) -> None:
-    if firmware.is_nano:
+def test_use_case_static_review_accepted(scenario_navigator: NavigateWithScenario) -> None:
+    backend = scenario_navigator.backend
+    device = backend.device
+    if device.is_nano:
         pytest.skip("Nano does not support legacy useCase on NBGL")
 
     client = NBGLCommandSender(backend)
@@ -27,11 +26,11 @@ def test_use_case_static_review_accepted(backend: BackendInterface,
 
 
 def test_use_case_static_review_refused(backend: BackendInterface,
-                                        firmware: Firmware,
                                         navigator: Navigator,
                                         test_name: str,
                                         default_screenshot_path: str) -> None:
-    if firmware.is_nano:
+    device = backend.device
+    if device.is_nano:
         pytest.skip("Nano does not support legacy useCase on NBGL")
 
     client = NBGLCommandSender(backend)
@@ -52,14 +51,14 @@ def test_use_case_static_review_refused(backend: BackendInterface,
 
 
 def test_use_case_light_review_accepted(backend: BackendInterface,
-                                        firmware: Firmware,
                                         navigator: Navigator,
                                         test_name: str,
                                         default_screenshot_path: str) -> None:
+    device = backend.device
     client = NBGLCommandSender(backend)
 
     instructions = []
-    if firmware.is_nano:
+    if device.is_nano:
         instructions += [
             NavInsID.RIGHT_CLICK,
             NavInsID.RIGHT_CLICK,
@@ -83,14 +82,14 @@ def test_use_case_light_review_accepted(backend: BackendInterface,
 
 
 def test_use_case_light_review_refused(backend: BackendInterface,
-                                       firmware: Firmware,
                                        navigator: Navigator,
                                        test_name: str,
                                        default_screenshot_path: str) -> None:
+    device = backend.device
     client = NBGLCommandSender(backend)
 
     instructions = []
-    if firmware.is_nano:
+    if device.is_nano:
         instructions += [
             NavInsID.RIGHT_CLICK,
             NavInsID.RIGHT_CLICK,

@@ -85,7 +85,11 @@ int ui_display_review(bool is_blind_signed) {
                                        &ICON_APP,
                                        "Review transaction\nto send NBT",
                                        NULL,
+#ifdef SCREEN_SIZE_WALLET
                                        "Sign transaction\nto send NBT",
+#else
+                                       NULL,
+#endif
                                        NULL,
                                        review_choice);
     } else {
@@ -95,7 +99,11 @@ int ui_display_review(bool is_blind_signed) {
                            &ICON_APP,
                            "Review transaction\nto send NBT",
                            NULL,
+#ifdef SCREEN_SIZE_WALLET
                            "Sign transaction\nto send NBT",
+#else
+                           NULL,
+#endif
                            review_choice);
     }
 
@@ -143,7 +151,11 @@ static void onTransactionContinue(bool askMore) {
         if (more_data_to_send()) {
             nbgl_useCaseReviewStreamingContinue(&pairList, onTransactionContinue);
         } else {
+#ifdef SCREEN_SIZE_WALLET
             nbgl_useCaseReviewStreamingFinish("Sign transaction\nto send NBT", review_choice);
+#else
+            nbgl_useCaseReviewStreamingFinish("Sign transaction", review_choice);
+#endif
         }
     } else {
         review_choice(false);

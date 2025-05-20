@@ -69,7 +69,11 @@ int ui_display_BTC_review() {
                        &ICON_BITCOIN,
                        "Review transaction\nto send Bitcoin (demo)",
                        NULL,
+#ifdef SCREEN_SIZE_WALLET
                        "Sign transaction to\n send Bitcoin? (demo)",
+#else
+                       NULL,
+#endif
                        review_choice);
 
     return 0;
@@ -117,7 +121,11 @@ int ui_display_BS_staking_review() {
                                    &ICON_ETHEREUM,
                                    "Review transaction\n(demo)",
                                    NULL,
+#ifdef SCREEN_SIZE_WALLET
                                    "Accept risk and sign\ntransaction? (demo)",
+#else
+                                   "Accept risk and sign transaction",
+#endif
                                    NULL,
                                    review_choice);
 
@@ -154,7 +162,11 @@ int ui_display_review_with_warning() {
                                &ICON_ETHEREUM,
                                "Review transaction\n(demo)",
                                NULL,
+#ifdef SCREEN_SIZE_WALLET
                                "Accept risk and sign\ntransaction? (demo)",
+#else
+                               "Accept risk and sign transaction",
+#endif
                                NULL,
                                &warning,
                                review_choice);
@@ -207,7 +219,11 @@ int ui_display_swap_review() {
                                &ICON_POLYGON,
                                "Review transaction to\nswap tokens (demo)",
                                NULL,
+#ifdef SCREEN_SIZE_WALLET
                                "Sign transaction to\nswap tokens? (demo)",
+#else
+                               NULL,
+#endif
                                &tipBox,
                                NULL,
                                review_choice);

@@ -1,15 +1,16 @@
 import pytest
 
+from ledgered.devices import DeviceType
+
 from ragger.backend.interface import BackendInterface
-from ragger.firmware import Firmware
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.firmware.touch.positions import STAX_BUTTON_LOWER_RIGHT, FLEX_BUTTON_LOWER_RIGHT
 
 from application_client.nbgl_command_sender import NBGLCommandSender
 
 
-def get_digit5_position(firmware: Firmware) -> tuple[int, int]:
-    if firmware == Firmware.STAX:
+def get_digit5_position(device_type: DeviceType) -> tuple[int, int]:
+    if device_type == DeviceType.STAX:
         screen_height = 672  # px
         screen_width = 400  # px
         header_height = 88  # px
@@ -24,37 +25,37 @@ def get_digit5_position(firmware: Firmware) -> tuple[int, int]:
     return digit_x, digit_y
 
 
-def get_enter_position(firmware: Firmware) -> tuple[int, int]:
-    if firmware == Firmware.STAX:
+def get_enter_position(device_type: DeviceType) -> tuple[int, int]:
+    if device_type == DeviceType.STAX:
         return STAX_BUTTON_LOWER_RIGHT
     return FLEX_BUTTON_LOWER_RIGHT
 
 
 @pytest.mark.parametrize("mode", ["digits", "pin"])
 def test_keypad(backend: BackendInterface,
-                firmware: Firmware,
                 navigator: Navigator,
                 test_name: str,
                 default_screenshot_path: str,
                 mode: str) -> None:
-    if firmware.is_nano:
+    device = backend.device
+    if device.is_nano:
         pytest.skip("Nano needs speculos API_LEVEL 23 for this test")
 
     client = NBGLCommandSender(backend)
 
     instructions = []
-    if firmware.is_nano:
+    if device.is_nano:
         instructions += [
             NavInsID.BOTH_CLICK * 5
         ]
     else:
-        digit5_pos = get_digit5_position(firmware)
+        digit5_pos = get_digit5_position(device.type)
         instructions += [
             NavIns(NavInsID.TOUCH, digit5_pos),
             NavIns(NavInsID.TOUCH, digit5_pos),
             NavIns(NavInsID.TOUCH, digit5_pos),
             NavIns(NavInsID.TOUCH, digit5_pos),
-            NavIns(NavInsID.TOUCH, get_enter_position(firmware)),
+            NavIns(NavInsID.TOUCH, get_enter_position(device.type)),
         ]
 
     test_name += f"_{mode}"

@@ -1,8 +1,9 @@
 import pytest
 
+from ledgered.devices import DeviceType
+
 from ragger.backend.interface import BackendInterface
 from ragger.error import ExceptionRAPDU
-from ragger.firmware import Firmware
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
@@ -36,19 +37,19 @@ def test_use_case_blind_signed_streaming_review_accepted(backend: BackendInterfa
 
 
 # display the long value field with more button
-def test_use_case_streaming_review_accepted_with_more(firmware: Firmware,
-                                                      backend: BackendInterface,
+def test_use_case_streaming_review_accepted_with_more(backend: BackendInterface,
                                                       navigator: Navigator,
                                                       test_name: str,
                                                       default_screenshot_path: str) -> None:
-    if firmware.is_nano:
+    device = backend.device
+    if device.is_nano:
         pytest.skip("Nano does not support legacy useCase on NBGL")
 
     client = NBGLCommandSender(backend)
 
     # Navigate in the main menu
     instructions = []
-    if firmware is Firmware.STAX:
+    if device.type == DeviceType.STAX:
         instructions += [
             NavInsID.SWIPE_CENTER_TO_LEFT,
             NavInsID.SWIPE_CENTER_TO_LEFT,
@@ -60,7 +61,7 @@ def test_use_case_streaming_review_accepted_with_more(firmware: Firmware,
             NavInsID.SWIPE_CENTER_TO_LEFT,
             NavInsID.USE_CASE_REVIEW_CONFIRM
         ]
-    elif firmware is Firmware.FLEX:
+    elif device.type == DeviceType.FLEX:
         instructions += [
             NavInsID.SWIPE_CENTER_TO_LEFT,
             NavInsID.SWIPE_CENTER_TO_LEFT,
