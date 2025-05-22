@@ -17,7 +17,11 @@ def test_use_case_address_review_accepted(navigator: Navigator,
     if not device.is_nano:
         instructions = [
             NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
-            NavIns(NavInsID.TOUCH, (100, 500 if device.type == DeviceType.STAX else 410)),
+            NavIns(NavInsID.TOUCH,
+            (
+                40 if device.type == DeviceType.APEX_P else 100,
+                500 if device.type == DeviceType.STAX else 410 if device.type == DeviceType.FLEX else 310,
+            )),
             NavIns(NavInsID.USE_CASE_ADDRESS_CONFIRMATION_EXIT_QR),
             NavIns(NavInsID.USE_CASE_ADDRESS_CONFIRMATION_CONFIRM),
             NavIns(NavInsID.USE_CASE_STATUS_DISMISS)
@@ -47,7 +51,11 @@ def test_use_case_long_address_review_accepted(navigator: Navigator,
     if not device.is_nano:
         instructions = [
             NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
-            NavIns(NavInsID.TOUCH, (100, 500 if device.type == DeviceType.STAX else 410)),
+            NavIns(NavInsID.TOUCH,
+            (
+                40 if device.type == DeviceType.APEX_P else 100,
+                500 if device.type == DeviceType.STAX else 410 if device.type == DeviceType.FLEX else 310,
+            )),
             NavIns(NavInsID.USE_CASE_ADDRESS_CONFIRMATION_EXIT_QR),
             NavIns(NavInsID.USE_CASE_ADDRESS_CONFIRMATION_CONFIRM),
             NavIns(NavInsID.USE_CASE_STATUS_DISMISS)
@@ -77,7 +85,11 @@ def test_use_case_long_address_review_accepted_with_tags(navigator: Navigator,
     if not device.is_nano:
         instructions = [
             NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
-            NavIns(NavInsID.TOUCH, (200, 370 if device.type == DeviceType.STAX else 370)),
+            NavIns(NavInsID.TOUCH,
+            (
+                150 if device.type == DeviceType.APEX_P else 200,
+                370 if device.type == DeviceType.STAX else 370 if device.type == DeviceType.FLEX else 250,
+            )),
             NavIns(NavInsID.USE_CASE_ADDRESS_CONFIRMATION_EXIT_QR),
             NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
             NavIns(NavInsID.USE_CASE_ADDRESS_CONFIRMATION_CONFIRM),

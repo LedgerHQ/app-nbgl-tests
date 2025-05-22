@@ -68,9 +68,11 @@ ICON_HOME_NANO = glyphs/home_nbgl_tests_14px.gif
 ifeq ($(COIN),demo)
 ICON_STAX = icons/app_demo_32px.png
 ICON_FLEX = icons/app_demo_40px.png
+ICON_APEX_P = icons/app_demo_32px_apex.png
 else
 ICON_STAX = icons/app_nbgl_tests_32px.png
 ICON_FLEX = icons/app_nbgl_tests_40px.png
+ICON_APEX_P = icons/app_nbgl_tests_32px_apex.png
 endif
 
 APP_DEMO_TYPE=0
@@ -111,7 +113,7 @@ ENABLE_NBGL_FOR_NANO_DEVICES = 1
 ########################################
 ENABLE_NBGL_QRCODE = 1
 #ENABLE_NBGL_KEYBOARD = 1
-ifeq ($(TARGET_NAME),$(filter $(TARGET_NAME),TARGET_STAX TARGET_FLEX))
+ifeq ($(TARGET_NAME),$(filter $(TARGET_NAME),TARGET_STAX TARGET_FLEX TARGET_APEX_P))
 ENABLE_NBGL_KEYPAD = 1
 endif
 
