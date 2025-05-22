@@ -3,6 +3,7 @@ import pytest
 from ragger.backend.interface import BackendInterface
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.firmware.touch.positions import POSITIONS
+from ledgered.devices import DeviceType
 
 from application_client.nbgl_command_sender import NBGLCommandSender
 
@@ -39,11 +40,20 @@ def test_navigation(backend: BackendInterface,
                 NavInsID.RIGHT_CLICK,
                 NavInsID.BOTH_CLICK]
         }
+    elif device.type == DeviceType.APEX_P:
+        instructions = {
+            "info":   [],
+            "button": [],
+            "switch": [NavIns(NavInsID.TOUCH, (243, 90))], 
+            "choice": [NavIns(NavInsID.TOUCH, POSITIONS["ChoiceList"][device.type][2])],
+            "bar":    []
+        }
+        instructions[mode] += [NavInsID.LEFT_HEADER_TAP]
     else:
         instructions = {
             "info":   [],
             "button": [],
-            "switch": [NavIns(NavInsID.TOUCH, (200, 113))],
+            "switch": [NavIns(NavInsID.TOUCH, (200, 113))], 
             "choice": [NavIns(NavInsID.TOUCH, POSITIONS["ChoiceList"][device.type][2])],
             "bar":    []
         }
