@@ -47,32 +47,24 @@ def test_use_case_streaming_review_accepted_with_more(backend: BackendInterface,
 
     client = NBGLCommandSender(backend)
 
-    # Navigate in the main menu
-    instructions = []
-    if device.type == DeviceType.STAX:
-        instructions += [
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavIns(NavInsID.TOUCH, (190, 424)),
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavInsID.CANCEL_FOOTER_TAP ,
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavInsID.USE_CASE_REVIEW_CONFIRM
-        ]
-    elif device.type == DeviceType.FLEX:
-        instructions += [
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavIns(NavInsID.TOUCH, (217, 360)),
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavInsID.CANCEL_FOOTER_TAP ,
-            NavInsID.SWIPE_CENTER_TO_LEFT,
-            NavInsID.USE_CASE_REVIEW_CONFIRM
-        ]
+    # specific coordinates for each device
+    specific_device_instructions = {
+        DeviceType.STAX: (190, 424),
+        DeviceType.FLEX: (217, 360),
+        DeviceType.APEX_P: (150, 250)
+    }
+
+    instructions = [
+        NavInsID.SWIPE_CENTER_TO_LEFT,
+        NavInsID.SWIPE_CENTER_TO_LEFT,
+        NavInsID.SWIPE_CENTER_TO_LEFT,
+        NavInsID.SWIPE_CENTER_TO_LEFT,
+        NavIns(NavInsID.TOUCH, specific_device_instructions[device.type]),
+        NavInsID.SWIPE_CENTER_TO_LEFT,
+        NavInsID.CANCEL_FOOTER_TAP,
+        NavInsID.SWIPE_CENTER_TO_LEFT,
+        NavInsID.USE_CASE_REVIEW_CONFIRM
+    ]
 
     assert len(instructions) > 0
     with client.test_use_case_streaming_review():
