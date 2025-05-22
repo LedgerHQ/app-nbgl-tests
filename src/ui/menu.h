@@ -22,7 +22,7 @@
 #define ICON_SOLANA   C_solana_64px
 #define ICON_POLYGON  C_polygon_64px
 #define ICON_ETHEREUM C_ethereum_64px
-#elif defined(TARGET_APEX_P) 
+#elif defined(TARGET_APEX_P)
 #if (APP_TYPE == APP_DEMO_TYPE)
 #define ICON_APP C_app_demo_48px
 #else
