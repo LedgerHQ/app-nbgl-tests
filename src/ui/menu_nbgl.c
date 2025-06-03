@@ -86,7 +86,7 @@ static void review_warning_choice(bool confirm) {
 
     // Reset setting menu to the right page
     nbgl_useCaseHomeAndSettings(APPNAME,
-                                &ICON_APP,
+                                &ICON_HOME,
                                 NULL,
                                 initSettingPage,
                                 &settingContents,
@@ -154,7 +154,7 @@ void ui_menu_main_nbgl_test(void) {
     homeAction.icon = NULL;
     homeAction.text = "Display flows";
     nbgl_useCaseHomeAndSettings(APPNAME,
-                                &ICON_APP,
+                                &ICON_HOME,
                                 NULL,
                                 INIT_HOME_PAGE,
                                 &settingContents,
@@ -185,7 +185,7 @@ void ui_menu_main_demo(void) {
     homeActionDemo.icon = NULL;
     homeActionDemo.text = "View demos";
     nbgl_useCaseHomeAndSettings(APPNAME,
-                                &ICON_APP,
+                                &ICON_HOME,
                                 "Showcase transactions and\n"
                                 "address verification, without\n"
                                 "spending.",
@@ -332,6 +332,7 @@ int ui_display_generic_settings() {
     nbgl_useCaseGenericSettings(APPNAME, 0, &settingContents, &infoList, quit_cb);
     return 0;
 }
+
 static void nav_control_cb(int token, uint8_t index) {
     UNUSED(token);
     UNUSED(index);

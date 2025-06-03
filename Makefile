@@ -24,7 +24,7 @@ include $(BOLOS_SDK)/Makefile.target
 # Application version
 APPVERSION_M = 1
 APPVERSION_N = 1
-APPVERSION_P = 3
+APPVERSION_P = 4
 APPVERSION = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 
 # Application source files
@@ -58,6 +58,12 @@ VARIANT_VALUES = nbgl_test demo
 # https://developers.ledger.com/docs/embedded-app/design-requirements/#device-icon
 ICON_NANOX = icons/app_nbgl_tests_14px.png
 ICON_NANOSP = icons/app_nbgl_tests_14px.png
+
+# With the Nano NBGL Design, the Home Screen icon is the reverse of the App icon:
+# It should be on white background, with rounded corners.
+# This definition allows SDK Makefiles to automatically generate it based on the App icon.
+# Please note that the icon is dynamically generated, and declared in the .gitignore to avoid storing it.
+ICON_HOME_NANO = glyphs/home_nbgl_tests_14px.gif
 
 ifeq ($(COIN),demo)
 ICON_STAX = icons/app_demo_32px.png
