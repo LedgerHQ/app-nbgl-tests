@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef SCREEN_SIZE_NANO
-#define ICON_APP      C_app_nbgl_tests_16px
+#define ICON_APP      C_app_nbgl_tests_14px
 #define ICON_WARNING  C_icon_warning
 #define ICON_INFO     C_info_button_14px
 #define ICON_BITCOIN  C_bitcoin_14px
