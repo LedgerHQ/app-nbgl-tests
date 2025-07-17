@@ -89,7 +89,7 @@ def test_use_case_generic_review(backend: BackendInterface,
             NavInsID.BOTH_CLICK,
         ]
     else:
-        if device.type == DeviceType.FLEX:
+        if device.type == DeviceType.FLEX or device.type == DeviceType.APEX_P:
             instructions += [
                 NavInsID.SWIPE_CENTER_TO_LEFT,
             ]
