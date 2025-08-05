@@ -35,8 +35,49 @@
 #include "validate.h"
 #include "menu.h"
 
-static nbgl_contentTagValue_t pairs[4];
-static nbgl_contentTagValueList_t pairList;
+#define PAIRS_NB 5
+#ifdef SCREEN_SIZE_WALLET
+#define INFO_NB 3
+#else
+#define INFO_NB 4
+#endif
+
+static nbgl_contentTagValue_t pairs[PAIRS_NB] = {0};
+static nbgl_contentTagValueList_t pairList = {0};
+static nbgl_warning_t warning = {0};
+static nbgl_contentValueExt_t extension = {0};
+static nbgl_contentInfoList_t infolist = {0};
+
+#ifdef SCREEN_SIZE_WALLET
+static const char* const infoTypes[INFO_NB] = {"Smart Contract owner",
+                                               "Smart Contract",
+                                               "Deployed on"};
+#else
+static const char* const infoTypes[INFO_NB] = {"Contract owner",
+                                               "Contract",
+                                               "Contract address",
+                                               "Deployed on"};
+#endif
+static const char* const infoValues[INFO_NB] = {"1inch Network\n1inch.io",
+                                                "Aggregation Router V6",
+#ifndef SCREEN_SIZE_WALLET
+                                                "0x111111125421cA6dc452d289314280a0f8842A65",
+#endif
+                                                "2024-02-12"};
+#ifdef SCREEN_SIZE_WALLET
+static const nbgl_contentValueExt_t infoExtensions[INFO_NB] = {
+    [1] = {.fullValue = "https://etherscan.io/address/0x111111125421cA6dc452d289314280a0f8842A65",
+           .explanation = "Scan to view on Etherscan",
+           .title = "0x111111125421cA6dc452d289314280a0f8842A65",
+           .aliasType = QR_CODE_ALIAS}};
+#endif
+
+// Initialize the pairs array
+static void init_pairs(void) {
+    explicit_bzero(pairs, sizeof(nbgl_contentTagValue_t) * PAIRS_NB);
+    explicit_bzero(&pairList, sizeof(nbgl_contentTagValueList_t));
+    pairList.pairs = pairs;
+}
 
 // called when long press button on 3rd page is long-touched or when reject footer is touched
 static void review_choice(bool confirm) {
@@ -50,18 +91,21 @@ static void review_choice(bool confirm) {
 }
 
 int ui_display_BTC_review() {
+    uint8_t nbPairs = 0;
     // Setup data to display
-    pairs[0].item = "Amount";
-    pairs[0].value = "1.5 BTC";
-    pairs[1].item = "To";
-    pairs[1].value = "bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2";
-    pairs[2].item = "Fees";
-    pairs[2].value = "0.00000698 BTC";
+    init_pairs();
+    pairs[nbPairs].item = "Amount";
+    pairs[nbPairs].value = "1.5 BTC";
+    nbPairs++;
+    pairs[nbPairs].item = "To";
+    pairs[nbPairs].value = "bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2";
+    nbPairs++;
+    pairs[nbPairs].item = "Fees";
+    pairs[nbPairs].value = "0.00000698 BTC";
+    nbPairs++;
 
     // Setup list
-    pairList.nbMaxLinesForValue = 0;
-    pairList.nbPairs = 3;
-    pairList.pairs = pairs;
+    pairList.nbPairs = nbPairs;
 
     // Start review flow
     nbgl_useCaseReview(TYPE_TRANSACTION,
@@ -100,20 +144,24 @@ int ui_display_SOL_address_review() {
 }
 
 int ui_display_BS_staking_review() {
+    uint8_t nbPairs = 0;
     // Setup data to display
-    pairs[0].item = "From";
-    pairs[0].value = "0x519192a437e6aeb895Cec72828A73B11b698dE3a";
-    pairs[1].item = "Amount";
-    pairs[1].value = "ETH 0";
-    pairs[2].item = "To";
-    pairs[2].value = "0x16D5A408e807db8eF7c578279BEeEe6b228f1c1C";
-    pairs[3].item = "Max fees";
-    pairs[3].value = "ETH 0.0047303";
+    init_pairs();
+    pairs[nbPairs].item = "From";
+    pairs[nbPairs].value = "0x519192a437e6aeb895Cec72828A73B11b698dE3a";
+    nbPairs++;
+    pairs[nbPairs].item = "Amount";
+    pairs[nbPairs].value = "ETH 0";
+    nbPairs++;
+    pairs[nbPairs].item = "To";
+    pairs[nbPairs].value = "0x16D5A408e807db8eF7c578279BEeEe6b228f1c1C";
+    nbPairs++;
+    pairs[nbPairs].item = "Max fees";
+    pairs[nbPairs].value = "ETH 0.0047303";
+    nbPairs++;
 
     // Setup list
-    pairList.nbMaxLinesForValue = 0;
-    pairList.nbPairs = 4;
-    pairList.pairs = pairs;
+    pairList.nbPairs = nbPairs;
 
     // Start blind-signing review flow
     nbgl_useCaseReviewBlindSigning(TYPE_TRANSACTION,
@@ -132,22 +180,25 @@ int ui_display_BS_staking_review() {
     return 0;
 }
 
-static nbgl_warning_t warning;
 int ui_display_review_with_warning() {
+    uint8_t nbPairs = 0;
     // Setup data to display
-    pairs[0].item = "From";
-    pairs[0].value = "0x519192a437e6aeb895Cec72828A73B11b698dE3a";
-    pairs[1].item = "Amount";
-    pairs[1].value = "ETH 0";
-    pairs[2].item = "To";
-    pairs[2].value = "0x16D5A408e807db8eF7c578279BEeEe6b228f1c1C";
-    pairs[3].item = "Max fees";
-    pairs[3].value = "ETH 0.0047303";
+    init_pairs();
+    pairs[nbPairs].item = "From";
+    pairs[nbPairs].value = "0x519192a437e6aeb895Cec72828A73B11b698dE3a";
+    nbPairs++;
+    pairs[nbPairs].item = "Amount";
+    pairs[nbPairs].value = "ETH 0";
+    nbPairs++;
+    pairs[nbPairs].item = "To";
+    pairs[nbPairs].value = "0x16D5A408e807db8eF7c578279BEeEe6b228f1c1C";
+    nbPairs++;
+    pairs[nbPairs].item = "Max fees";
+    pairs[nbPairs].value = "ETH 0.0047303";
+    nbPairs++;
 
     // Setup list
-    pairList.nbMaxLinesForValue = 0;
-    pairList.nbPairs = 4;
-    pairList.pairs = pairs;
+    pairList.nbPairs = nbPairs;
 
     // Setup warning
     explicit_bzero(&warning, sizeof(nbgl_warning_t));
@@ -156,7 +207,7 @@ int ui_display_review_with_warning() {
     warning.providerMessage = "This Demo is\npotentially risky.";
     warning.reportUrl = "ledger.com";
 
-    // Start blind-signing review flow
+    // Start review flow
     nbgl_useCaseAdvancedReview(TYPE_TRANSACTION,
                                &pairList,
                                &ICON_ETHEREUM,
@@ -174,59 +225,53 @@ int ui_display_review_with_warning() {
     return 0;
 }
 
-#define INFO_NB 3
-static const char* const infoTypes[INFO_NB] = {"Contract owner", "Contract", "Deployed on"};
-static const char* const infoValues[INFO_NB] = {"1inch Network\n1inch.io",
-                                                "Aggregation Router V6",
-                                                "2024-02-12"};
-static const nbgl_contentValueExt_t infoExtensions[INFO_NB] = {
-    [1] = {.fullValue = "https://etherscan.io/address/0x111111125421cA6dc452d289314280a0f8842A65",
-           .explanation = "Scan to view on Etherscan",
-           .title = "0x111111125421cA6dc452d289314280a0f8842A65",
-           .aliasType = QR_CODE_ALIAS}};
-
-static nbgl_tipBox_t tipBox;
-
 int ui_display_swap_review() {
-    explicit_bzero(&tipBox, sizeof(tipBox));
+    uint8_t nbPairs = 0;
+    init_pairs();
+    explicit_bzero(&extension, sizeof(nbgl_contentValueExt_t));
+    explicit_bzero(&infolist, sizeof(nbgl_contentInfoList_t));
     // Setup data to display
-    pairs[0].item = "Send";
-    pairs[0].value = "USDT 42";
-    pairs[1].item = "Receive minimum";
-    pairs[1].value = "SUSHI 54.66";
-    pairs[2].item = "Max fees";
-    pairs[2].value = "POL 0.008273";
-    pairs[3].item = "Network";
-    pairs[3].value = "Polygon";
+    pairs[nbPairs].item = "Interaction with";
+    pairs[nbPairs].value = "1inch";
+    pairs[nbPairs].extension = &extension;
+    pairs[nbPairs].aliasValue = 1;
+    extension.aliasType = INFO_LIST_ALIAS;
+    extension.infolist = &infolist;
+    infolist.nbInfos = INFO_NB;
+    infolist.infoTypes = infoTypes;
+    infolist.infoContents = infoValues;
+#ifdef SCREEN_SIZE_WALLET
+    infolist.infoExtensions = infoExtensions;
+    infolist.withExtensions = true;
+#endif
+    nbPairs++;
+    pairs[nbPairs].item = "Send";
+    pairs[nbPairs].value = "USDT 42";
+    nbPairs++;
+    pairs[nbPairs].item = "Receive minimum";
+    pairs[nbPairs].value = "SUSHI 54.66";
+    nbPairs++;
+    pairs[nbPairs].item = "Max fees";
+    pairs[nbPairs].value = "POL 0.008273";
+    nbPairs++;
+    pairs[nbPairs].item = "Network";
+    pairs[nbPairs].value = "Polygon";
+    nbPairs++;
 
     // Setup list
-    pairList.nbMaxLinesForValue = 0;
-    pairList.nbPairs = 4;
-    pairList.pairs = pairs;
+    pairList.nbPairs = nbPairs;
 
-    tipBox.icon = &ICON_INFO;
-    tipBox.text = "Interaction with a\nsmart contract from:\n1inch";
-    tipBox.modalTitle = "Contract information";
-    tipBox.infos.nbInfos = INFO_NB;
-    tipBox.infos.infoTypes = infoTypes;
-    tipBox.infos.infoContents = infoValues;
-    tipBox.infos.infoExtensions = infoExtensions;
-    tipBox.infos.withExtensions = true;
-    tipBox.type = INFOS_LIST;
-
-    nbgl_useCaseAdvancedReview(TYPE_TRANSACTION,
-                               &pairList,
-                               &ICON_POLYGON,
-                               "Review transaction to\nswap tokens (demo)",
-                               NULL,
+    nbgl_useCaseReview(TYPE_TRANSACTION,
+                       &pairList,
+                       &ICON_POLYGON,
+                       "Review transaction to\nswap tokens (demo)",
+                       NULL,
 #ifdef SCREEN_SIZE_WALLET
-                               "Sign transaction to\nswap tokens? (demo)",
+                       "Sign transaction to\nswap tokens? (demo)",
 #else
-                               NULL,
+                       NULL,
 #endif
-                               &tipBox,
-                               NULL,
-                               review_choice);
+                       review_choice);
 
     return 0;
 }
