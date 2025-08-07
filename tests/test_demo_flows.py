@@ -45,12 +45,14 @@ def test_app_demo_flow_swap_1inch(navigator: Navigator,
         # Navigate in the main menu
         instructions = [
             NavInsID.USE_CASE_CHOICE_CONFIRM,
-            NavIns(NavInsID.TOUCH, (200, 230)),
-            NavInsID.USE_CASE_CHOICE_CONFIRM,
-            NavIns(NavInsID.TOUCH, (350 if device.type == DeviceType.STAX else 420,
-                                    310 if device.type == DeviceType.STAX else 320)),
-            NavIns(NavInsID.TOUCH, (50, 50)),
-            NavIns(NavInsID.TOUCH, (50, 50)),
+            NavIns(NavInsID.TOUCH, (200, 230)),  # Select 1inch
+            NavInsID.USE_CASE_REVIEW_NEXT,
+            # Enter Contract details
+            NavIns(NavInsID.TOUCH, (350 if device.type == DeviceType.STAX else 420, 100)),
+            # Display Contract address
+            NavIns(NavInsID.TOUCH, (350 if device.type == DeviceType.STAX else 420, 300)),
+            NavInsID.LEFT_HEADER_TAP,
+            NavInsID.LEFT_HEADER_TAP,
         ]
 
     navigator.navigate_and_compare(screenshot_path, test_name+"/part1", instructions,
