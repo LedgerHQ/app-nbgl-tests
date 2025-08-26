@@ -49,11 +49,14 @@ def test_app_demo_flow_swap_1inch(navigator: Navigator,
     elif device.type == DeviceType.APEX_P:
         instructions = [
             NavInsID.USE_CASE_CHOICE_CONFIRM,
-            NavIns(NavInsID.TOUCH, (140, 155)),
-            NavInsID.USE_CASE_CHOICE_CONFIRM,
-            NavIns(NavInsID.TOUCH, (140, 210)),
-            NavIns(NavInsID.TOUCH, (30, 30)),
-            NavIns(NavInsID.TOUCH, (30, 30)),
+            NavIns(NavInsID.TOUCH, (140, 155)),  # Select 1inch
+            NavInsID.USE_CASE_REVIEW_NEXT,
+            # Enter Contract details
+            NavIns(NavInsID.TOUCH, (272, 62)),
+            # Display Contract address
+            NavIns(NavInsID.TOUCH, (272, 214)),
+            NavInsID.LEFT_HEADER_TAP,
+            NavInsID.LEFT_HEADER_TAP,
         ]
     else:
         instructions = [
