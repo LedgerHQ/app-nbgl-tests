@@ -1,22 +1,30 @@
 import pytest
 
-from ledgered.devices import DeviceType
+from ledgered.devices import DeviceType, Devices
 
 from ragger.backend.interface import BackendInterface
 from ragger.navigator import Navigator, NavInsID, NavIns
-from ragger.firmware.touch.positions import STAX_BUTTON_LOWER_RIGHT, FLEX_BUTTON_LOWER_RIGHT
+from ragger.firmware.touch.positions import (
+    STAX_BUTTON_LOWER_RIGHT,
+    FLEX_BUTTON_LOWER_RIGHT,
+    APEX_P_BUTTON_LOWER_RIGHT,
+)
 
 from application_client.nbgl_command_sender import NBGLCommandSender
 
 
 def get_digit5_position(device_type: DeviceType) -> tuple[int, int]:
     if device_type == DeviceType.STAX:
-        screen_height = 672  # px
-        screen_width = 400  # px
+        screen_height = Devices.get_by_type(DeviceType.STAX).resolution.y
+        screen_width = Devices.get_by_type(DeviceType.STAX).resolution.x
         header_height = 88  # px
+    elif device_type == DeviceType.APEX_P:
+        screen_height = Devices.get_by_type(DeviceType.APEX_P).resolution.y
+        screen_width = Devices.get_by_type(DeviceType.APEX_P).resolution.x
+        header_height = 96  # px
     else:
-        screen_height = 600  # px
-        screen_width = 480  # px
+        screen_height = Devices.get_by_type(DeviceType.FLEX).resolution.y
+        screen_width = Devices.get_by_type(DeviceType.FLEX).resolution.y
         header_height = 96  # px
 
     usable_height = screen_height - header_height
@@ -28,6 +36,8 @@ def get_digit5_position(device_type: DeviceType) -> tuple[int, int]:
 def get_enter_position(device_type: DeviceType) -> tuple[int, int]:
     if device_type == DeviceType.STAX:
         return STAX_BUTTON_LOWER_RIGHT
+    elif device_type == DeviceType.APEX_P:
+        return APEX_P_BUTTON_LOWER_RIGHT
     return FLEX_BUTTON_LOWER_RIGHT
 
 
