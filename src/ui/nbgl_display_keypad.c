@@ -15,8 +15,6 @@
  *  limitations under the License.
  *****************************************************************************/
 
-#ifdef HAVE_NBGL
-
 #include "nbgl_use_case.h"
 #include "os.h"
 #include "io.h"
@@ -91,4 +89,3 @@ int ui_display_keypad_pin() {
     return 0;
 }
 #endif  // NBGL_KEYPAD
-#endif  // HAVE_NBGL

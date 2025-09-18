@@ -16,8 +16,6 @@
  *  limitations under the License.
  *****************************************************************************/
 
-#ifdef HAVE_NBGL
-
 #include "os.h"
 #include "glyphs.h"
 #include "nbgl_use_case.h"
@@ -388,5 +386,3 @@ int ui_display_navigation(uint8_t nav_type) {
     io_send_sw(sw);
     return 0;
 }
-
-#endif
