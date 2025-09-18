@@ -33,49 +33,18 @@ static void validate_cb(const uint8_t* entry, uint8_t length) {
     nbgl_useCaseStatus("Pin Status", isSuccess, ui_menu_main);
 }
 
-#ifdef SCREEN_SIZE_NANO
 static void quit_cb(void) {
     io_send_sw(SW_OK);
     ui_menu_main();
 }
-#else
-static void quit_cb(int token, uint8_t index) {
-    UNUSED(index);
-    UNUSED(token);
-    io_send_sw(SW_OK);
-    ui_menu_main();
-}
-#endif
 
 int ui_display_keypad_digits() {
-#ifdef SCREEN_SIZE_NANO
-    nbgl_useCaseKeypadDigits("Digit Keypad (5555)", 4, 4, false, validate_cb, quit_cb);
-#else
-    nbgl_useCaseKeypadDigits("Digit Keypad (5555)",
-                             4,
-                             4,
-                             FIRST_USER_TOKEN,
-                             false,
-                             TUNE_TAP_CASUAL,
-                             validate_cb,
-                             quit_cb);
-#endif
+    nbgl_useCaseKeypad("Digit Keypad (5555)", 4, 4, false, false, validate_cb, quit_cb);
     return 0;
 }
 
 int ui_display_keypad_pin() {
-#ifdef SCREEN_SIZE_NANO
-    nbgl_useCaseKeypadPIN("PIN Keypad (5555)", 4, 4, false, validate_cb, quit_cb);
-#else
-    nbgl_useCaseKeypadPIN("PIN Keypad (5555)",
-                          4,
-                          4,
-                          FIRST_USER_TOKEN,
-                          false,
-                          TUNE_TAP_CASUAL,
-                          validate_cb,
-                          quit_cb);
-#endif
+    nbgl_useCaseKeypad("PIN Keypad (5555)", 4, 4, false, true, validate_cb, quit_cb);
     return 0;
 }
 #else   // NBGL_KEYPAD
