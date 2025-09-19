@@ -15,7 +15,6 @@
  *  limitations under the License.
  *****************************************************************************/
 
-#ifdef HAVE_NBGL
 #include <stdbool.h>  // bool
 #include <string.h>   // memset
 
@@ -136,5 +135,3 @@ int ui_display_light_review() {
                             review_choice);
     return 0;
 }
-
-#endif  // HAVE_NBGL

@@ -15,8 +15,6 @@
  *  limitations under the License.
  *****************************************************************************/
 
-#ifdef HAVE_NBGL
-
 #include "nbgl_use_case.h"
 #include "io.h"
 #include "globals.h"
@@ -37,5 +35,3 @@ void app_ticker_event_callback(void) {
         ui_menu_main();
     }
 }
-
-#endif  // HAVE_NBGL

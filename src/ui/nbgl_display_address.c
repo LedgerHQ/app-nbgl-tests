@@ -15,8 +15,6 @@
  *  limitations under the License.
  *****************************************************************************/
 
-#ifdef HAVE_NBGL
-
 #include <stdbool.h>  // bool
 #include <string.h>   // memset
 
@@ -92,5 +90,3 @@ int ui_display_long_address_review_with_tags() {
         review_choice);
     return 0;
 }
-
-#endif
