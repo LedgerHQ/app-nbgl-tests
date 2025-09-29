@@ -36,7 +36,7 @@ def get_digit5_position(device_type: DeviceType) -> tuple[int, int]:
 def get_enter_position(device_type: DeviceType) -> tuple[int, int]:
     if device_type == DeviceType.STAX:
         return STAX_BUTTON_LOWER_RIGHT
-    elif device_type == DeviceType.APEX_P:
+    if device_type == DeviceType.APEX_P:
         return APEX_P_BUTTON_LOWER_RIGHT
     return FLEX_BUTTON_LOWER_RIGHT
 
@@ -48,16 +48,11 @@ def test_keypad(backend: BackendInterface,
                 default_screenshot_path: str,
                 mode: str) -> None:
     device = backend.device
-    if device.is_nano:
-        pytest.skip("Nano needs speculos API_LEVEL 23 for this test")
-
     client = NBGLCommandSender(backend)
 
     instructions = []
     if device.is_nano:
-        instructions += [
-            NavInsID.BOTH_CLICK * 5
-        ]
+        instructions += [NavInsID.BOTH_CLICK] * 5
     else:
         digit5_pos = get_digit5_position(device.type)
         instructions += [
