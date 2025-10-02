@@ -6,13 +6,16 @@
         {
             "name": "Nano S+",
             "includePath": [
-                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/build/flex/gen_src",
+                "${workspaceFolder}/build/stax/gen_src",
+                "${workspaceFolder}/**",
                 "${env:BOLOS_SDK}/**"
             ],
             "defines": [
                 "TARGET_NANOS2",
                 "OS_IO_SEPROXYHAL",
                 "HAVE_NBGL",
+                "NBGL_KEYPAD",
                 "HAVE_SPRINTF",
                 "HAVE_IO_USB",
                 "HAVE_L4_USBLIB",

@@ -24,7 +24,7 @@ include $(BOLOS_SDK)/Makefile.target
 # Application version
 APPVERSION_M = 1
 APPVERSION_N = 1
-APPVERSION_P = 5
+APPVERSION_P = 6
 APPVERSION = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 
 # Application source files
@@ -113,9 +113,7 @@ ENABLE_NBGL_FOR_NANO_DEVICES = 1
 ########################################
 ENABLE_NBGL_QRCODE = 1
 #ENABLE_NBGL_KEYBOARD = 1
-ifeq ($(TARGET_NAME),$(filter $(TARGET_NAME),TARGET_STAX TARGET_FLEX TARGET_APEX_P))
 ENABLE_NBGL_KEYPAD = 1
-endif
 
 ########################################
 #          Features disablers          #

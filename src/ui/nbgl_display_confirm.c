@@ -15,8 +15,6 @@
  *  limitations under the License.
  *****************************************************************************/
 
-#ifdef HAVE_NBGL
-
 #include "nbgl_use_case.h"
 #include "io.h"
 #include "display.h"
@@ -31,5 +29,3 @@ int ui_display_confirm() {
     io_send_sw(SW_OK);
     return 0;
 }
-
-#endif  // HAVE_NBGL
