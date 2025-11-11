@@ -177,6 +177,20 @@ int ui_display_BS_staking_review() {
     return 0;
 }
 
+#ifdef SCREEN_SIZE_NANO
+static const nbgl_contentCenter_t warningInfo = {.icon = &WARNING_ICON,
+                                                 .title = "Ledger Demo",
+                                                 .description = "This Demo is\npotentially risky."};
+
+// Details page shown when the user taps the top-right icon.
+static const nbgl_warningDetails_t warningDetails = {
+    .title = "Blind signing ahead",
+    .type = CENTERED_INFO_WARNING,
+    .centeredInfo.illustrType = ICON_ILLUSTRATION,
+    .centeredInfo.icon = &WARNING_ICON,
+    .centeredInfo.title = "Blind signing ahead",
+    .centeredInfo.description = "You could loose all your assets."};
+#endif
 int ui_display_review_with_warning() {
     uint8_t nbPairs = 0;
     // Setup data to display
@@ -199,10 +213,15 @@ int ui_display_review_with_warning() {
 
     // Setup warning
     explicit_bzero(&warning, sizeof(nbgl_warning_t));
+#ifdef SCREEN_SIZE_WALLET
     warning.predefinedSet = (1 << W3C_RISK_DETECTED_WARN);
     warning.reportProvider = "Ledger Demo";
     warning.providerMessage = "This Demo is\npotentially risky.";
     warning.reportUrl = "ledger.com";
+#else
+    warning.introDetails = &warningDetails;
+    warning.info = &warningInfo;
+#endif
 
     // Start review flow
     nbgl_useCaseAdvancedReview(TYPE_TRANSACTION,

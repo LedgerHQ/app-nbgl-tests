@@ -1,5 +1,3 @@
-import pytest
-
 from ledgered.devices import Device, DeviceType
 
 from ragger.navigator import Navigator, NavInsID, NavIns
@@ -143,10 +141,24 @@ def test_app_demo_flow_ETH_warning(device: Device,
                                    test_name: str,
                                    default_screenshot_path: str) -> None:
     if device.is_nano:
-        pytest.skip("Nano does not support this use case with warning screen")
-
-
-    if device.type == DeviceType.APEX_P:
+        instructions = [
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
+        ]
+    elif device.type == DeviceType.APEX_P:
         instructions = [
             NavInsID.USE_CASE_CHOICE_CONFIRM,
             NavIns(NavInsID.TOUCH, (140, 350)),

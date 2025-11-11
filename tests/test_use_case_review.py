@@ -41,18 +41,25 @@ def test_use_case_blind_signed_review_display_warning(backend: BackendInterface,
                                                       test_name: str,
                                                       default_screenshot_path: str) -> None:
     device = backend.device
-    if device.is_nano:
-        pytest.skip("Nano does not support this use case with warning screen")
-
     client = NBGLCommandSender(backend)
 
-    instructions = [
-            NavInsID.USE_CASE_CHOICE_REJECT,
-            NavInsID.INFO_HEADER_TAP,
-            NavInsID.LEFT_HEADER_TAP,
-            NavInsID.USE_CASE_REVIEW_REJECT,
-            NavInsID.USE_CASE_CHOICE_CONFIRM
+    if device.is_nano:
+        instructions = [
+            NavInsID.BOTH_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
         ]
+    else:
+        instructions = [
+                NavInsID.USE_CASE_CHOICE_REJECT,
+                NavInsID.INFO_HEADER_TAP,
+                NavInsID.LEFT_HEADER_TAP,
+                NavInsID.USE_CASE_REVIEW_REJECT,
+                NavInsID.USE_CASE_CHOICE_CONFIRM
+            ]
     with pytest.raises(ExceptionRAPDU):
         with client.test_use_case_blind_signed_review():
             navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
