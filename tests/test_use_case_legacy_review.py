@@ -16,8 +16,32 @@ def test_use_case_static_review_accepted(scenario_navigator: NavigateWithScenari
 
     client = NBGLCommandSender(backend)
 
-    with client.test_use_case_static_review():
+    with client.test_use_case_static_review(0):
         scenario_navigator.review_approve()
+
+    status = client.get_async_response().status
+
+    # Assert that we have received an approval
+    assert status == Errors.SW_SUCCESS
+
+
+def test_use_case_static_review_light_accepted(backend: BackendInterface,
+                                               navigator: Navigator,
+                                               test_name: str,
+                                               default_screenshot_path: str) -> None:
+    device = backend.device
+    if device.is_nano:
+        pytest.skip("Nano does not support legacy useCase on NBGL")
+
+    client = NBGLCommandSender(backend)
+
+    instructions = [
+        NavIns(NavInsID.SWIPE_CENTER_TO_LEFT),
+        NavInsID.USE_CASE_REVIEW_NEXT,
+        NavInsID.USE_CASE_CHOICE_CONFIRM,
+    ]
+    with client.test_use_case_static_review(1):
+        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     status = client.get_async_response().status
 
@@ -42,7 +66,7 @@ def test_use_case_static_review_refused(backend: BackendInterface,
     ]
 
     with pytest.raises(ExceptionRAPDU) as e:
-        with client.test_use_case_static_review():
+        with client.test_use_case_static_review(0):
             navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     # Assert that we have received a refusal

@@ -13,7 +13,7 @@ int ui_display_long_address_review();
 int ui_display_streaming_review(bool is_blind_signed);
 int ui_display_long_address_review_with_tags();
 int ui_display_spinner();
-int ui_display_static_review();
+int ui_display_static_review(bool light);
 int ui_display_light_review();
 int ui_display_BTC_review();
 int ui_display_SOL_address_review();
