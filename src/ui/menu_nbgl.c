@@ -17,7 +17,6 @@
  *****************************************************************************/
 
 #include "os.h"
-#include "glyphs.h"
 #include "nbgl_use_case.h"
 #include "display.h"
 
@@ -384,5 +383,18 @@ int ui_display_navigation(uint8_t nav_type) {
             break;
     }
     io_send_sw(sw);
+    return 0;
+}
+
+static void review_action_choice(void) {
+    io_send_sw(SWO_SUCCESS);
+    ui_menu_main();
+}
+
+int ui_display_action(void) {
+    nbgl_useCaseAction(&WARNING_ICON,
+                       "Test action message",
+                       "Confirm",
+                       review_action_choice);
     return 0;
 }

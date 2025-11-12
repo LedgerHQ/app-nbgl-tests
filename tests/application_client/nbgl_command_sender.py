@@ -39,6 +39,7 @@ class InsType(IntEnum):
     TEST_USE_CASE_KEYPAD = 0x11
     TEST_USE_CASE_NAVIGATION = 0x12
     TEST_USE_CASE_REVIEW_WARNING = 0x14
+    TEST_USE_CASE_ACTION = 0x15
 
 class Errors(IntEnum):
     SW_DENY                    = 0x6985
@@ -194,3 +195,9 @@ class NBGLCommandSender:
 
     def get_async_response(self) -> Optional[RAPDU]:
         return self.backend.last_async_response
+
+    @contextmanager
+    def test_action(self) -> Generator[None, None, None]:
+        with self.backend.exchange_async(cla=CLA,
+                                         ins=InsType.TEST_USE_CASE_ACTION) as response:
+            yield response
