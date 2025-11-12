@@ -392,9 +392,36 @@ static void review_action_choice(void) {
 }
 
 int ui_display_action(void) {
-    nbgl_useCaseAction(&WARNING_ICON,
-                       "Test action message",
-                       "Confirm",
-                       review_action_choice);
+    nbgl_useCaseAction(&WARNING_ICON, "Test action message", "Confirm", review_action_choice);
+    return 0;
+}
+
+static void review_details_choice(bool confirm) {
+    UNUSED(confirm);
+    PRINTF("Choice with details callback: confirm=%d\n", confirm);
+    io_send_sw(SWO_SUCCESS);
+    ui_menu_main();
+}
+
+int ui_display_choice_details(void) {
+    static const nbgl_warningDetails_t warningDetails = {
+        .title = "Choice warning",
+        .type = CENTERED_INFO_WARNING,
+        .centeredInfo.illustrType = ICON_ILLUSTRATION,
+        .centeredInfo.icon = &WARNING_ICON,
+        .centeredInfo.title = "Choice warning",
+        .centeredInfo.description = "You could loose all your assets."};
+
+#ifdef SCREEN_SIZE_WALLET
+    nbgl_useCaseChoiceWithDetails(&LARGE_REVIEW_ICON,
+#else
+    nbgl_useCaseChoiceWithDetails(&REVIEW_ICON,
+#endif  // SCREEN_SIZE_WALLET
+                                  "Test choice",
+                                  "With details",
+                                  "Confirm",
+                                  "Cancel",
+                                  (nbgl_warningDetails_t*) &warningDetails,
+                                  review_details_choice);
     return 0;
 }

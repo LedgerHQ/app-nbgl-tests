@@ -157,6 +157,11 @@ int apdu_dispatcher(const command_t *cmd) {
                 return io_send_sw(SWO_INCORRECT_P1_P2);
             }
             return ui_display_action();
+        case TEST_USE_CASE_CHOICE_DETAILS:
+            if (cmd->p1 != 0 || cmd->p2 != 0) {
+                return io_send_sw(SWO_INCORRECT_P1_P2);
+            }
+            return ui_display_choice_details();
         default:
             return io_send_sw(SWO_INVALID_INS);
     }
