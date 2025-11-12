@@ -30,6 +30,7 @@ typedef enum {
     TEST_SOUND = 0x13,
     TEST_USE_CASE_REVIEW_WARNING = 0x14,
     TEST_USE_CASE_ACTION = 0x15,
+    TEST_USE_CASE_CHOICE_DETAILS = 0x16,
 } command_e;
 
 /**
