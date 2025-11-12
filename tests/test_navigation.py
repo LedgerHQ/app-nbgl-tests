@@ -44,7 +44,7 @@ def test_navigation(backend: BackendInterface,
         instructions = {
             "info":   [],
             "button": [],
-            "switch": [NavIns(NavInsID.TOUCH, (243, 90))], 
+            "switch": [NavIns(NavInsID.TOUCH, (243, 90))],
             "choice": [NavIns(NavInsID.TOUCH, POSITIONS["ChoiceList"][device.type][2])],
             "bar":    []
         }
@@ -53,7 +53,7 @@ def test_navigation(backend: BackendInterface,
         instructions = {
             "info":   [],
             "button": [],
-            "switch": [NavIns(NavInsID.TOUCH, (200, 113))], 
+            "switch": [NavIns(NavInsID.TOUCH, (200, 113))],
             "choice": [NavIns(NavInsID.TOUCH, POSITIONS["ChoiceList"][device.type][2])],
             "bar":    []
         }

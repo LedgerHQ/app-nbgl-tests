@@ -5,7 +5,7 @@ from ragger.error import ExceptionRAPDU
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW_OK
+from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
 
 def test_use_case_static_review_accepted(scenario_navigator: NavigateWithScenario) -> None:
@@ -22,7 +22,7 @@ def test_use_case_static_review_accepted(scenario_navigator: NavigateWithScenari
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 def test_use_case_static_review_refused(backend: BackendInterface,
@@ -78,7 +78,7 @@ def test_use_case_light_review_accepted(backend: BackendInterface,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 def test_use_case_light_review_refused(backend: BackendInterface,

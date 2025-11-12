@@ -7,7 +7,7 @@ from ragger.error import ExceptionRAPDU
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW_OK
+from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
 
 def test_use_case_streaming_review_accepted(backend: BackendInterface,
@@ -20,7 +20,7 @@ def test_use_case_streaming_review_accepted(backend: BackendInterface,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 def test_use_case_blind_signed_streaming_review_accepted(backend: BackendInterface,
@@ -33,7 +33,7 @@ def test_use_case_blind_signed_streaming_review_accepted(backend: BackendInterfa
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 # display the long value field with more button
@@ -73,7 +73,7 @@ def test_use_case_streaming_review_accepted_with_more(backend: BackendInterface,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 def test_use_case_streaming_review_refused(backend: BackendInterface,

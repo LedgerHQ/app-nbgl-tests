@@ -144,7 +144,7 @@ def test_app_demo_flow_ETH_warning(device: Device,
                                    default_screenshot_path: str) -> None:
     if device.is_nano:
         pytest.skip("Nano does not support this use case with warning screen")
-    
+
 
     if device.type == DeviceType.APEX_P:
         instructions = [
