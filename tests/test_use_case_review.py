@@ -114,3 +114,14 @@ def test_use_case_generic_review(backend: BackendInterface,
 
     # Assert that we have received an approval
     assert status == Errors.SW_SUCCESS
+
+def test_use_case_multiple_warnings(scenario_navigator: NavigateWithScenario) -> None:
+    client = NBGLCommandSender(scenario_navigator.backend)
+
+    with client.test_use_case_review_multiple_warnings():
+        scenario_navigator.review_approve_with_warning(nb_warnings=2)
+
+    status = client.get_async_response().status
+
+    # Assert that we have received an approval
+    assert status == Errors.SW_SUCCESS

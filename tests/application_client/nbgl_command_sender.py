@@ -41,6 +41,7 @@ class InsType(IntEnum):
     TEST_USE_CASE_REVIEW_WARNING = 0x14
     TEST_USE_CASE_ACTION = 0x15
     TEST_USE_CASE_CHOICE_DETAILS = 0x16
+    TEST_USE_CASE_REVIEW_MULTIPLE_WARNING = 0x17
 
 class Errors(IntEnum):
     SW_DENY                    = 0x6985
@@ -140,6 +141,12 @@ class NBGLCommandSender:
     def test_use_case_review_with_warning(self) -> Generator[None, None, None]:
         with self.backend.exchange_async(cla=CLA,
                                          ins=InsType.TEST_USE_CASE_REVIEW_WARNING) as response:
+            yield response
+
+    @contextmanager
+    def test_use_case_review_multiple_warnings(self) -> Generator[None, None, None]:
+        with self.backend.exchange_async(cla=CLA,
+                                         ins=InsType.TEST_USE_CASE_REVIEW_MULTIPLE_WARNING) as response:
             yield response
 
     @contextmanager
