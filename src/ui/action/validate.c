@@ -21,21 +21,21 @@
 
 #include "validate.h"
 #include "menu.h"
-#include "sw.h"
+#include "status_words.h"
 #include "globals.h"
 
 void validate_transaction(bool choice) {
     if (choice) {
-        io_send_sw(SW_OK);
+        io_send_sw(SWO_SUCCESS);
     } else {
-        io_send_sw(SW_DENY);
+        io_send_sw(SWO_CONDITIONS_NOT_SATISFIED);
     }
 }
 
 void validate_address(bool choice) {
     if (choice) {
-        io_send_sw(SW_OK);
+        io_send_sw(SWO_SUCCESS);
     } else {
-        io_send_sw(SW_DENY);
+        io_send_sw(SWO_CONDITIONS_NOT_SATISFIED);
     }
 }

@@ -20,7 +20,7 @@
 #include "io.h"
 #include "globals.h"
 #include "display.h"
-#include "sw.h"
+#include "status_words.h"
 
 #define PIN_LEN 4
 #define PIN_VAL "5555"
@@ -29,12 +29,12 @@
 
 static void validate_cb(const uint8_t* entry, uint8_t length) {
     bool isSuccess = (length == PIN_LEN) && (memcmp(entry, PIN_VAL, PIN_LEN) == 0);
-    io_send_sw(isSuccess ? SW_OK : SW_BAD_STATE);
+    io_send_sw(isSuccess ? SWO_SUCCESS : SWO_SECURITY_CONDITION_NOT_SATISFIED);
     nbgl_useCaseStatus("Pin Status", isSuccess, ui_menu_main);
 }
 
 static void quit_cb(void) {
-    io_send_sw(SW_OK);
+    io_send_sw(SWO_SUCCESS);
     ui_menu_main();
 }
 
@@ -49,12 +49,12 @@ int ui_display_keypad_pin() {
 }
 #else   // NBGL_KEYPAD
 int ui_display_keypad_digits() {
-    io_send_sw(SW_INS_NOT_SUPPORTED);
+    io_send_sw(SWO_INVALID_INS);
     return 0;
 }
 
 int ui_display_keypad_pin() {
-    io_send_sw(SW_INS_NOT_SUPPORTED);
+    io_send_sw(SWO_INVALID_INS);
     return 0;
 }
 #endif  // NBGL_KEYPAD

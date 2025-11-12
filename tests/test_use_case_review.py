@@ -7,7 +7,7 @@ from ragger.error import ExceptionRAPDU
 from ragger.navigator import Navigator, NavInsID
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW_OK
+from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
 
 def test_use_case_review_accepted(backend: BackendInterface,
@@ -20,7 +20,7 @@ def test_use_case_review_accepted(backend: BackendInterface,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 def test_use_case_blind_signed_review_accepted(backend: BackendInterface,
@@ -33,7 +33,7 @@ def test_use_case_blind_signed_review_accepted(backend: BackendInterface,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 def test_use_case_blind_signed_review_display_warning(backend: BackendInterface,
@@ -89,7 +89,7 @@ def test_use_case_generic_review(backend: BackendInterface,
             NavInsID.BOTH_CLICK,
         ]
     else:
-        if device.type == DeviceType.FLEX or device.type == DeviceType.APEX_P:
+        if device.type in (DeviceType.FLEX, DeviceType.APEX_P):
             instructions += [
                 NavInsID.SWIPE_CENTER_TO_LEFT,
             ]
@@ -106,4 +106,4 @@ def test_use_case_generic_review(backend: BackendInterface,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS

@@ -23,7 +23,7 @@
 #include "nbgl_use_case.h"
 
 #include "globals.h"
-#include "sw.h"
+#include "status_words.h"
 #include "validate.h"
 #include "display.h"
 #include "menu.h"
@@ -98,7 +98,7 @@ int ui_display_static_review() {
 }
 #else   // SCREEN_SIZE_WALLET
 int ui_display_static_review() {
-    io_send_sw(SW_INS_NOT_SUPPORTED);
+    io_send_sw(SWO_INVALID_INS);
     return 0;
 }
 #endif  // SCREEN_SIZE_WALLET

@@ -19,7 +19,7 @@
 #include "io.h"
 #include "globals.h"
 #include "display.h"
-#include "sw.h"
+#include "status_words.h"
 
 int ui_display_spinner() {
     G_ticker_counter = 40;
@@ -31,7 +31,7 @@ int G_ticker_counter;
 void app_ticker_event_callback(void) {
     // use a counter to stop the spinner after a while
     if (G_ticker_counter > 0 && --G_ticker_counter == 0) {
-        io_send_sw(SW_OK);
+        io_send_sw(SWO_SUCCESS);
         ui_menu_main();
     }
 }

@@ -23,7 +23,7 @@
 
 #include "globals.h"
 #include "menu.h"
-#include "sw.h"
+#include "status_words.h"
 
 extern void app_exit(void);
 
@@ -317,7 +317,7 @@ void ui_menu_main(void) {
 }
 
 static void quit_cb(void) {
-    io_send_sw(SW_OK);
+    io_send_sw(SWO_SUCCESS);
     ui_menu_main();
 }
 
@@ -337,7 +337,7 @@ static void nav_control_cb(int token, uint8_t index) {
 }
 
 int ui_display_navigation(uint8_t nav_type) {
-    uint16_t sw = SW_OK;
+    uint16_t sw = SWO_SUCCESS;
     switch (nav_type) {
         case P1_NAV_CONTENT_CENTERED_INFO:
             nbgl_useCaseNavigableContent("Centered Info",
@@ -380,7 +380,7 @@ int ui_display_navigation(uint8_t nav_type) {
                                          nav_control_cb);
             break;
         default:
-            sw = SW_WRONG_P1P2;
+            sw = SWO_INCORRECT_P1_P2;
             break;
     }
     io_send_sw(sw);

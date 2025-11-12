@@ -3,7 +3,7 @@ from ledgered.devices import DeviceType
 from ragger.navigator import Navigator, NavInsID, NavIns
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
-from application_client.nbgl_command_sender import NBGLCommandSender, SW_OK
+from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
 def test_use_case_address_review_accepted(navigator: Navigator,
                                           scenario_navigator: NavigateWithScenario,
@@ -36,7 +36,7 @@ def test_use_case_address_review_accepted(navigator: Navigator,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 def test_use_case_long_address_review_accepted(navigator: Navigator,
@@ -70,7 +70,7 @@ def test_use_case_long_address_review_accepted(navigator: Navigator,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 def test_use_case_long_address_review_accepted_with_tags(navigator: Navigator,
@@ -105,4 +105,4 @@ def test_use_case_long_address_review_accepted_with_tags(navigator: Navigator,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS

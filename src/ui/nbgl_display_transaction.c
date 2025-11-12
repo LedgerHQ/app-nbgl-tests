@@ -29,7 +29,7 @@
 #include "display.h"
 #include "constants.h"
 #include "globals.h"
-#include "sw.h"
+#include "status_words.h"
 #include "validate.h"
 #include "menu.h"
 
@@ -184,7 +184,7 @@ int ui_display_streaming_review(bool is_blind_signed) {
 }
 
 static void quit_cb(void) {
-    io_send_sw(SW_DENY);
+    io_send_sw(SWO_CONDITIONS_NOT_SATISFIED);
     ui_menu_main();
 }
 
@@ -193,9 +193,9 @@ static void control_cb(int token, uint8_t index, int page) {
     UNUSED(page);
 
     if (token == FIRST_USER_TOKEN) {
-        io_send_sw(SW_OK);
+        io_send_sw(SWO_SUCCESS);
     } else {
-        io_send_sw(SW_DENY);
+        io_send_sw(SWO_CONDITIONS_NOT_SATISFIED);
     }
     ui_menu_main();
 }

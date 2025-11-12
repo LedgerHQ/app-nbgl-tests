@@ -28,7 +28,6 @@
 #include "display.h"
 #include "constants.h"
 #include "globals.h"
-#include "sw.h"
 #include "validate.h"
 #include "menu.h"
 
