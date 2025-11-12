@@ -101,10 +101,10 @@ int apdu_dispatcher(const command_t *cmd) {
             return ui_display_streaming_review(true);
         case TEST_USE_CASE_STATIC_REVIEW:
             // P1 & P2 may be used later as test/sub-test number
-            if (cmd->p1 != 0 || cmd->p2 != 0) {
+            if (cmd->p2 != 0) {
                 return io_send_sw(SWO_INCORRECT_P1_P2);
             }
-            return ui_display_static_review();
+            return ui_display_static_review((bool) cmd->p1);
         case TEST_USE_CASE_LIGHT_REVIEW:
             // P1 & P2 may be used later as test/sub-test number
             if (cmd->p1 != 0 || cmd->p2 != 0) {

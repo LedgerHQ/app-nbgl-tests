@@ -178,9 +178,10 @@ class NBGLCommandSender:
             yield response
 
     @contextmanager
-    def test_use_case_static_review(self) -> Generator[None, None, None]:
+    def test_use_case_static_review(self, p1: int) -> Generator[None, None, None]:
         with self.backend.exchange_async(cla=CLA,
                                          ins=InsType.TEST_USE_CASE_STATIC_REVIEW,
+                                         p1=p1,
                                          p2=P2.P2_LAST) as response:
             yield response
 
