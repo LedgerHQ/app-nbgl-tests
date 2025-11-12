@@ -30,3 +30,4 @@ int ui_display_navigation(uint8_t nav_type);
 int ui_play_sound(uint8_t tune_type);
 int ui_display_action(void);
 int ui_display_choice_details(void);
+int ui_display_review_multiple_warnings(void);
