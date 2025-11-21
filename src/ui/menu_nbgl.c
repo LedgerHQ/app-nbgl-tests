@@ -17,13 +17,12 @@
  *****************************************************************************/
 
 #include "os.h"
-#include "glyphs.h"
 #include "nbgl_use_case.h"
 #include "display.h"
 
 #include "globals.h"
 #include "menu.h"
-#include "sw.h"
+#include "status_words.h"
 
 extern void app_exit(void);
 
@@ -317,7 +316,7 @@ void ui_menu_main(void) {
 }
 
 static void quit_cb(void) {
-    io_send_sw(SW_OK);
+    io_send_sw(SWO_SUCCESS);
     ui_menu_main();
 }
 
@@ -337,7 +336,7 @@ static void nav_control_cb(int token, uint8_t index) {
 }
 
 int ui_display_navigation(uint8_t nav_type) {
-    uint16_t sw = SW_OK;
+    uint16_t sw = SWO_SUCCESS;
     switch (nav_type) {
         case P1_NAV_CONTENT_CENTERED_INFO:
             nbgl_useCaseNavigableContent("Centered Info",
@@ -380,9 +379,49 @@ int ui_display_navigation(uint8_t nav_type) {
                                          nav_control_cb);
             break;
         default:
-            sw = SW_WRONG_P1P2;
+            sw = SWO_INCORRECT_P1_P2;
             break;
     }
     io_send_sw(sw);
+    return 0;
+}
+
+static void review_action_choice(void) {
+    io_send_sw(SWO_SUCCESS);
+    ui_menu_main();
+}
+
+int ui_display_action(void) {
+    nbgl_useCaseAction(&WARNING_ICON, "Test action message", "Confirm", review_action_choice);
+    return 0;
+}
+
+static void review_details_choice(bool confirm) {
+    UNUSED(confirm);
+    PRINTF("Choice with details callback: confirm=%d\n", confirm);
+    io_send_sw(SWO_SUCCESS);
+    ui_menu_main();
+}
+
+int ui_display_choice_details(void) {
+    static const nbgl_warningDetails_t warningDetails = {
+        .title = "Choice warning",
+        .type = CENTERED_INFO_WARNING,
+        .centeredInfo.illustrType = ICON_ILLUSTRATION,
+        .centeredInfo.icon = &WARNING_ICON,
+        .centeredInfo.title = "Choice warning",
+        .centeredInfo.description = "You could loose all your assets."};
+
+#ifdef SCREEN_SIZE_WALLET
+    nbgl_useCaseChoiceWithDetails(&LARGE_REVIEW_ICON,
+#else
+    nbgl_useCaseChoiceWithDetails(&REVIEW_ICON,
+#endif  // SCREEN_SIZE_WALLET
+                                  "Test choice",
+                                  "With details",
+                                  "Confirm",
+                                  "Cancel",
+                                  (nbgl_warningDetails_t*) &warningDetails,
+                                  review_details_choice);
     return 0;
 }

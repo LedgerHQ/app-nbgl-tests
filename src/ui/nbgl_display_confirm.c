@@ -18,7 +18,7 @@
 #include "nbgl_use_case.h"
 #include "io.h"
 #include "display.h"
-#include "sw.h"
+#include "status_words.h"
 
 static void callback(void) {
     nbgl_useCaseStatus("Message OK", true, ui_menu_main);
@@ -26,6 +26,6 @@ static void callback(void) {
 
 int ui_display_confirm() {
     nbgl_useCaseConfirm("Do you confirm", "This message ?", "Confirm", "Cancel", callback);
-    io_send_sw(SW_OK);
+    io_send_sw(SWO_SUCCESS);
     return 0;
 }

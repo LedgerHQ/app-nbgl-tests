@@ -23,7 +23,7 @@
 #include "nbgl_use_case.h"
 
 #include "globals.h"
-#include "sw.h"
+#include "status_words.h"
 #include "validate.h"
 #include "display.h"
 #include "menu.h"
@@ -58,6 +58,8 @@ static void reject_callback(void) {
     review_choice(false);
 }
 
+static bool light_review = false;
+
 void continue_callback() {
     // Format amount and address to g_amount and g_address buffers
     memset(g_amount, 0, sizeof(g_amount));
@@ -77,16 +79,21 @@ void continue_callback() {
     pairList.pairs = pairs;
 
     infoLongPress.icon = &ICON_APP;
-    infoLongPress.longPressText = "Hold to sign";
+    infoLongPress.longPressText = light_review ? "Confirm" : "Hold to sign";
     infoLongPress.longPressToken = 0;
     infoLongPress.tuneId = TUNE_TAP_CASUAL;
     infoLongPress.text = "Sign transaction\nto send NBT";
 
-    nbgl_useCaseStaticReview(&pairList, &infoLongPress, "Reject", review_choice);
+    if (light_review) {
+        nbgl_useCaseStaticReviewLight(&pairList, &infoLongPress, "Reject", review_choice);
+    } else {
+        nbgl_useCaseStaticReview(&pairList, &infoLongPress, "Reject", review_choice);
+    }
 }
 
 // start a static review flow
-int ui_display_static_review() {
+int ui_display_static_review(bool light) {
+    light_review = light;
     nbgl_useCaseReviewStart(&ICON_APP,
                             "Review transaction\nto send NBT",
                             NULL,
@@ -97,8 +104,9 @@ int ui_display_static_review() {
     return 0;
 }
 #else   // SCREEN_SIZE_WALLET
-int ui_display_static_review() {
-    io_send_sw(SW_INS_NOT_SUPPORTED);
+int ui_display_static_review(bool light) {
+    UNUSED(light);
+    io_send_sw(SWO_INVALID_INS);
     return 0;
 }
 #endif  // SCREEN_SIZE_WALLET

@@ -29,9 +29,11 @@
 #include "display.h"
 #include "constants.h"
 #include "globals.h"
-#include "sw.h"
+#include "status_words.h"
 #include "validate.h"
 #include "menu.h"
+
+#define PAIRS_NB 5
 
 // Buffer where the transaction amount string is written
 static char g_amount[30];
@@ -39,8 +41,11 @@ static char g_amount[30];
 static char g_address[43];
 static char g_address_long[100];
 
-static nbgl_contentTagValue_t pairs[3];
+static nbgl_contentTagValue_t pairs[PAIRS_NB];
 static nbgl_contentTagValueList_t pairList;
+static nbgl_warning_t warning = {0};
+static nbgl_preludeDetails_t prelude_details = {0};
+static nbgl_genericDetails_t generic_details = {0};
 
 // called when long press button on 3rd page is long-touched or when reject footer is touched
 static void review_choice(bool confirm) {
@@ -184,7 +189,7 @@ int ui_display_streaming_review(bool is_blind_signed) {
 }
 
 static void quit_cb(void) {
-    io_send_sw(SW_DENY);
+    io_send_sw(SWO_CONDITIONS_NOT_SATISFIED);
     ui_menu_main();
 }
 
@@ -193,9 +198,9 @@ static void control_cb(int token, uint8_t index, int page) {
     UNUSED(page);
 
     if (token == FIRST_USER_TOKEN) {
-        io_send_sw(SW_OK);
+        io_send_sw(SWO_SUCCESS);
     } else {
-        io_send_sw(SW_DENY);
+        io_send_sw(SWO_CONDITIONS_NOT_SATISFIED);
     }
     ui_menu_main();
 }
@@ -255,6 +260,76 @@ int ui_display_generic_review(void) {
 
     // Start review flow
     nbgl_useCaseGenericReview(&genericContent, "Cancel", quit_cb);
+
+    return 0;
+}
+
+int ui_display_review_multiple_warnings(void) {
+    uint8_t nbPairs = 0;
+    // Setup data to display
+    explicit_bzero(pairs, sizeof(nbgl_contentTagValue_t) * PAIRS_NB);
+    explicit_bzero(&pairList, sizeof(nbgl_contentTagValueList_t));
+    pairList.pairs = pairs;
+
+    pairs[nbPairs].item = "From";
+    pairs[nbPairs].value = "0x519192a437e6aeb895Cec72828A73B11b698dE3a";
+    nbPairs++;
+    pairs[nbPairs].item = "Amount";
+    pairs[nbPairs].value = "ETH 0";
+    nbPairs++;
+    pairs[nbPairs].item = "To";
+    pairs[nbPairs].value = "0x16D5A408e807db8eF7c578279BEeEe6b228f1c1C";
+    nbPairs++;
+    pairs[nbPairs].item = "Max fees";
+    pairs[nbPairs].value = "ETH 0.0047303";
+    nbPairs++;
+
+    // Setup list
+    pairList.nbPairs = nbPairs;
+
+    // Setup warning
+    explicit_bzero(&warning, sizeof(nbgl_warning_t));
+    warning.predefinedSet = (1 << BLIND_SIGNING_WARN);
+
+    generic_details.title = "Discover safer signing";
+#ifdef SCREEN_SIZE_WALLET
+    generic_details.type = QRCODE_WARNING;
+    generic_details.qrCode.url = "ledger.com/tiny-url";
+    generic_details.qrCode.text1 = "ledger.com/tiny-url";
+    generic_details.qrCode.text2 = "Discover a safer way to sign your transactions";
+    generic_details.qrCode.centered = true;
+#else
+    generic_details.type = CENTERED_INFO_WARNING;
+    generic_details.centeredInfo.title = "Center warning";
+#endif
+
+#ifdef SCREEN_SIZE_WALLET
+    prelude_details.icon = &LARGE_REVIEW_ICON;
+#else
+    prelude_details.icon = &REVIEW_ICON;
+#endif
+    prelude_details.title = "There is a safer\nway to sign";
+    prelude_details.description = "Introduction message";
+    prelude_details.buttonText = "Learn more";
+    prelude_details.footerText = "Continue to blind signing";
+    prelude_details.details = &generic_details;
+
+    warning.prelude = &prelude_details;
+
+    // Start review flow
+    nbgl_useCaseAdvancedReview(TYPE_TRANSACTION,
+                               &pairList,
+                               &ICON_ETHEREUM,
+                               "Review warnings transaction\n(demo)",
+                               NULL,
+#ifdef SCREEN_SIZE_WALLET
+                               "Accept risk and sign\ntransaction? (demo)",
+#else
+                               "Accept risk and sign transaction",
+#endif
+                               NULL,
+                               &warning,
+                               review_choice);
 
     return 0;
 }

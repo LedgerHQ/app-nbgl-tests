@@ -17,23 +17,23 @@
 
 #include "os_io_seproxyhal.h"
 #include "io.h"
-#include "sw.h"
+#include "status_words.h"
 
 #ifdef HAVE_PIEZO_SOUND
 
 int ui_play_sound(uint8_t tune_type) {
     if (tune_type == 0 || tune_type > NB_TUNES) {
-        return io_send_sw(SW_WRONG_P1P2);
+        return io_send_sw(SWO_INCORRECT_P1_P2);
     }
     io_seproxyhal_play_tune(tune_type);
-    io_send_sw(SW_OK);
+    io_send_sw(SWO_SUCCESS);
     return 0;
 }
 
 #else  // HAVE_PIEZO_SOUND
 
 int ui_play_sound() {
-    io_send_sw(SW_INS_NOT_SUPPORTED);
+    io_send_sw(SWO_INVALID_INS);
     return 0;
 }
 

@@ -7,7 +7,7 @@ from ragger.error import ExceptionRAPDU
 from ragger.navigator import Navigator, NavInsID
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors, SW_OK
+from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
 
 def test_use_case_review_accepted(backend: BackendInterface,
@@ -20,7 +20,7 @@ def test_use_case_review_accepted(backend: BackendInterface,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 def test_use_case_blind_signed_review_accepted(backend: BackendInterface,
@@ -33,7 +33,7 @@ def test_use_case_blind_signed_review_accepted(backend: BackendInterface,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
 
 
 def test_use_case_blind_signed_review_display_warning(backend: BackendInterface,
@@ -41,18 +41,25 @@ def test_use_case_blind_signed_review_display_warning(backend: BackendInterface,
                                                       test_name: str,
                                                       default_screenshot_path: str) -> None:
     device = backend.device
-    if device.is_nano:
-        pytest.skip("Nano does not support this use case with warning screen")
-
     client = NBGLCommandSender(backend)
 
-    instructions = [
-            NavInsID.USE_CASE_CHOICE_REJECT,
-            NavInsID.INFO_HEADER_TAP,
-            NavInsID.LEFT_HEADER_TAP,
-            NavInsID.USE_CASE_REVIEW_REJECT,
-            NavInsID.USE_CASE_CHOICE_CONFIRM
+    if device.is_nano:
+        instructions = [
+            NavInsID.BOTH_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.RIGHT_CLICK,
+            NavInsID.BOTH_CLICK,
         ]
+    else:
+        instructions = [
+                NavInsID.USE_CASE_CHOICE_REJECT,
+                NavInsID.INFO_HEADER_TAP,
+                NavInsID.LEFT_HEADER_TAP,
+                NavInsID.USE_CASE_REVIEW_REJECT,
+                NavInsID.USE_CASE_CHOICE_CONFIRM
+            ]
     with pytest.raises(ExceptionRAPDU):
         with client.test_use_case_blind_signed_review():
             navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
@@ -89,7 +96,7 @@ def test_use_case_generic_review(backend: BackendInterface,
             NavInsID.BOTH_CLICK,
         ]
     else:
-        if device.type == DeviceType.FLEX or device.type == DeviceType.APEX_P:
+        if device.type in (DeviceType.FLEX, DeviceType.APEX_P):
             instructions += [
                 NavInsID.SWIPE_CENTER_TO_LEFT,
             ]
@@ -106,4 +113,15 @@ def test_use_case_generic_review(backend: BackendInterface,
     status = client.get_async_response().status
 
     # Assert that we have received an approval
-    assert status == SW_OK
+    assert status == Errors.SW_SUCCESS
+
+def test_use_case_multiple_warnings(scenario_navigator: NavigateWithScenario) -> None:
+    client = NBGLCommandSender(scenario_navigator.backend)
+
+    with client.test_use_case_review_multiple_warnings():
+        scenario_navigator.review_approve_with_warning(nb_warnings=2)
+
+    status = client.get_async_response().status
+
+    # Assert that we have received an approval
+    assert status == Errors.SW_SUCCESS
