@@ -197,6 +197,8 @@ static void control_cb(int token, uint8_t index, int page) {
     UNUSED(index);
     UNUSED(page);
 
+    PRINTF("Token: %d\n", token);
+
     if (token == FIRST_USER_TOKEN) {
         io_send_sw(SWO_SUCCESS);
     } else {
@@ -209,13 +211,13 @@ static void content_cb(uint8_t contentIndex, nbgl_content_t *content) {
     memset(content, 0, sizeof(nbgl_content_t));
 
     switch (contentIndex) {
+        // case 0:
+        //     content->type = CENTERED_INFO;
+        //     content->content.centeredInfo.text1 = "Centered Info";
+        //     content->content.centeredInfo.text2 = "Text 2";
+        //     content->content.centeredInfo.icon = &ICON_INFO;
+        //     break;
         case 0:
-            content->type = CENTERED_INFO;
-            content->content.centeredInfo.text1 = "Centered Info";
-            content->content.centeredInfo.text2 = "Text 2";
-            content->content.centeredInfo.icon = &ICON_INFO;
-            break;
-        case 1:
             // Format amount and address to g_amount and g_address buffers
             memset(g_amount, 0, sizeof(g_amount));
             snprintf(g_amount, sizeof(g_amount), "NBT 0.99");
@@ -224,28 +226,34 @@ static void content_cb(uint8_t contentIndex, nbgl_content_t *content) {
             memset(g_address_long, 0, sizeof(g_address_long));
             snprintf(g_address_long,
                      sizeof(g_address_long),
-                     "5A8FgbMkmG2e3J41sBdjvjaBUyz8qHohsQcGtRf63qEUTMBvmA45fpp5pSacMdSg7A3b71RejLzB8"
-                     "EkGbfjp5PELVHCRUaE");
+                     "04AC4F5FEA8814CC2C2BBCA343F4280B25D2A5F6D65E511DD16977F35C3E64B74");
             // Setup data to display
-            pairs[0].item = "Amount";
-            pairs[0].value = g_amount;
-            pairs[1].item = "Address Short";
-            pairs[1].value = g_address;
-            pairs[2].item = "Address Long";
-            pairs[2].value = g_address_long;
+            pairs[0].item = "Public Key";
+            pairs[0].value = g_address_long;
+            // pairs[1].item = "Address Short";
+            // pairs[1].value = g_address;
+            // pairs[2].item = "Address Long";
+            // pairs[2].value = g_address_long;
 
-            content->type = TAG_VALUE_LIST;
-            content->content.tagValueList.nbPairs = 3;
-            content->content.tagValueList.pairs = pairs;
-            break;
-        case 2:
-            content->type = INFO_BUTTON;
-            content->content.infoButton.text = "Info Button";
-            content->content.infoButton.icon = &ICON_APP;
-            content->content.infoButton.buttonText = "Valid";
-            content->content.infoButton.buttonToken = FIRST_USER_TOKEN;
+            content->type = TAG_VALUE_CONFIRM;
+            content->content.tagValueConfirm.tagValueList.nbPairs = 1;
+            content->content.tagValueConfirm.tagValueList.pairs = pairs;
+            content->content.tagValueConfirm.confirmationText = "Approve";
+            content->content.tagValueConfirm.confirmationToken = 67;
+            // content->content.tagValueConfirm.cancelText = "Cancel Text";
+            // content->content.tagValueConfirm.cancelToken = 68;
+            content->content.tagValueConfirm.tuneId = TUNE_LOOK_AT_ME;
             content->contentActionCallback = control_cb;
+
             break;
+        // case 2:
+        //     content->type = INFO_BUTTON;
+        //     content->content.infoButton.text = "Info Button";
+        //     content->content.infoButton.icon = &ICON_APP;
+        //     content->content.infoButton.buttonText = "Valid";
+        //     content->content.infoButton.buttonToken = FIRST_USER_TOKEN;
+        //     content->contentActionCallback = control_cb;
+        //     break;
         default:
             break;
     }
@@ -256,10 +264,10 @@ int ui_display_generic_review(void) {
 
     genericContent.callbackCallNeeded = true;
     genericContent.contentGetterCallback = content_cb;
-    genericContent.nbContents = 3;
+    genericContent.nbContents = 1;
 
     // Start review flow
-    nbgl_useCaseGenericReview(&genericContent, "Cancel", quit_cb);
+    nbgl_useCaseGenericReview(&genericContent, "Reject", quit_cb);
 
     return 0;
 }

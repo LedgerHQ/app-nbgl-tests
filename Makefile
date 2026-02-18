@@ -90,7 +90,7 @@ DEFINES +=APP_TYPE=$(APP_DEMO_TYPE)
 endif
 
 # Enabling DEBUG flag will enable PRINTF and disable optimizations
-#DEBUG = 1
+DEBUG = 1
 
 ########################################
 #     Application custom permissions   #
