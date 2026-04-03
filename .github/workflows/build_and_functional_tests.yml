@@ -29,7 +29,7 @@ on:
 
 jobs:
   build_application_nbgl_test:
-    name: Build nbgl_test application using the reusable workflow
+    name: Build application using the reusable workflow
     uses: LedgerHQ/ledger-app-workflows/.github/workflows/reusable_build.yml@v1
     with:
       upload_app_binaries_artifact: "compiled_app_binaries"
@@ -42,7 +42,7 @@ jobs:
       flags: "COIN=demo"
 
   ragger_tests:
-    name: Run ragger tests on nbgl_test using the reusable workflow
+    name: Run standalone ragger tests using the reusable workflow
     needs: build_application_nbgl_test
     uses: LedgerHQ/ledger-app-workflows/.github/workflows/reusable_ragger_tests.yml@v1
     with:
