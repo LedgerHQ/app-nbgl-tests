@@ -19,6 +19,8 @@ def test_spinner(backend: BackendInterface,
             NavIns(NavInsID.TOUCH)
         ]
 
+    backend.pause_ticker()
     with client.test_spinner():
         navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
         backend.wait_for_home_screen()
+    backend.resume_ticker()
