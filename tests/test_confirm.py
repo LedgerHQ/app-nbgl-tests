@@ -3,10 +3,13 @@ from ragger.navigator import Navigator, NavInsID
 
 from application_client.nbgl_command_sender import NBGLCommandSender
 
-def test_confirm(backend: BackendInterface,
-                 navigator: Navigator,
-                 test_name: str,
-                 default_screenshot_path: str) -> None:
+
+def test_confirm(
+    backend: BackendInterface,
+    navigator: Navigator,
+    test_name: str,
+    default_screenshot_path: str,
+) -> None:
     device = backend.device
     client = NBGLCommandSender(backend)
 
@@ -25,10 +28,13 @@ def test_confirm(backend: BackendInterface,
         navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
         backend.wait_for_home_screen()
 
-def test_action(backend: BackendInterface,
-                navigator: Navigator,
-                test_name: str,
-                default_screenshot_path: str) -> None:
+
+def test_action(
+    backend: BackendInterface,
+    navigator: Navigator,
+    test_name: str,
+    default_screenshot_path: str,
+) -> None:
     device = backend.device
     client = NBGLCommandSender(backend)
 
@@ -46,10 +52,13 @@ def test_action(backend: BackendInterface,
         navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
         backend.wait_for_home_screen()
 
-def test_choice_details(backend: BackendInterface,
-                        navigator: Navigator,
-                        test_name: str,
-                        default_screenshot_path: str) -> None:
+
+def test_choice_details(
+    backend: BackendInterface,
+    navigator: Navigator,
+    test_name: str,
+    default_screenshot_path: str,
+) -> None:
     device = backend.device
     client = NBGLCommandSender(backend)
 

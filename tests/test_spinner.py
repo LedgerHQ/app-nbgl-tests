@@ -5,10 +5,13 @@ from ragger.navigator import Navigator, NavInsID, NavIns
 
 from application_client.nbgl_command_sender import NBGLCommandSender
 
-def test_spinner(backend: BackendInterface,
-                 navigator: Navigator,
-                 test_name: str,
-                 default_screenshot_path: str) -> None:
+
+def test_spinner(
+    backend: BackendInterface,
+    navigator: Navigator,
+    test_name: str,
+    default_screenshot_path: str,
+) -> None:
     device = backend.device
     client = NBGLCommandSender(backend)
 
@@ -18,7 +21,7 @@ def test_spinner(backend: BackendInterface,
             NavIns(NavInsID.TOUCH),
             NavIns(NavInsID.TOUCH),
             NavIns(NavInsID.TOUCH),
-            NavIns(NavInsID.TOUCH)
+            NavIns(NavInsID.TOUCH),
         ]
 
     backend.pause_ticker()

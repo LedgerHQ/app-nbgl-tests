@@ -10,8 +10,9 @@ from ragger.navigator.navigation_scenario import NavigateWithScenario
 from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
 
-def test_use_case_streaming_review_accepted(backend: BackendInterface,
-                                            scenario_navigator: NavigateWithScenario) -> None:
+def test_use_case_streaming_review_accepted(
+    backend: BackendInterface, scenario_navigator: NavigateWithScenario
+) -> None:
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_streaming_review():
@@ -23,8 +24,9 @@ def test_use_case_streaming_review_accepted(backend: BackendInterface,
     assert status == Errors.SW_SUCCESS
 
 
-def test_use_case_blind_signed_streaming_review_accepted(backend: BackendInterface,
-                                                         scenario_navigator: NavigateWithScenario) -> None:
+def test_use_case_blind_signed_streaming_review_accepted(
+    backend: BackendInterface, scenario_navigator: NavigateWithScenario
+) -> None:
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_blind_signed_streaming_review():
@@ -37,10 +39,12 @@ def test_use_case_blind_signed_streaming_review_accepted(backend: BackendInterfa
 
 
 # display the long value field with more button
-def test_use_case_streaming_review_accepted_with_more(backend: BackendInterface,
-                                                      navigator: Navigator,
-                                                      test_name: str,
-                                                      default_screenshot_path: str) -> None:
+def test_use_case_streaming_review_accepted_with_more(
+    backend: BackendInterface,
+    navigator: Navigator,
+    test_name: str,
+    default_screenshot_path: str,
+) -> None:
     device = backend.device
     if device.is_nano:
         pytest.skip("Nano does not support legacy useCase on NBGL")
@@ -51,7 +55,7 @@ def test_use_case_streaming_review_accepted_with_more(backend: BackendInterface,
     specific_device_instructions = {
         DeviceType.STAX: (190, 424),
         DeviceType.FLEX: (217, 360),
-        DeviceType.APEX_P: (150, 250)
+        DeviceType.APEX_P: (150, 250),
     }
 
     instructions = [
@@ -63,7 +67,7 @@ def test_use_case_streaming_review_accepted_with_more(backend: BackendInterface,
         NavInsID.SWIPE_CENTER_TO_LEFT,
         NavInsID.CANCEL_FOOTER_TAP,
         NavInsID.SWIPE_CENTER_TO_LEFT,
-        NavInsID.USE_CASE_REVIEW_CONFIRM
+        NavInsID.USE_CASE_REVIEW_CONFIRM,
     ]
 
     assert len(instructions) > 0
@@ -76,8 +80,9 @@ def test_use_case_streaming_review_accepted_with_more(backend: BackendInterface,
     assert status == Errors.SW_SUCCESS
 
 
-def test_use_case_streaming_review_refused(backend: BackendInterface,
-                                           scenario_navigator: NavigateWithScenario) -> None:
+def test_use_case_streaming_review_refused(
+    backend: BackendInterface, scenario_navigator: NavigateWithScenario
+) -> None:
     client = NBGLCommandSender(backend)
 
     with pytest.raises(ExceptionRAPDU) as e:
