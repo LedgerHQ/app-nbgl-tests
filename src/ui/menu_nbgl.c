@@ -31,12 +31,12 @@ extern void app_exit(void);
 //  -----------------------------------------------------------
 
 #define SETTING_INFO_NB 4
-static const char* const INFO_TYPES[SETTING_INFO_NB] = {"Version",
+static const char *const INFO_TYPES[SETTING_INFO_NB] = {"Version",
                                                         "Developer",
                                                         "Dummy 1",
                                                         "Dummy 2"};
 
-static const char* const INFO_CONTENTS[SETTING_INFO_NB] = {APPVERSION,
+static const char *const INFO_CONTENTS[SETTING_INFO_NB] = {APPVERSION,
                                                            "Ledger",
                                                            "Dummy 1 information",
                                                            "Dummy 2 information"};
@@ -78,7 +78,7 @@ static void review_warning_choice(bool confirm) {
         switch_value = !N_storage.dummy2_allowed;
         switches[DUMMY_SWITCH_2_ID].initState = (nbgl_state_t) switch_value;
         // store the new setting value in NVM
-        nvm_write((void*) &N_storage.dummy2_allowed, &switch_value, 1);
+        nvm_write((void *) &N_storage.dummy2_allowed, &switch_value, 1);
     }
 
     // Reset setting menu to the right page
@@ -104,7 +104,7 @@ static void controls_callback(int token, uint8_t index, int page) {
         switch_value = !N_storage.dummy1_allowed;
         switches[DUMMY_SWITCH_1_ID].initState = (nbgl_state_t) switch_value;
         // store the new setting value in NVM
-        nvm_write((void*) &N_storage.dummy1_allowed, &switch_value, 1);
+        nvm_write((void *) &N_storage.dummy1_allowed, &switch_value, 1);
     } else if (token == DUMMY_SWITCH_2_TOKEN) {
         // Dummy 2 switch touched
 
@@ -123,7 +123,7 @@ static void controls_callback(int token, uint8_t index, int page) {
             switch_value = !N_storage.dummy2_allowed;
             switches[DUMMY_SWITCH_2_ID].initState = (nbgl_state_t) switch_value;
             // store the new setting value in NVM
-            nvm_write((void*) &N_storage.dummy2_allowed, &switch_value, 1);
+            nvm_write((void *) &N_storage.dummy2_allowed, &switch_value, 1);
         }
     }
 }
@@ -165,9 +165,9 @@ void ui_menu_main_nbgl_test(void) {
 //  -----------------------------------------------------------
 
 #define SETTING_DEMO_INFO_NB 2
-static const char* const INFO_TYPES_DEMO[SETTING_DEMO_INFO_NB] = {"Version", "Developer"};
+static const char *const INFO_TYPES_DEMO[SETTING_DEMO_INFO_NB] = {"Version", "Developer"};
 
-static const char* const INFO_CONTENTS_DEMO[SETTING_DEMO_INFO_NB] = {APPVERSION, "Ledger"};
+static const char *const INFO_CONTENTS_DEMO[SETTING_DEMO_INFO_NB] = {APPVERSION, "Ledger"};
 
 static const nbgl_contentInfoList_t infoListDemo = {
     .nbInfos = SETTING_DEMO_INFO_NB,
@@ -208,7 +208,7 @@ enum {
     ETH_WARNING_REVIEW_TOKEN
 };
 
-static const char* const barTexts[DEMO_FLOW_NB] = {"Send bitcoin",
+static const char *const barTexts[DEMO_FLOW_NB] = {"Send bitcoin",
                                                    "Swap with 1inch",
                                                    "Blind-sign on Ethereum",
                                                    "Receive SOL",
@@ -244,7 +244,7 @@ static void demo_control_cb(int token, uint8_t index) {
     }
 }
 
-static bool nav_bar_cb(uint8_t page, nbgl_pageContent_t* content) {
+static bool nav_bar_cb(uint8_t page, nbgl_pageContent_t *content) {
     UNUSED(page);
 #ifdef HAVE_PIEZO_SOUND
     content->tuneId = NBGL_NO_TUNE;
@@ -259,7 +259,7 @@ static bool nav_bar_cb(uint8_t page, nbgl_pageContent_t* content) {
     return true;
 }
 
-static bool nav_switch_cb(uint8_t page, nbgl_pageContent_t* content) {
+static bool nav_switch_cb(uint8_t page, nbgl_pageContent_t *content) {
     UNUSED(page);
     content->type = SWITCHES_LIST;
     content->switchesList.nbSwitches = SETTINGS_SWITCHES_NB;
@@ -268,12 +268,12 @@ static bool nav_switch_cb(uint8_t page, nbgl_pageContent_t* content) {
 }
 
 #define CHOICES_NB 4
-static const char* const choicesTexts[CHOICES_NB] = {"Choice 1",
+static const char *const choicesTexts[CHOICES_NB] = {"Choice 1",
                                                      "Choice 2",
                                                      "Choice 3",
                                                      "Choice 4"};
 
-static bool nav_choice_cb(uint8_t page, nbgl_pageContent_t* content) {
+static bool nav_choice_cb(uint8_t page, nbgl_pageContent_t *content) {
     UNUSED(page);
     content->type = CHOICES_LIST;
     content->choicesList.names = choicesTexts;
@@ -283,7 +283,7 @@ static bool nav_choice_cb(uint8_t page, nbgl_pageContent_t* content) {
     return true;
 }
 
-static bool nav_button_cb(uint8_t page, nbgl_pageContent_t* content) {
+static bool nav_button_cb(uint8_t page, nbgl_pageContent_t *content) {
     UNUSED(page);
     content->type = INFO_BUTTON;
     content->infoButton.text = "Test info button";
@@ -293,7 +293,7 @@ static bool nav_button_cb(uint8_t page, nbgl_pageContent_t* content) {
     return true;
 }
 
-static bool nav_info_cb(uint8_t page, nbgl_pageContent_t* content) {
+static bool nav_info_cb(uint8_t page, nbgl_pageContent_t *content) {
     UNUSED(page);
     content->type = CENTERED_INFO;
     content->centeredInfo.text1 = "Test centered info";
@@ -421,7 +421,7 @@ int ui_display_choice_details(void) {
                                   "With details",
                                   "Confirm",
                                   "Cancel",
-                                  (nbgl_warningDetails_t*) &warningDetails,
+                                  (nbgl_warningDetails_t *) &warningDetails,
                                   review_details_choice);
     return 0;
 }
