@@ -27,7 +27,7 @@
 
 #ifdef NBGL_KEYPAD
 
-static void validate_cb(const uint8_t* entry, uint8_t length) {
+static void validate_cb(const uint8_t *entry, uint8_t length) {
     bool isSuccess = (length == PIN_LEN) && (memcmp(entry, PIN_VAL, PIN_LEN) == 0);
     io_send_sw(isSuccess ? SWO_SUCCESS : SWO_SECURITY_CONDITION_NOT_SATISFIED);
     nbgl_useCaseStatus("Pin Status", isSuccess, ui_menu_main);

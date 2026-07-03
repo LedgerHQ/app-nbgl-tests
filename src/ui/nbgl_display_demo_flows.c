@@ -46,16 +46,16 @@ static nbgl_contentValueExt_t extension = {0};
 static nbgl_contentInfoList_t infolist = {0};
 
 #ifdef SCREEN_SIZE_WALLET
-static const char* const infoTypes[INFO_NB] = {"Smart Contract owner",
+static const char *const infoTypes[INFO_NB] = {"Smart Contract owner",
                                                "Smart Contract",
                                                "Deployed on"};
 #else
-static const char* const infoTypes[INFO_NB] = {"Contract owner",
+static const char *const infoTypes[INFO_NB] = {"Contract owner",
                                                "Contract",
                                                "Contract address",
                                                "Deployed on"};
 #endif
-static const char* const infoValues[INFO_NB] = {"1inch Network\n1inch.io",
+static const char *const infoValues[INFO_NB] = {"1inch Network\n1inch.io",
                                                 "Aggregation Router V6",
 #ifndef SCREEN_SIZE_WALLET
                                                 "0x111111125421cA6dc452d289314280a0f8842A65",

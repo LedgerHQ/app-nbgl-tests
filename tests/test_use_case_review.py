@@ -10,8 +10,9 @@ from ragger.navigator.navigation_scenario import NavigateWithScenario
 from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
 
-def test_use_case_review_accepted(backend: BackendInterface,
-                                  scenario_navigator: NavigateWithScenario) -> None:
+def test_use_case_review_accepted(
+    backend: BackendInterface, scenario_navigator: NavigateWithScenario
+) -> None:
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_review():
@@ -23,8 +24,9 @@ def test_use_case_review_accepted(backend: BackendInterface,
     assert status == Errors.SW_SUCCESS
 
 
-def test_use_case_blind_signed_review_accepted(backend: BackendInterface,
-                                               scenario_navigator: NavigateWithScenario) -> None:
+def test_use_case_blind_signed_review_accepted(
+    backend: BackendInterface, scenario_navigator: NavigateWithScenario
+) -> None:
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_blind_signed_review():
@@ -36,10 +38,12 @@ def test_use_case_blind_signed_review_accepted(backend: BackendInterface,
     assert status == Errors.SW_SUCCESS
 
 
-def test_use_case_blind_signed_review_display_warning(backend: BackendInterface,
-                                                      navigator: Navigator,
-                                                      test_name: str,
-                                                      default_screenshot_path: str) -> None:
+def test_use_case_blind_signed_review_display_warning(
+    backend: BackendInterface,
+    navigator: Navigator,
+    test_name: str,
+    default_screenshot_path: str,
+) -> None:
     device = backend.device
     client = NBGLCommandSender(backend)
 
@@ -54,19 +58,22 @@ def test_use_case_blind_signed_review_display_warning(backend: BackendInterface,
         ]
     else:
         instructions = [
-                NavInsID.USE_CASE_CHOICE_REJECT,
-                NavInsID.INFO_HEADER_TAP,
-                NavInsID.LEFT_HEADER_TAP,
-                NavInsID.USE_CASE_REVIEW_REJECT,
-                NavInsID.USE_CASE_CHOICE_CONFIRM
-            ]
+            NavInsID.USE_CASE_CHOICE_REJECT,
+            NavInsID.INFO_HEADER_TAP,
+            NavInsID.LEFT_HEADER_TAP,
+            NavInsID.USE_CASE_REVIEW_REJECT,
+            NavInsID.USE_CASE_CHOICE_CONFIRM,
+        ]
     with pytest.raises(ExceptionRAPDU):
         with client.test_use_case_blind_signed_review():
-            navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
+            navigator.navigate_and_compare(
+                default_screenshot_path, test_name, instructions
+            )
 
 
-def test_use_case_review_refused(backend: BackendInterface,
-                                 scenario_navigator: NavigateWithScenario) -> None:
+def test_use_case_review_refused(
+    backend: BackendInterface, scenario_navigator: NavigateWithScenario
+) -> None:
     client = NBGLCommandSender(backend)
 
     with pytest.raises(ExceptionRAPDU) as e:
@@ -78,10 +85,12 @@ def test_use_case_review_refused(backend: BackendInterface,
     assert len(e.value.data) == 0
 
 
-def test_use_case_generic_review(backend: BackendInterface,
-                                 navigator: Navigator,
-                                 test_name: str,
-                                 default_screenshot_path: str) -> None:
+def test_use_case_generic_review(
+    backend: BackendInterface,
+    navigator: Navigator,
+    test_name: str,
+    default_screenshot_path: str,
+) -> None:
     device = backend.device
     client = NBGLCommandSender(backend)
 
@@ -114,6 +123,7 @@ def test_use_case_generic_review(backend: BackendInterface,
 
     # Assert that we have received an approval
     assert status == Errors.SW_SUCCESS
+
 
 def test_use_case_multiple_warnings(scenario_navigator: NavigateWithScenario) -> None:
     client = NBGLCommandSender(scenario_navigator.backend)

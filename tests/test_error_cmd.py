@@ -3,7 +3,7 @@ import pytest
 from ragger.error import ExceptionRAPDU
 from ragger.backend.interface import BackendInterface
 
-from application_client.nbgl_command_sender import CLA, InsType, P1, P2, Errors
+from application_client.nbgl_command_sender import CLA, InsType, P2, Errors
 
 
 # Ensure the app returns an error when a bad CLA is used
@@ -16,7 +16,7 @@ def test_bad_cla(backend: BackendInterface) -> None:
 # Ensure the app returns an error when a bad INS is used
 def test_bad_ins(backend: BackendInterface) -> None:
     with pytest.raises(ExceptionRAPDU) as e:
-        backend.exchange(cla=CLA, ins=0xff)
+        backend.exchange(cla=CLA, ins=0xFF)
     assert e.value.status == Errors.SW_INS_NOT_SUPPORTED
 
 

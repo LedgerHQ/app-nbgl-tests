@@ -42,11 +42,13 @@ def get_enter_position(device_type: DeviceType) -> tuple[int, int]:
 
 
 @pytest.mark.parametrize("mode", ["digits", "pin"])
-def test_keypad(backend: BackendInterface,
-                navigator: Navigator,
-                test_name: str,
-                default_screenshot_path: str,
-                mode: str) -> None:
+def test_keypad(
+    backend: BackendInterface,
+    navigator: Navigator,
+    test_name: str,
+    default_screenshot_path: str,
+    mode: str,
+) -> None:
     device = backend.device
     client = NBGLCommandSender(backend)
 
