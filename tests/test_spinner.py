@@ -1,9 +1,8 @@
 import time
 
-from ragger.backend.interface import BackendInterface
-from ragger.navigator import Navigator, NavInsID, NavIns
-
 from application_client.nbgl_command_sender import NBGLCommandSender
+from ragger.backend.interface import BackendInterface
+from ragger.navigator import Navigator, NavIns, NavInsID
 
 
 def test_spinner(

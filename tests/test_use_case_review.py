@@ -1,18 +1,13 @@
 import pytest
-
+from application_client.nbgl_command_sender import Errors, NBGLCommandSender
 from ledgered.devices import DeviceType
-
 from ragger.backend.interface import BackendInterface
 from ragger.error import ExceptionRAPDU
 from ragger.navigator import Navigator, NavInsID
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
-
-def test_use_case_review_accepted(
-    backend: BackendInterface, scenario_navigator: NavigateWithScenario
-) -> None:
+def test_use_case_review_accepted(backend: BackendInterface, scenario_navigator: NavigateWithScenario) -> None:
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_review():
@@ -24,9 +19,7 @@ def test_use_case_review_accepted(
     assert status == Errors.SW_SUCCESS
 
 
-def test_use_case_blind_signed_review_accepted(
-    backend: BackendInterface, scenario_navigator: NavigateWithScenario
-) -> None:
+def test_use_case_blind_signed_review_accepted(backend: BackendInterface, scenario_navigator: NavigateWithScenario) -> None:
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_blind_signed_review():
@@ -66,14 +59,10 @@ def test_use_case_blind_signed_review_display_warning(
         ]
     with pytest.raises(ExceptionRAPDU):
         with client.test_use_case_blind_signed_review():
-            navigator.navigate_and_compare(
-                default_screenshot_path, test_name, instructions
-            )
+            navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
 
-def test_use_case_review_refused(
-    backend: BackendInterface, scenario_navigator: NavigateWithScenario
-) -> None:
+def test_use_case_review_refused(backend: BackendInterface, scenario_navigator: NavigateWithScenario) -> None:
     client = NBGLCommandSender(backend)
 
     with pytest.raises(ExceptionRAPDU) as e:

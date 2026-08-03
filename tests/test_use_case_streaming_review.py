@@ -1,18 +1,13 @@
 import pytest
-
+from application_client.nbgl_command_sender import Errors, NBGLCommandSender
 from ledgered.devices import DeviceType
-
 from ragger.backend.interface import BackendInterface
 from ragger.error import ExceptionRAPDU
-from ragger.navigator import Navigator, NavInsID, NavIns
+from ragger.navigator import Navigator, NavIns, NavInsID
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
-
-def test_use_case_streaming_review_accepted(
-    backend: BackendInterface, scenario_navigator: NavigateWithScenario
-) -> None:
+def test_use_case_streaming_review_accepted(backend: BackendInterface, scenario_navigator: NavigateWithScenario) -> None:
     client = NBGLCommandSender(backend)
 
     with client.test_use_case_streaming_review():
@@ -80,9 +75,7 @@ def test_use_case_streaming_review_accepted_with_more(
     assert status == Errors.SW_SUCCESS
 
 
-def test_use_case_streaming_review_refused(
-    backend: BackendInterface, scenario_navigator: NavigateWithScenario
-) -> None:
+def test_use_case_streaming_review_refused(backend: BackendInterface, scenario_navigator: NavigateWithScenario) -> None:
     client = NBGLCommandSender(backend)
 
     with pytest.raises(ExceptionRAPDU) as e:

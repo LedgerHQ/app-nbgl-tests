@@ -1,8 +1,8 @@
-from enum import IntEnum
-from typing import Generator, List, Optional
+from collections.abc import Generator
 from contextlib import contextmanager
+from enum import IntEnum
 
-from ragger.backend.interface import BackendInterface, RAPDU
+from ragger.backend.interface import RAPDU, BackendInterface
 
 MAX_APDU_LEN: int = 255
 
@@ -56,7 +56,7 @@ class Errors(IntEnum):
     SW_SUCCESS = 0x9000
 
 
-def split_message(message: bytes, max_size: int) -> List[bytes]:
+def split_message(message: bytes, max_size: int) -> list[bytes]:
     return [message[x : x + max_size] for x in range(0, len(message), max_size)]
 
 
@@ -79,86 +79,62 @@ class NBGLCommandSender:
 
     @contextmanager
     def test_spinner(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_SPINNER, p2=P2.P2_LAST
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_SPINNER, p2=P2.P2_LAST) as response:
             yield response
 
     @contextmanager
     def test_generic_settings(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_GENERIC_SETTINGS
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_GENERIC_SETTINGS) as response:
             yield response
 
     @contextmanager
     def test_generic_config(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_GENERIC_CONFIG
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_GENERIC_CONFIG) as response:
             yield response
 
     @contextmanager
     def test_generic_review(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_GENERIC_REVIEW
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_GENERIC_REVIEW) as response:
             yield response
 
     @contextmanager
     def test_confirm(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_CONFIRM
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_CONFIRM) as response:
             yield response
 
     @contextmanager
     def test_keypad(self, p1: int) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_KEYPAD, p1=p1
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_KEYPAD, p1=p1) as response:
             yield response
 
     @contextmanager
     def test_navigation(self, p1: int) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_NAVIGATION, p1=p1
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_NAVIGATION, p1=p1) as response:
             yield response
 
     @contextmanager
     def test_use_case_review(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_REVIEW, p2=P2.P2_LAST
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_REVIEW, p2=P2.P2_LAST) as response:
             yield response
 
     @contextmanager
     def test_use_case_blind_signed_review(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_REVIEW_BLIND_SIGNING, p2=P2.P2_LAST
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_REVIEW_BLIND_SIGNING, p2=P2.P2_LAST) as response:
             yield response
 
     @contextmanager
     def test_use_case_review_with_warning(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_REVIEW_WARNING
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_REVIEW_WARNING) as response:
             yield response
 
     @contextmanager
     def test_use_case_review_multiple_warnings(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_REVIEW_MULTIPLE_WARNING
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_REVIEW_MULTIPLE_WARNING) as response:
             yield response
 
     @contextmanager
     def test_use_case_streaming_review(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_STREAMING_REVIEW, p2=P2.P2_LAST
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_STREAMING_REVIEW, p2=P2.P2_LAST) as response:
             yield response
 
     @contextmanager
@@ -174,54 +150,40 @@ class NBGLCommandSender:
 
     @contextmanager
     def test_use_case_address_review(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_ADDRESS_REVIEW, p2=P2.P2_LAST
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_ADDRESS_REVIEW, p2=P2.P2_LAST) as response:
             yield response
 
     @contextmanager
     def test_use_case_long_address_review(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_ADDRESS_REVIEW, p1=0x01, p2=P2.P2_LAST
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_ADDRESS_REVIEW, p1=0x01, p2=P2.P2_LAST) as response:
             yield response
 
     @contextmanager
     def test_use_case_long_address_review_with_tags(
         self,
     ) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_ADDRESS_REVIEW, p1=0x02, p2=P2.P2_LAST
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_ADDRESS_REVIEW, p1=0x02, p2=P2.P2_LAST) as response:
             yield response
 
     @contextmanager
     def test_use_case_static_review(self, p1: int) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_STATIC_REVIEW, p1=p1, p2=P2.P2_LAST
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_STATIC_REVIEW, p1=p1, p2=P2.P2_LAST) as response:
             yield response
 
     @contextmanager
     def test_use_case_light_review(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_LIGHT_REVIEW, p2=P2.P2_LAST
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_LIGHT_REVIEW, p2=P2.P2_LAST) as response:
             yield response
 
-    def get_async_response(self) -> Optional[RAPDU]:
+    def get_async_response(self) -> RAPDU | None:
         return self.backend.last_async_response
 
     @contextmanager
     def test_action(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_ACTION
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_ACTION) as response:
             yield response
 
     @contextmanager
     def test_choice_details(self) -> Generator[None, None, None]:
-        with self.backend.exchange_async(
-            cla=CLA, ins=InsType.TEST_USE_CASE_CHOICE_DETAILS
-        ) as response:
+        with self.backend.exchange_async(cla=CLA, ins=InsType.TEST_USE_CASE_CHOICE_DETAILS) as response:
             yield response
