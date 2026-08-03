@@ -1,11 +1,9 @@
 import pytest
-
+from application_client.nbgl_command_sender import Errors, NBGLCommandSender
 from ragger.backend.interface import BackendInterface
 from ragger.error import ExceptionRAPDU
-from ragger.navigator import Navigator, NavInsID, NavIns
+from ragger.navigator import Navigator, NavIns, NavInsID
 from ragger.navigator.navigation_scenario import NavigateWithScenario
-
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
 
 def test_use_case_static_review_accepted(
@@ -73,9 +71,7 @@ def test_use_case_static_review_refused(
 
     with pytest.raises(ExceptionRAPDU) as e:
         with client.test_use_case_static_review(0):
-            navigator.navigate_and_compare(
-                default_screenshot_path, test_name, instructions
-            )
+            navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     # Assert that we have received a refusal
     assert e.value.status == Errors.SW_DENY
@@ -143,9 +139,7 @@ def test_use_case_light_review_refused(
 
     with pytest.raises(ExceptionRAPDU) as e:
         with client.test_use_case_light_review():
-            navigator.navigate_and_compare(
-                default_screenshot_path, test_name, instructions
-            )
+            navigator.navigate_and_compare(default_screenshot_path, test_name, instructions)
 
     # Assert that we have received a refusal
     assert e.value.status == Errors.SW_DENY

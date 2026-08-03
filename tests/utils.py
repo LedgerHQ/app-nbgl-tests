@@ -1,6 +1,5 @@
-from pathlib import Path
-from typing import List
 import re
+from pathlib import Path
 
 
 def verify_name(name: str) -> None:
@@ -44,11 +43,11 @@ def verify_version(version: str) -> None:
     assert version == vers_str
 
 
-def _read_makefile() -> List[str]:
+def _read_makefile() -> list[str]:
     """Read lines from the parent Makefile"""
 
     parent = Path(__file__).parent.parent.resolve()
     makefile = f"{parent}/Makefile"
-    with open(makefile, "r", encoding="utf-8") as f_p:
+    with open(makefile, encoding="utf-8") as f_p:
         lines = f_p.readlines()
     return lines

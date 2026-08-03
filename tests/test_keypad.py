@@ -1,16 +1,13 @@
 import pytest
-
-from ledgered.devices import DeviceType, Devices
-
-from ragger.backend.interface import BackendInterface
-from ragger.navigator import Navigator, NavInsID, NavIns
-from ragger.firmware.touch.positions import (
-    STAX_BUTTON_LOWER_RIGHT,
-    FLEX_BUTTON_LOWER_RIGHT,
-    APEX_P_BUTTON_LOWER_RIGHT,
-)
-
 from application_client.nbgl_command_sender import NBGLCommandSender
+from ledgered.devices import Devices, DeviceType
+from ragger.backend.interface import BackendInterface
+from ragger.firmware.touch.positions import (
+    APEX_P_BUTTON_LOWER_RIGHT,
+    FLEX_BUTTON_LOWER_RIGHT,
+    STAX_BUTTON_LOWER_RIGHT,
+)
+from ragger.navigator import Navigator, NavIns, NavInsID
 
 
 def get_digit5_position(device_type: DeviceType) -> tuple[int, int]:

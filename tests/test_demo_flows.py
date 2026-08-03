@@ -1,12 +1,9 @@
 from ledgered.devices import Device, DeviceType
-
-from ragger.navigator import Navigator, NavInsID, NavIns
+from ragger.navigator import Navigator, NavIns, NavInsID
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
 
-def test_app_demo_flow_send_BTC(
-    navigator: Navigator, scenario_navigator: NavigateWithScenario, test_name: str
-) -> None:
+def test_app_demo_flow_send_BTC(navigator: Navigator, scenario_navigator: NavigateWithScenario, test_name: str) -> None:
     device = scenario_navigator.backend.device
     screenshot_path = scenario_navigator.screenshot_path
     # Navigate in the main menu
@@ -37,9 +34,7 @@ def test_app_demo_flow_send_BTC(
     scenario_navigator.review_approve(test_name=test_name + "/part2")
 
 
-def test_app_demo_flow_swap_1inch(
-    navigator: Navigator, scenario_navigator: NavigateWithScenario, test_name: str
-) -> None:
+def test_app_demo_flow_swap_1inch(navigator: Navigator, scenario_navigator: NavigateWithScenario, test_name: str) -> None:
     device = scenario_navigator.backend.device
     screenshot_path = scenario_navigator.screenshot_path
     if device.is_nano:
@@ -67,13 +62,9 @@ def test_app_demo_flow_swap_1inch(
             NavIns(NavInsID.TOUCH, (200, 230)),  # Select 1inch
             NavInsID.USE_CASE_REVIEW_NEXT,
             # Enter Contract details
-            NavIns(
-                NavInsID.TOUCH, (350 if device.type == DeviceType.STAX else 420, 100)
-            ),
+            NavIns(NavInsID.TOUCH, (350 if device.type == DeviceType.STAX else 420, 100)),
             # Display Contract address
-            NavIns(
-                NavInsID.TOUCH, (350 if device.type == DeviceType.STAX else 420, 300)
-            ),
+            NavIns(NavInsID.TOUCH, (350 if device.type == DeviceType.STAX else 420, 300)),
             NavInsID.LEFT_HEADER_TAP,
             NavInsID.LEFT_HEADER_TAP,
         ]
@@ -88,9 +79,7 @@ def test_app_demo_flow_swap_1inch(
     scenario_navigator.review_approve(test_name=test_name + "/part2")
 
 
-def test_app_demo_flow_BS_stake(
-    navigator: Navigator, scenario_navigator: NavigateWithScenario, test_name: str
-) -> None:
+def test_app_demo_flow_BS_stake(navigator: Navigator, scenario_navigator: NavigateWithScenario, test_name: str) -> None:
     device = scenario_navigator.backend.device
     screenshot_path = scenario_navigator.screenshot_path
     if device.is_nano:
@@ -122,9 +111,7 @@ def test_app_demo_flow_BS_stake(
     scenario_navigator.review_approve_with_warning(test_name=test_name + "/part2")
 
 
-def test_app_demo_flow_SOL_receive(
-    navigator: Navigator, scenario_navigator: NavigateWithScenario, test_name: str
-) -> None:
+def test_app_demo_flow_SOL_receive(navigator: Navigator, scenario_navigator: NavigateWithScenario, test_name: str) -> None:
     device = scenario_navigator.backend.device
     screenshot_path = scenario_navigator.screenshot_path
     if device.is_nano:
@@ -157,9 +144,7 @@ def test_app_demo_flow_SOL_receive(
     scenario_navigator.address_review_approve(test_name=test_name + "/part2")
 
 
-def test_app_demo_flow_ETH_warning(
-    device: Device, navigator: Navigator, test_name: str, default_screenshot_path: str
-) -> None:
+def test_app_demo_flow_ETH_warning(device: Device, navigator: Navigator, test_name: str, default_screenshot_path: str) -> None:
     if device.is_nano:
         instructions = [
             NavInsID.RIGHT_CLICK,

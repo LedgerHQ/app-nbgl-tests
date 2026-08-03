@@ -1,14 +1,10 @@
+from application_client.nbgl_command_sender import Errors, NBGLCommandSender
 from ledgered.devices import DeviceType
-
-from ragger.navigator import Navigator, NavInsID, NavIns
+from ragger.navigator import Navigator, NavIns, NavInsID
 from ragger.navigator.navigation_scenario import NavigateWithScenario
 
-from application_client.nbgl_command_sender import NBGLCommandSender, Errors
 
-
-def test_use_case_address_review_accepted(
-    navigator: Navigator, scenario_navigator: NavigateWithScenario, test_name: str
-) -> None:
+def test_use_case_address_review_accepted(navigator: Navigator, scenario_navigator: NavigateWithScenario, test_name: str) -> None:
     backend = scenario_navigator.backend
     device = backend.device
     screenshot_path = scenario_navigator.screenshot_path
@@ -22,11 +18,7 @@ def test_use_case_address_review_accepted(
                 NavInsID.TOUCH,
                 (
                     40 if device.type == DeviceType.APEX_P else 100,
-                    500
-                    if device.type == DeviceType.STAX
-                    else 410
-                    if device.type == DeviceType.FLEX
-                    else 310,
+                    500 if device.type == DeviceType.STAX else 410 if device.type == DeviceType.FLEX else 310,
                 ),
             ),
             NavIns(NavInsID.USE_CASE_ADDRESS_CONFIRMATION_EXIT_QR),
@@ -62,11 +54,7 @@ def test_use_case_long_address_review_accepted(
                 NavInsID.TOUCH,
                 (
                     40 if device.type == DeviceType.APEX_P else 100,
-                    500
-                    if device.type == DeviceType.STAX
-                    else 410
-                    if device.type == DeviceType.FLEX
-                    else 310,
+                    500 if device.type == DeviceType.STAX else 410 if device.type == DeviceType.FLEX else 310,
                 ),
             ),
             NavIns(NavInsID.USE_CASE_ADDRESS_CONFIRMATION_EXIT_QR),
@@ -102,11 +90,7 @@ def test_use_case_long_address_review_accepted_with_tags(
                 NavInsID.TOUCH,
                 (
                     150 if device.type == DeviceType.APEX_P else 200,
-                    370
-                    if device.type == DeviceType.STAX
-                    else 370
-                    if device.type == DeviceType.FLEX
-                    else 250,
+                    370 if device.type == DeviceType.STAX else 370 if device.type == DeviceType.FLEX else 250,
                 ),
             ),
             NavIns(NavInsID.USE_CASE_ADDRESS_CONFIRMATION_EXIT_QR),

@@ -1,11 +1,9 @@
 import pytest
-
-from ragger.backend.interface import BackendInterface
-from ragger.navigator import Navigator, NavInsID, NavIns
-from ragger.firmware.touch.positions import POSITIONS
-from ledgered.devices import DeviceType
-
 from application_client.nbgl_command_sender import NBGLCommandSender
+from ledgered.devices import DeviceType
+from ragger.backend.interface import BackendInterface
+from ragger.firmware.touch.positions import POSITIONS
+from ragger.navigator import Navigator, NavIns, NavInsID
 
 
 @pytest.mark.parametrize("mode", ["info", "button", "switch", "choice", "bar"])
@@ -68,7 +66,5 @@ def test_navigation(
     p1 = {"info": 0x00, "button": 0x01, "switch": 0x02, "choice": 0x03, "bar": 0x04}
 
     with client.test_navigation(p1[mode]):
-        navigator.navigate_and_compare(
-            default_screenshot_path, test_name, instructions[mode]
-        )
+        navigator.navigate_and_compare(default_screenshot_path, test_name, instructions[mode])
         backend.wait_for_home_screen()

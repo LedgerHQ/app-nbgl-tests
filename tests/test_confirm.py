@@ -1,7 +1,6 @@
+from application_client.nbgl_command_sender import NBGLCommandSender
 from ragger.backend.interface import BackendInterface
 from ragger.navigator import Navigator, NavInsID
-
-from application_client.nbgl_command_sender import NBGLCommandSender
 
 
 def test_confirm(
