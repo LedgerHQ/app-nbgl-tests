@@ -32,6 +32,7 @@ typedef enum {
     TEST_USE_CASE_ACTION = 0x15,
     TEST_USE_CASE_CHOICE_DETAILS = 0x16,
     TEST_USE_CASE_REVIEW_MULTIPLE_WARNINGS = 0x17,
+    TEST_USE_CASE_ADVANCED_STREAMING_REVIEW = 0x18,
 } command_e;
 
 /**
@@ -47,6 +48,8 @@ typedef enum {
 #define P1_NAV_CONTENT_SWITCHES      0x02
 #define P1_NAV_CONTENT_CHOICES       0x03
 #define P1_NAV_CONTENT_BARS          0x04
+#define P1_W3C_NO_THREAT             0x00
+#define P1_W3C_THREAT_DETECTED       0x01
 
 // Please ensure that the P1_TUNE_* values are in sync with the SDK (include/os_io_seproxyhal.h)
 #define P1_TUNE_BOOT          0x01

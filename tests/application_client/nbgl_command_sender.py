@@ -15,6 +15,9 @@ class P1(IntEnum):
     # Parameter 1 for Keypad.
     P1_DIGITS = 0x00
     P1_PIN = 0x01
+    # Parameter 1 for advanced streaming review Web3 Checks warning.
+    P1_W3C_NO_THREAT = 0x00
+    P1_W3C_THREAT_DETECTED = 0x01
 
 
 class P2(IntEnum):
@@ -45,6 +48,7 @@ class InsType(IntEnum):
     TEST_USE_CASE_ACTION = 0x15
     TEST_USE_CASE_CHOICE_DETAILS = 0x16
     TEST_USE_CASE_REVIEW_MULTIPLE_WARNING = 0x17
+    TEST_USE_CASE_ADVANCED_STREAMING_REVIEW = 0x18
 
 
 class Errors(IntEnum):
@@ -144,6 +148,17 @@ class NBGLCommandSender:
         with self.backend.exchange_async(
             cla=CLA,
             ins=InsType.TEST_USE_CASE_STREAMING_REVIEW_BLIND_SIGNING,
+            p2=P2.P2_LAST,
+        ) as response:
+            yield response
+
+    @contextmanager
+    def test_use_case_advanced_streaming_review(self, threat: bool) -> Generator[None, None, None]:
+        p1 = P1.P1_W3C_THREAT_DETECTED if threat else P1.P1_W3C_NO_THREAT
+        with self.backend.exchange_async(
+            cla=CLA,
+            ins=InsType.TEST_USE_CASE_ADVANCED_STREAMING_REVIEW,
+            p1=p1,
             p2=P2.P2_LAST,
         ) as response:
             yield response
