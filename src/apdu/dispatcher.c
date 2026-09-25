@@ -99,6 +99,17 @@ int apdu_dispatcher(const command_t *cmd) {
                 return io_send_sw(SWO_INCORRECT_P1_P2);
             }
             return ui_display_streaming_review(true);
+        case TEST_USE_CASE_ADVANCED_STREAMING_REVIEW:
+            if (cmd->p2 != 0) {
+                return io_send_sw(SWO_INCORRECT_P1_P2);
+            }
+            if (cmd->p1 == P1_W3C_NO_THREAT) {
+                return ui_display_advanced_streaming_review(false);
+            }
+            if (cmd->p1 == P1_W3C_THREAT_DETECTED) {
+                return ui_display_advanced_streaming_review(true);
+            }
+            return io_send_sw(SWO_INCORRECT_P1_P2);
         case TEST_USE_CASE_STATIC_REVIEW:
             // P1 & P2 may be used later as test/sub-test number
             if (cmd->p2 != 0) {

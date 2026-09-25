@@ -188,6 +188,28 @@ int ui_display_streaming_review(bool is_blind_signed) {
     return 0;
 }
 
+int ui_display_advanced_streaming_review(bool is_threat) {
+    // streaming counter initialization
+    streaming_counter = 4;
+
+    // Setup Web3 Checks warning
+    explicit_bzero(&warning, sizeof(nbgl_warning_t));
+    warning.predefinedSet = is_threat ? (1 << W3C_THREAT_DETECTED_WARN) : (1 << W3C_NO_THREAT_WARN);
+    warning.reportProvider = "Blockaid";
+    warning.reportUrl = "url.com/od24xz";
+    warning.providerMessage = "Transaction checked by Blockaid.";
+
+    // Start advanced streaming review flow
+    nbgl_useCaseAdvancedReviewStreamingStart(TYPE_TRANSACTION,
+                                             &ICON_APP,
+                                             "Review transaction\nto send NBT",
+                                             NULL,
+                                             &warning,
+                                             onTransactionContinue);
+
+    return 0;
+}
+
 static void quit_cb(void) {
     io_send_sw(SWO_CONDITIONS_NOT_SATISFIED);
     ui_menu_main();

@@ -45,6 +45,9 @@
             "test_use_case_streaming_review.py::test_use_case_blind_signed_streaming_review_accepted",
             "test_use_case_streaming_review.py::test_use_case_streaming_review_accepted_with_more",
             "test_use_case_streaming_review.py::test_use_case_streaming_review_refused",
+            "test_use_case_streaming_review.py::test_use_case_advanced_streaming_review_no_threat_accepted",
+            "test_use_case_streaming_review.py::test_use_case_advanced_streaming_review_threat_accepted",
+            "test_use_case_streaming_review.py::test_use_case_advanced_streaming_review_wrong_p1p2",
             "test_version_cmd.py::test_version"
         ]
     }
